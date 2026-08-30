@@ -10,15 +10,6 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - backend
-      - valkey
-
-  valkey:
-    image: valkey/valkey:latest
-    container_name: nahidka-valkey
-    ports:
-      - "6379:6379"
-    volumes:
-      - valkey_data:/data
 
   backend:
     build:
@@ -33,9 +24,6 @@ services:
     environment:
       - DB_PATH=/app/data/nahidka.db
       - VALKEY_URL=valkey:6379
-    depends_on:
-      - valkey
 
 volumes:
   backend_data:
-  valkey_data:

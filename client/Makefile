@@ -1,4 +1,4 @@
-.PHONY: build build-desktop build-android build-ios build-web run-desktop run-web
+.PHONY: build build-desktop build-android build-ios build-web run-desktop run-web test
 
 build: build-desktop build-android build-ios build-web
 
@@ -19,3 +19,6 @@ run-desktop:
 
 run-web:
 	./gradlew :webApp:jsBrowserRun
+
+test:
+	./gradlew allTests
