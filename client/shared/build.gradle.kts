@@ -63,6 +63,7 @@ kotlin {
             api(project(":shared:core:feature:social-battery"))
             api(project(":shared:core:feature:goals"))
             api(project(":shared:core:feature:dashboard"))
+            api(project(":shared:ui:dashboard"))
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
