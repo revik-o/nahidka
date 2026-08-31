@@ -57,7 +57,12 @@ kotlin {
             implementation(libs.compose.uiTooling)
         }
         commonMain.dependencies {
-            api(project(":shared:lib:api"))
+            api(project(":shared:core:lib:api"))
+            api(project(":shared:core:feature:tasks"))
+            api(project(":shared:core:feature:financial-management"))
+            api(project(":shared:core:feature:social-battery"))
+            api(project(":shared:core:feature:goals"))
+            api(project(":shared:core:feature:dashboard"))
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
