@@ -1,0 +1,29 @@
+package org.orev.nahidka.ui.common.theme
+
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.Text
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+
+@Composable
+fun NahidkaTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val colorScheme = NahidkaDarkColorScheme
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = NahidkaTypography,
+        content = content
+    )
+}
+
+@Preview
+@Composable
+fun NahidkaThemePreview() {
+    NahidkaTheme {
+        Text("Theme Preview")
+    }
+}

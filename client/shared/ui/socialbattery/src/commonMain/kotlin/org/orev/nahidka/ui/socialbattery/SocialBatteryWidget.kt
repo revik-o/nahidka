@@ -7,6 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import org.orev.nahidka.ui.common.theme.NahidkaTheme
 
 @Composable
 fun SocialBatteryWidget(
@@ -31,5 +33,13 @@ fun SocialBatteryWidget(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+    }
+}
+
+@Preview
+@Composable
+fun SocialBatteryWidgetPreview() {
+    NahidkaTheme {
+        SocialBatteryWidget(batteryLevel = 0.7f)
     }
 }

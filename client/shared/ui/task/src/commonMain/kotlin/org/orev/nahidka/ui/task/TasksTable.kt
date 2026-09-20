@@ -1,5 +1,8 @@
 package org.orev.nahidka.ui.task
 
+import androidx.compose.ui.tooling.preview.Preview
+import org.orev.nahidka.ui.common.theme.NahidkaTheme
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -92,4 +95,34 @@ private fun RowScope.HeaderCell(
             .weight(1f)
             .clickable(onClick = onClick)
     )
+}
+
+@Preview
+@Composable
+fun TasksTablePreview() {
+    NahidkaTheme {
+        TasksTable(
+            tasks = listOf(
+                TaskEntity(id = "1", title = "Mock Task 1", description = "Mock desc", status = "To Do", priority = 1),
+                TaskEntity(id = "2", title = "Mock Task 2", description = "Mock desc", status = "In Progress", priority = 2)
+            ),
+            onTaskClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun HeaderCellPreview() {
+    NahidkaTheme {
+        Row {
+            HeaderCell(
+                text = "Mock Header",
+                field = TaskSortField.TITLE,
+                currentSortField = TaskSortField.TITLE,
+                sortAscending = true,
+                onClick = {}
+            )
+        }
+    }
 }

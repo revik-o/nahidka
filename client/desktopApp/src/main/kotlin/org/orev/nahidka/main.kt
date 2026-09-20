@@ -34,7 +34,7 @@ fun main() = application {
     if (isMac) {
         Window(
             onCloseRequest = ::exitApplication,
-            title = "Nahidka",
+            title = "nahidka",
         ) {
             window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
             window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
@@ -55,11 +55,11 @@ fun main() = application {
         ) {
             DecoratedWindow(
                 onCloseRequest = ::exitApplication,
-                title = "Nahidka",
+                title = "nahidka",
             ) {
                 App(titleBar = {
                     TitleBar(Modifier.newFullscreenControls()) {
-                        Text("Nahidka")
+                        Text("nahidka")
                     }
                 })
             }

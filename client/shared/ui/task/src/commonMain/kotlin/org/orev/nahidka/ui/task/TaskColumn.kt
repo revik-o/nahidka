@@ -1,5 +1,8 @@
 package org.orev.nahidka.ui.task
 
+import androidx.compose.ui.tooling.preview.Preview
+import org.orev.nahidka.ui.common.theme.NahidkaTheme
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -43,5 +46,20 @@ fun TaskColumn(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun TaskColumnPreview() {
+    NahidkaTheme {
+        TaskColumn(
+            statusName = "To Do",
+            tasks = listOf(
+                TaskEntity(id = "1", title = "Mock Task 1", description = "Mock desc", status = "To Do", priority = 1),
+                TaskEntity(id = "2", title = "Mock Task 2", description = "Mock desc", status = "To Do", priority = 2)
+            ),
+            onTaskClick = {}
+        )
     }
 }

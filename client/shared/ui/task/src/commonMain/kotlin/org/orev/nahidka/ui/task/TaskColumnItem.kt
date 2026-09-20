@@ -1,5 +1,8 @@
 package org.orev.nahidka.ui.task
 
+import androidx.compose.ui.tooling.preview.Preview
+import org.orev.nahidka.ui.common.theme.NahidkaTheme
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
@@ -40,5 +43,16 @@ fun TaskColumnItem(
                 overflow = TextOverflow.Ellipsis
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun TaskColumnItemPreview() {
+    NahidkaTheme {
+        TaskColumnItem(
+            task = TaskEntity(id = "1", title = "Mock Task", description = "Mock description", status = "To Do", priority = 1),
+            onClick = {}
+        )
     }
 }

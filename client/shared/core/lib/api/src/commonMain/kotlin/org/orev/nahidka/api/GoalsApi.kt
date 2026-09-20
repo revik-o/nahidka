@@ -1,25 +1,14 @@
 package org.orev.nahidka.api
 
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
-
 class GoalsApi {
 
-    fun getGoals(): Deferred<List<Goal>> {
-        val deferred = CompletableDeferred<List<Goal>>()
-        deferred.complete(emptyList())
-        return deferred
+    suspend fun getGoals(): List<Goal> {
+        return emptyList()
     }
 
-    fun createGoal(goal: Goal): Deferred<Unit> {
-        val deferred = CompletableDeferred<Unit>()
-        deferred.complete(Unit)
-        return deferred
+    suspend fun createGoal(goal: Goal) {
     }
 
-    fun updateGoal(goalId: String, title: String): Deferred<Unit> {
-        val deferred = CompletableDeferred<Unit>()
-        deferred.complete(Unit)
-        return deferred
+    suspend fun updateGoal(goalId: String, title: String) {
     }
 }

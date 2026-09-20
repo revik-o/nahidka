@@ -1,5 +1,8 @@
 package org.orev.nahidka.ui.goal
 
+import androidx.compose.ui.tooling.preview.Preview
+import org.orev.nahidka.ui.common.theme.NahidkaTheme
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.LinearProgressIndicator
@@ -36,6 +39,17 @@ fun GoalLinearItem(
         Text(
             text = "${(goal.progress * 100).toInt()}%",
             style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+
+@Preview
+@Composable
+fun GoalLinearItemPreview() {
+    NahidkaTheme {
+        GoalLinearItem(
+            goal = GoalEntity(id = "1", title = "Learn Compose", progress = 0.75f, deadline = "2026-12-31"),
+            onClick = {}
         )
     }
 }

@@ -5,7 +5,6 @@ import org.orev.nahidka.ui.models.TaskEntity
 // Demonstration of Metro DI for UI
 // You would define scopes like AppScope or ActivityScope in your core modules.
 
-/*
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.Inject
@@ -33,4 +32,3 @@ class TaskViewModel @Inject constructor(
         return listOf(defaultTask)
     }
 }
-*/

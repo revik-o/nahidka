@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -28,10 +29,13 @@ kotlin {
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
+            implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.components.resources)
             implementation(project(":shared:ui:models"))
             implementation(project(":shared:ui:common"))
             implementation(project(":shared:ui:socialbattery"))
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.metro.runtime)
         }
         commonTest.dependencies { implementation(libs.kotlin.test) }
     }

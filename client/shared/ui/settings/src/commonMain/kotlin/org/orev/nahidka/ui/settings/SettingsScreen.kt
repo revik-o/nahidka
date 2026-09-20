@@ -8,6 +8,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import org.orev.nahidka.ui.common.theme.NahidkaTheme
 
 @Composable
 fun SettingsScreen(modifier: Modifier = Modifier) {
@@ -35,5 +37,13 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
             Text("Enable Notifications", style = MaterialTheme.typography.bodyLarge)
             Switch(checked = notificationsEnabled, onCheckedChange = { notificationsEnabled = it })
         }
+    }
+}
+
+@Preview
+@Composable
+fun SettingsScreenPreview() {
+    NahidkaTheme {
+        SettingsScreen()
     }
 }

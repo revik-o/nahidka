@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import org.orev.nahidka.ui.common.theme.NahidkaTheme
 import org.orev.nahidka.ui.models.NotificationEntity
 
 @Composable
@@ -45,5 +47,22 @@ fun NotificationHistoryScreen(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun NotificationHistoryScreenPreview() {
+    NahidkaTheme {
+        NotificationHistoryScreen(
+            notifications = listOf(
+                NotificationEntity(
+                    id = "1",
+                    title = "New Message",
+                    message = "Hello!",
+                    timestamp = 1670000000000L
+                )
+            )
+        )
     }
 }

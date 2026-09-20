@@ -1,61 +1,36 @@
 package org.orev.nahidka.api
 
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
-
 class UsersApi {
 
-    fun login(login: String, password: String): Deferred<User> {
-        val deferred = CompletableDeferred<User>()
-        deferred.complete(User("1", login, "test@test.com"))
-        return deferred
+    suspend fun login(login: String, password: String): User {
+        return User("1", login, "test@test.com")
     }
 
-    fun register(login: String, password: String): Deferred<User> {
-        val deferred = CompletableDeferred<User>()
-        deferred.complete(User("1", login, "test@test.com"))
-        return deferred
+    suspend fun register(login: String, password: String): User {
+        return User("1", login, "test@test.com")
     }
 
-    fun oauthGoogle(token: String): Deferred<User> {
-        val deferred = CompletableDeferred<User>()
-        deferred.complete(User("1", "google_user", "test@google.com"))
-        return deferred
+    suspend fun oauthGoogle(token: String): User {
+        return User("1", "google_user", "test@google.com")
     }
 
-    fun getProfile(): Deferred<UserProfile> {
-        val deferred = CompletableDeferred<UserProfile>()
-        deferred.complete(UserProfile("1", "Hello World"))
-        return deferred
+    suspend fun getProfile(): UserProfile {
+        return UserProfile("1", "Hello World")
     }
 
-    fun updateProfile(profile: UserProfile): Deferred<Unit> {
-        val deferred = CompletableDeferred<Unit>()
-        deferred.complete(Unit)
-        return deferred
+    suspend fun updateProfile(profile: UserProfile) {
     }
 
-    fun patchProfile(bio: String): Deferred<Unit> {
-        val deferred = CompletableDeferred<Unit>()
-        deferred.complete(Unit)
-        return deferred
+    suspend fun patchProfile(bio: String) {
     }
 
-    fun getApplicationOptions(): Deferred<ApplicationOptions> {
-        val deferred = CompletableDeferred<ApplicationOptions>()
-        deferred.complete(ApplicationOptions("dark", "en"))
-        return deferred
+    suspend fun getApplicationOptions(): ApplicationOptions {
+        return ApplicationOptions("dark", "en")
     }
 
-    fun updateApplicationOptions(options: ApplicationOptions): Deferred<Unit> {
-        val deferred = CompletableDeferred<Unit>()
-        deferred.complete(Unit)
-        return deferred
+    suspend fun updateApplicationOptions(options: ApplicationOptions) {
     }
 
-    fun patchApplicationOptions(theme: String): Deferred<Unit> {
-        val deferred = CompletableDeferred<Unit>()
-        deferred.complete(Unit)
-        return deferred
+    suspend fun patchApplicationOptions(theme: String) {
     }
 }

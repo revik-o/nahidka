@@ -1,12 +1,11 @@
 package org.orev.nahidka.ui.financialmanagement
 
+import androidx.compose.ui.tooling.preview.Preview
+import org.orev.nahidka.ui.common.theme.NahidkaTheme
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -47,10 +46,9 @@ fun FinancialManagementTable(
                     }
                     
                     // Placeholder icon
-                    Icon(
-                        imageVector = Icons.Default.ShoppingCart,
-                        contentDescription = transaction.iconName,
-                        tint = MaterialTheme.colorScheme.primary
+                    Text(
+                        text = "🛒",
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     
@@ -70,15 +68,32 @@ fun FinancialManagementTable(
                     if (isDesktop) {
                         Spacer(modifier = Modifier.width(16.dp))
                         IconButton(onClick = { onEdit(transaction) }) {
-                            Icon(Icons.Default.Edit, contentDescription = "Edit")
+                            Text("Edit")
                         }
                         IconButton(onClick = { onDelete(transaction) }) {
-                            Icon(Icons.Default.Delete, contentDescription = "Delete")
+                            Text("Del")
                         }
                     }
                 }
                 Divider()
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun FinancialManagementTablePreview() {
+    NahidkaTheme {
+        FinancialManagementTable(
+            transactions = listOf(
+                TransactionEntity(id = "1", title = "Groceries", amount = -50.0, iconName = "cart"),
+                TransactionEntity(id = "2", title = "Salary", amount = 1000.0, iconName = "money")
+            ),
+            selectMode = false,
+            onToggleSelect = {},
+            onEdit = {},
+            onDelete = {}
+        )
     }
 }

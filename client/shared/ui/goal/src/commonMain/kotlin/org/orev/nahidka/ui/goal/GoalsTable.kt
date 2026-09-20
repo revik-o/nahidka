@@ -1,5 +1,8 @@
 package org.orev.nahidka.ui.goal
 
+import androidx.compose.ui.tooling.preview.Preview
+import org.orev.nahidka.ui.common.theme.NahidkaTheme
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -80,4 +83,34 @@ private fun RowScope.GoalHeaderCell(
             .weight(1f)
             .clickable(onClick = onClick)
     )
+}
+
+@Preview
+@Composable
+fun GoalsTablePreview() {
+    NahidkaTheme {
+        GoalsTable(
+            goals = listOf(
+                GoalEntity(id = "1", title = "Learn Compose", progress = 0.75f, deadline = "2026-12-31"),
+                GoalEntity(id = "2", title = "Build App", progress = 0.3f, deadline = "2026-10-15")
+            ),
+            onGoalClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun GoalHeaderCellPreview() {
+    NahidkaTheme {
+        Row {
+            GoalHeaderCell(
+                text = "Mock Header",
+                field = GoalSortField.TITLE,
+                currentSortField = GoalSortField.TITLE,
+                sortAscending = true,
+                onClick = {}
+            )
+        }
+    }
 }
