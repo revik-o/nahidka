@@ -1,9 +1,12 @@
-.PHONY: build build-desktop build-android build-ios build-web run-desktop run-web test
+.PHONY: build build-desktop build-desktop-image build-android build-ios build-web run-desktop launch-desktop run-web test
 
 build: build-desktop build-android build-ios build-web
 
 build-desktop:
-	./gradlew :desktopApp:packageDistributionForCurrentOS
+	./gradlew :desktopApp:packageReleaseDistributionForCurrentOS
+
+build-desktop-image:
+	./gradlew :desktopApp:createReleaseDistributable
 
 build-android:
 	./gradlew :androidApp:assembleDebug

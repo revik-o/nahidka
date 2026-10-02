@@ -1,0 +1,11 @@
+
+xwininfo: Window id: 0x800007 "nahidka"
+
+  Root window id: 0x480 (the root window) (has no name)
+  Parent window id: 0x20001b (has no name)
+     2 children:
+     0x80001f "FocusProxy": ("Focus-Proxy-Window" "FocusProxy")  1x1+-1+-1  +-1+27
+     0x80001c "Content window": ("org-orev-nahidka-MainKt" "org-orev-nahidka-MainKt")  2562x1921+-1+-28  +-1+0
+        1 child:
+        0x800020 "sun-awt-X11-XCanvasPeer": ("org-orev-nahidka-MainKt" "org-orev-nahidka-MainKt")  2560x1892+1+28  +0+28
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launch_background">#090913</color>
+    <style name="Theme.Nahidka" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/launch_background</item>
+        <item name="android:statusBarColor">@color/launch_background</item>
+        <item name="android:navigationBarColor">@color/launch_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    <style name="Theme.Nahidka.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/launch_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/launch_mark</item>
+        <item name="postSplashScreenTheme">@style/Theme.Nahidka</item>
+    </style>
+</resources>

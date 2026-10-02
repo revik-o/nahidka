@@ -1,0 +1,3 @@
+-keep class com.jetbrains.** { *; }
+-keep class com.sun.jna.** { *; }
+-keep class org.orev.nahidka.window.nativeapi.** { *; }

@@ -3,7 +3,7 @@ package org.orev.nahidka.ui.common.theme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.darkColorScheme
 
-val NahidkaBackground = Color(0xFF0A0A14)
+val NahidkaBackground = Color(0xFF090913)
 val NahidkaPrimary = Color(0xFFD042C3)
 val NahidkaSecondary = Color(0xFF7B42D0)
 val NahidkaSurface = Color(0xFF151523)

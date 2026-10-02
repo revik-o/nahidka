@@ -1,0 +1,24 @@
+
+xwininfo: Window id: 0x480 (the root window) (has no name)
+
+  Root window id: 0x480 (the root window) (has no name)
+  Parent window id: 0x0 (none)
+     8 children:
+     0x800008 "org-orev-nahidka-MainKt": ("org-orev-nahidka-MainKt" "org-orev-nahidka-MainKt")  1x1+1+1  +1+1
+     0x200019 (has no name): ()  800x600+0+0  +0+0
+     0x200011 (has no name): ()  1x1+0+0  +0+0
+     0x20000f (has no name): ()  1x1+-1+-1  +-1+-1
+     0x20000e (has no name): ()  1x1+0+0  +0+0
+     0x200005 "Qt Selection Owner for kwin_x11": ()  3x3+0+0  +0+0
+     0x200010 "KWin": ()  1x1+0+0  +0+0
+     0x20001a (has no name): ()  800x600+140+140  +140+140
+        1 child:
+        0x20001b (has no name): ()  800x600+0+0  +140+140
+           1 child:
+           0x800007 "nahidka": ("org-orev-nahidka-MainKt" "org-orev-nahidka-MainKt")  800x600+0+0  +140+140
+              2 children:
+              0x80001f "FocusProxy": ("Focus-Proxy-Window" "FocusProxy")  1x1+-1+-1  +139+139
+              0x80001c "Content window": ("org-orev-nahidka-MainKt" "org-orev-nahidka-MainKt")  800x600+0+0  +140+140
+                 1 child:
+                 0x800020 "sun-awt-X11-XCanvasPeer": ("org-orev-nahidka-MainKt" "org-orev-nahidka-MainKt")  800x600+0+0  +140+140
+

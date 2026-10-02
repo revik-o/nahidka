@@ -1,0 +1,6 @@
+WM_NORMAL_HINTS(WM_SIZE_HINTS):
+		user specified location: 48, 48
+		program specified location: 48, 48
+		program specified size: 790 by 570
+		window gravity: NorthWest
+_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x3, 0x1, 0x1, 0x0, 0x0

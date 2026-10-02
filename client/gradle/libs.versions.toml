@@ -19,8 +19,16 @@ kotlin = "2.4.10"
 kotlin-wrappers = "2026.8.4"
 kotlinx-coroutines = "1.11.0"
 material3 = "1.11.0-alpha07"
+androidx-splashscreen = "1.2.0"
+androidx-benchmark = "1.5.0"
+androidx-profileinstaller = "1.4.1"
+jbr-api = "1.9.0"
+jna = "5.17.0"
 
 [libraries]
+androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
+androidx-benchmark-macro = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "androidx-benchmark" }
+androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "androidx-profileinstaller" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { module = "junit:junit", version.ref = "junit" }
@@ -48,7 +56,13 @@ metro-runtime = { module = "dev.zacsweers.metro:runtime", version.ref = "metro" 
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
+jbr-api = { module = "org.jetbrains.runtime:jbr-api", version.ref = "jbr-api" }
+jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
+jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
+
 [plugins]
+androidTest = { id = "com.android.test", version.ref = "agp" }
+baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-benchmark" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }

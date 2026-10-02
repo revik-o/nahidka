@@ -1,0 +1,38 @@
+{
+  "session": "x11",
+  "scale": 1.5,
+  "fallback": false,
+  "launcher": "/home/oleg/Documents/git/nahidka/client/desktopApp/build/compose/binaries/main-release/app/org.orev.nahidka/bin/org.orev.nahidka",
+  "checks": [
+    {
+      "check": "packaged dashboard first frame",
+      "passed": true,
+      "window": "0x800007"
+    },
+    {
+      "check": "initial floating bounds",
+      "passed": true,
+      "bounds": [
+        140,
+        140,
+        1200,
+        900
+      ]
+    },
+    {
+      "check": "minimum size hints",
+      "passed": false,
+      "hints": "WM_NORMAL_HINTS(WM_SIZE_HINTS):\n\t\tuser specified location: 48, 48\n\t\tprogram specified location: 48, 48\n\t\tprogram specified size: 800 by 600\n\t\tprogram specified minimum size: 360 by 480\n\t\twindow gravity: NorthWest\n_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x3, 0x1, 0x0, 0x0, 0x0\n"
+    },
+    {
+      "check": "custom maximize",
+      "passed": false,
+      "bounds": [
+        140,
+        140,
+        1200,
+        900
+      ]
+    }
+  ]
+}

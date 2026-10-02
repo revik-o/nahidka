@@ -1,0 +1,38 @@
+{
+  "session": "x11",
+  "scale": 1.0,
+  "fallback": false,
+  "launcher": "/tmp/nahidka-window-baseline/bin/org.orev.nahidka",
+  "checks": [
+    {
+      "check": "packaged dashboard first frame",
+      "passed": true,
+      "window": "0x800007"
+    },
+    {
+      "check": "initial floating bounds",
+      "passed": true,
+      "bounds": [
+        141,
+        168,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "minimum size hints",
+      "passed": false,
+      "hints": "WM_NORMAL_HINTS(WM_SIZE_HINTS):\n\t\tuser specified location: 48, 48\n\t\tprogram specified location: 48, 48\n\t\tprogram specified size: 790 by 570\n\t\twindow gravity: NorthWest\n_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x3, 0x1, 0x1, 0x0, 0x0\n"
+    },
+    {
+      "check": "baseline maximize rendering capture",
+      "passed": true,
+      "bounds": [
+        0,
+        28,
+        2560,
+        1892
+      ]
+    }
+  ]
+}

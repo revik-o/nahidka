@@ -1,0 +1,222 @@
+{
+  "session": "wayland",
+  "checks": [
+    {
+      "check": "packaged dashboard first frame",
+      "passed": true,
+      "window": "0x2000007"
+    },
+    {
+      "check": "initial floating bounds",
+      "passed": true,
+      "bounds": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "minimum size hints",
+      "passed": true,
+      "hints": "WM_NORMAL_HINTS(WM_SIZE_HINTS):\n\t\tuser specified location: 48, 48\n\t\tprogram specified location: 48, 48\n\t\tprogram specified size: 800 by 600\n\t\tprogram specified minimum size: 360 by 480\n\t\twindow gravity: NorthWest\n_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x3, 0x1, 0x0, 0x0, 0x0\n"
+    },
+    {
+      "check": "custom maximize",
+      "passed": true,
+      "bounds": [
+        0,
+        0,
+        1920,
+        1200
+      ]
+    },
+    {
+      "check": "custom restore preserves bounds",
+      "passed": true,
+      "bounds": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "native caption move",
+      "passed": false,
+      "bounds": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "native resize NW",
+      "passed": false,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "native resize N",
+      "passed": false,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "native resize NE",
+      "passed": false,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "native resize E",
+      "passed": false,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "native resize SE",
+      "passed": false,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "native resize S",
+      "passed": false,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "native resize SW",
+      "passed": false,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "native resize W",
+      "passed": false,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "minimum resize clamp",
+      "passed": true,
+      "bounds": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "caption double click",
+      "passed": true,
+      "bounds": [
+        0,
+        0,
+        1920,
+        1200
+      ]
+    },
+    {
+      "check": "drag control cancels without moving",
+      "passed": true,
+      "bounds": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "custom minimize",
+      "passed": false
+    },
+    {
+      "check": "custom close",
+      "passed": false,
+      "exit_code": null
+    }
+  ]
+}

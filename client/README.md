@@ -18,6 +18,7 @@ Use the run configurations provided by the run widget in your IDE's toolbar. You
 
 - Android app: `./gradlew :androidApp:assembleDebug`
 - Desktop app:
+  - Build once: `./gradlew :desktopApp:createReleaseDistributable`
   - Hot reload: `./gradlew :desktopApp:hotRun --auto`
   - Standard run: `./gradlew :desktopApp:run`
 - Web app:

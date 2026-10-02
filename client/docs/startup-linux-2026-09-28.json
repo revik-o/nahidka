@@ -1,0 +1,260 @@
+{
+  "platform": "Linux-6.12.107+deb13-amd64-x86_64-with-glibc2.41",
+  "command": [
+    "client/desktopApp/build/compose/binaries/main-release/app/org.orev.nahidka/bin/org.orev.nahidka"
+  ],
+  "note": "Fresh processes; filesystem caches NOT cleared. First observed launch is not necessarily first install.",
+  "first_observed_launch": {
+    "launch_to_main_ms": 1072.1801580002648,
+    "launch_to_frame_ms": 4539.940241000295,
+    "main_to_frame_ms": 3472.277569
+  },
+  "summary": {
+    "launch_to_main_ms": {
+      "median": 791.139023499909,
+      "p95": 1056.1301280004045
+    },
+    "launch_to_frame_ms": {
+      "median": 3108.0368950001684,
+      "p95": 4144.920504999391
+    },
+    "main_to_frame_ms": {
+      "median": 2318.3081105,
+      "p95": 3119.552568
+    }
+  },
+  "samples": [
+    {
+      "launch_to_main_ms": 861.7678970003908,
+      "launch_to_frame_ms": 3127.7740310006266,
+      "main_to_frame_ms": 2267.855602
+    },
+    {
+      "launch_to_main_ms": 876.7183450008815,
+      "launch_to_frame_ms": 3466.874399000517,
+      "main_to_frame_ms": 2594.236876
+    },
+    {
+      "launch_to_main_ms": 925.716026000373,
+      "launch_to_frame_ms": 3917.539623999801,
+      "main_to_frame_ms": 2996.016814
+    },
+    {
+      "launch_to_main_ms": 1027.2019409994755,
+      "launch_to_frame_ms": 4144.920504999391,
+      "main_to_frame_ms": 3119.552568
+    },
+    {
+      "launch_to_main_ms": 1060.323750999487,
+      "launch_to_frame_ms": 4754.527399999461,
+      "main_to_frame_ms": 3702.3137
+    },
+    {
+      "launch_to_main_ms": 866.2791309998283,
+      "launch_to_frame_ms": 3576.9313219998367,
+      "main_to_frame_ms": 2713.04069
+    },
+    {
+      "launch_to_main_ms": 801.8875739999203,
+      "launch_to_frame_ms": 3088.2997589997103,
+      "main_to_frame_ms": 2288.392201
+    },
+    {
+      "launch_to_main_ms": 839.0906899994661,
+      "launch_to_frame_ms": 2903.2404109993877,
+      "main_to_frame_ms": 2066.300466
+    },
+    {
+      "launch_to_main_ms": 704.1401459991903,
+      "launch_to_frame_ms": 2868.6047279998093,
+      "main_to_frame_ms": 2165.46
+    },
+    {
+      "launch_to_main_ms": 693.2768329997998,
+      "launch_to_frame_ms": 3039.1724060000342,
+      "main_to_frame_ms": 2348.22402
+    },
+    {
+      "launch_to_main_ms": 734.7709550003856,
+      "launch_to_frame_ms": 2939.5162930004517,
+      "main_to_frame_ms": 2205.947167
+    },
+    {
+      "launch_to_main_ms": 682.0486149999851,
+      "launch_to_frame_ms": 2769.9720000000525,
+      "main_to_frame_ms": 2088.906339
+    },
+    {
+      "launch_to_main_ms": 720.431644999735,
+      "launch_to_frame_ms": 2793.624355999782,
+      "main_to_frame_ms": 2074.666908
+    },
+    {
+      "launch_to_main_ms": 698.4534780003742,
+      "launch_to_frame_ms": 2808.909520999805,
+      "main_to_frame_ms": 2112.464666
+    },
+    {
+      "launch_to_main_ms": 666.1289310004577,
+      "launch_to_frame_ms": 2751.7582700002094,
+      "main_to_frame_ms": 2087.465045
+    },
+    {
+      "launch_to_main_ms": 761.6103939999448,
+      "launch_to_frame_ms": 2853.8533979999556,
+      "main_to_frame_ms": 2095.550945
+    },
+    {
+      "launch_to_main_ms": 732.0263550000163,
+      "launch_to_frame_ms": 3223.6295450002217,
+      "main_to_frame_ms": 2492.586168
+    },
+    {
+      "launch_to_main_ms": 941.1945359997844,
+      "launch_to_frame_ms": 3895.561696999721,
+      "main_to_frame_ms": 2958.900271
+    },
+    {
+      "launch_to_main_ms": 1056.1301280004045,
+      "launch_to_frame_ms": 3895.088783000574,
+      "main_to_frame_ms": 2844.627704
+    },
+    {
+      "launch_to_main_ms": 780.3904729998976,
+      "launch_to_frame_ms": 3255.8567870000843,
+      "main_to_frame_ms": 2478.5916
+    }
+  ],
+  "baseline": {
+    "command": [
+      "baseline-package/bin/org.orev.nahidka"
+    ],
+    "first_observed_launch": {
+      "launch_to_main_ms": 1043.1666909998967,
+      "launch_to_frame_ms": 4999.309083000298,
+      "main_to_frame_ms": 4051.116521
+    },
+    "summary": {
+      "launch_to_main_ms": {
+        "median": 801.9216089996917,
+        "p95": 1020.1523300002009
+      },
+      "launch_to_frame_ms": {
+        "median": 4241.277559499395,
+        "p95": 6682.108162000077
+      },
+      "main_to_frame_ms": {
+        "median": 3497.0144315,
+        "p95": 5772.643104
+      }
+    },
+    "samples": [
+      {
+        "launch_to_main_ms": 797.5159409998014,
+        "launch_to_frame_ms": 4299.990298999546,
+        "main_to_frame_ms": 3545.007829
+      },
+      {
+        "launch_to_main_ms": 999.2620419998275,
+        "launch_to_frame_ms": 4911.950814999727,
+        "main_to_frame_ms": 3961.297218
+      },
+      {
+        "launch_to_main_ms": 812.2221350004111,
+        "launch_to_frame_ms": 5266.37977900009,
+        "main_to_frame_ms": 4492.208799
+      },
+      {
+        "launch_to_main_ms": 1020.1523300002009,
+        "launch_to_frame_ms": 5423.951077000311,
+        "main_to_frame_ms": 4473.632518
+      },
+      {
+        "launch_to_main_ms": 1195.70318300066,
+        "launch_to_frame_ms": 7115.758529999766,
+        "main_to_frame_ms": 6052.191296
+      },
+      {
+        "launch_to_main_ms": 1002.5099630001932,
+        "launch_to_frame_ms": 6682.108162000077,
+        "main_to_frame_ms": 5772.643104
+      },
+      {
+        "launch_to_main_ms": 738.5130730008314,
+        "launch_to_frame_ms": 3781.6447520008296,
+        "main_to_frame_ms": 3090.274128
+      },
+      {
+        "launch_to_main_ms": 809.1367400002127,
+        "launch_to_frame_ms": 4173.840589000065,
+        "main_to_frame_ms": 3415.403004
+      },
+      {
+        "launch_to_main_ms": 786.4454500004285,
+        "launch_to_frame_ms": 3933.513781000329,
+        "main_to_frame_ms": 3184.351243
+      },
+      {
+        "launch_to_main_ms": 781.826811999963,
+        "launch_to_frame_ms": 3938.1704910001645,
+        "main_to_frame_ms": 3195.628544
+      },
+      {
+        "launch_to_main_ms": 806.327276999582,
+        "launch_to_frame_ms": 4004.3162249994566,
+        "main_to_frame_ms": 3246.999298
+      },
+      {
+        "launch_to_main_ms": 742.6486920003299,
+        "launch_to_frame_ms": 3855.9475210004166,
+        "main_to_frame_ms": 3154.756333
+      },
+      {
+        "launch_to_main_ms": 787.2093659998427,
+        "launch_to_frame_ms": 4182.564819999243,
+        "main_to_frame_ms": 3449.021034
+      },
+      {
+        "launch_to_main_ms": 693.4295189994373,
+        "launch_to_frame_ms": 3685.3554110002733,
+        "main_to_frame_ms": 3029.266028
+      },
+      {
+        "launch_to_main_ms": 710.4572150001331,
+        "launch_to_frame_ms": 3885.8016599997427,
+        "main_to_frame_ms": 3214.741575
+      },
+      {
+        "launch_to_main_ms": 678.1092549999812,
+        "launch_to_frame_ms": 4077.9942629997095,
+        "main_to_frame_ms": 3436.140014
+      },
+      {
+        "launch_to_main_ms": 753.5254390004411,
+        "launch_to_frame_ms": 5202.867269000308,
+        "main_to_frame_ms": 4508.107808
+      },
+      {
+        "launch_to_main_ms": 897.2757359997559,
+        "launch_to_frame_ms": 5430.66225199982,
+        "main_to_frame_ms": 4577.451906
+      },
+      {
+        "launch_to_main_ms": 960.0634629996421,
+        "launch_to_frame_ms": 5442.961235999974,
+        "main_to_frame_ms": 4592.095453
+      },
+      {
+        "launch_to_main_ms": 1013.2493440005419,
+        "launch_to_frame_ms": 4873.762338999768,
+        "main_to_frame_ms": 3912.983593
+      }
+    ]
+  },
+  "baseline_revision": "6c49c36d81f2745816a0808280cb012768a3d63a",
+  "baseline_adjustments": [
+    "Identical opt-in first-frame instrumentation",
+    "Added missing jdk.unsupported to bundled baseline runtime so Jewel could launch"
+  ],
+  "measurement_date": "2026-09-28 Europe/Kyiv"
+}

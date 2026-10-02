@@ -1,0 +1,254 @@
+{
+  "platform": "Linux-6.12.111+deb13-amd64-x86_64-with-glibc2.41",
+  "command": [
+    "client/desktopApp/build/compose/binaries/main-release/app/org.orev.nahidka/bin/org.orev.nahidka"
+  ],
+  "note": "Fresh processes; filesystem caches NOT cleared. First observed launch is not necessarily first install.",
+  "first_observed_launch": {
+    "launch_to_main_ms": 1057.718340000065,
+    "launch_to_frame_ms": 3886.60326200079,
+    "main_to_frame_ms": 2832.550818
+  },
+  "summary": {
+    "launch_to_main_ms": {
+      "median": 935.5211520005469,
+      "p95": 1035.333518000698
+    },
+    "launch_to_frame_ms": {
+      "median": 3727.72184599944,
+      "p95": 3952.305051001531
+    },
+    "main_to_frame_ms": {
+      "median": 2814.757411,
+      "p95": 3002.911715
+    }
+  },
+  "samples": [
+    {
+      "launch_to_main_ms": 971.114359999774,
+      "launch_to_frame_ms": 3784.4004269991274,
+      "main_to_frame_ms": 2817.625143
+    },
+    {
+      "launch_to_main_ms": 1003.4303049997106,
+      "launch_to_frame_ms": 3830.968665999535,
+      "main_to_frame_ms": 2833.158295
+    },
+    {
+      "launch_to_main_ms": 875.4744999987452,
+      "launch_to_frame_ms": 3568.3896809987345,
+      "main_to_frame_ms": 2696.386215
+    },
+    {
+      "launch_to_main_ms": 963.6766319999879,
+      "launch_to_frame_ms": 3578.9489210001193,
+      "main_to_frame_ms": 2616.561815
+    },
+    {
+      "launch_to_main_ms": 919.3635009996797,
+      "launch_to_frame_ms": 3685.2270830004272,
+      "main_to_frame_ms": 2771.15485
+    },
+    {
+      "launch_to_main_ms": 801.9797540000582,
+      "launch_to_frame_ms": 3608.0245220000506,
+      "main_to_frame_ms": 2809.667976
+    },
+    {
+      "launch_to_main_ms": 917.3003759988205,
+      "launch_to_frame_ms": 3770.216608998453,
+      "main_to_frame_ms": 2854.181911
+    },
+    {
+      "launch_to_main_ms": 861.1078020003333,
+      "launch_to_frame_ms": 3908.3285060005437,
+      "main_to_frame_ms": 3048.076761
+    },
+    {
+      "launch_to_main_ms": 1013.6284829986835,
+      "launch_to_frame_ms": 3664.3157839989726,
+      "main_to_frame_ms": 2655.984717
+    },
+    {
+      "launch_to_main_ms": 1030.3722040007415,
+      "launch_to_frame_ms": 3876.6957429998,
+      "main_to_frame_ms": 2846.449055
+    },
+    {
+      "launch_to_main_ms": 1027.3638590006158,
+      "launch_to_frame_ms": 3933.736537999721,
+      "main_to_frame_ms": 2907.640377
+    },
+    {
+      "launch_to_main_ms": 878.5231440015195,
+      "launch_to_frame_ms": 3639.8726210009045,
+      "main_to_frame_ms": 2762.803526
+    },
+    {
+      "launch_to_main_ms": 776.24786099841,
+      "launch_to_frame_ms": 3586.902992999967,
+      "main_to_frame_ms": 2811.889679
+    },
+    {
+      "launch_to_main_ms": 807.3569049993239,
+      "launch_to_frame_ms": 3442.298617999768,
+      "main_to_frame_ms": 2637.047543
+    },
+    {
+      "launch_to_main_ms": 999.45426100021,
+      "launch_to_frame_ms": 3562.3536120001518,
+      "main_to_frame_ms": 2565.148718
+    },
+    {
+      "launch_to_main_ms": 951.678803001414,
+      "launch_to_frame_ms": 3810.314203001326,
+      "main_to_frame_ms": 2862.478814
+    },
+    {
+      "launch_to_main_ms": 863.2315540016862,
+      "launch_to_frame_ms": 3864.72017000051,
+      "main_to_frame_ms": 3002.911715
+    },
+    {
+      "launch_to_main_ms": 1035.333518000698,
+      "launch_to_frame_ms": 3952.305051001531,
+      "main_to_frame_ms": 2923.093765
+    },
+    {
+      "launch_to_main_ms": 1055.0906380012748,
+      "launch_to_frame_ms": 3979.6263330008514,
+      "main_to_frame_ms": 2929.741986
+    },
+    {
+      "launch_to_main_ms": 828.6212330003764,
+      "launch_to_frame_ms": 3584.741643999223,
+      "main_to_frame_ms": 2758.111144
+    }
+  ],
+  "baseline": {
+    "command": [
+      "/tmp/nahidka-window-baseline/bin/org.orev.nahidka"
+    ],
+    "first_observed_launch": {
+      "launch_to_main_ms": 998.6515550008335,
+      "launch_to_frame_ms": 3527.9375200007053,
+      "main_to_frame_ms": 2529.802486
+    },
+    "summary": {
+      "launch_to_main_ms": {
+        "median": 916.1683909997009,
+        "p95": 1060.7346190008684
+      },
+      "launch_to_frame_ms": {
+        "median": 3448.451990000649,
+        "p95": 3887.632886000574
+      },
+      "main_to_frame_ms": {
+        "median": 2512.88028,
+        "p95": 2945.203555
+      }
+    },
+    "samples": [
+      {
+        "launch_to_main_ms": 911.0153349993197,
+        "launch_to_frame_ms": 3361.7621529992903,
+        "main_to_frame_ms": 2453.615327
+      },
+      {
+        "launch_to_main_ms": 883.4825319991069,
+        "launch_to_frame_ms": 3155.778295998971,
+        "main_to_frame_ms": 2275.904033
+      },
+      {
+        "launch_to_main_ms": 915.4280880011356,
+        "launch_to_frame_ms": 3769.331196001076,
+        "main_to_frame_ms": 2856.860253
+      },
+      {
+        "launch_to_main_ms": 914.1602140007308,
+        "launch_to_frame_ms": 3423.7616560003516,
+        "main_to_frame_ms": 2512.831507
+      },
+      {
+        "launch_to_main_ms": 1044.0958830004092,
+        "launch_to_frame_ms": 3821.5208790006727,
+        "main_to_frame_ms": 2779.388317
+      },
+      {
+        "launch_to_main_ms": 916.8254090000119,
+        "launch_to_frame_ms": 3272.2897450003074,
+        "main_to_frame_ms": 2361.802162
+      },
+      {
+        "launch_to_main_ms": 907.2433279998222,
+        "launch_to_frame_ms": 3278.5569980005675,
+        "main_to_frame_ms": 2373.992603
+      },
+      {
+        "launch_to_main_ms": 894.4829160009249,
+        "launch_to_frame_ms": 3381.188661000124,
+        "main_to_frame_ms": 2492.680163
+      },
+      {
+        "launch_to_main_ms": 1004.1886400013027,
+        "launch_to_frame_ms": 3621.940261000418,
+        "main_to_frame_ms": 2620.202938
+      },
+      {
+        "launch_to_main_ms": 1060.7346190008684,
+        "launch_to_frame_ms": 3531.451034001293,
+        "main_to_frame_ms": 2472.993816
+      },
+      {
+        "launch_to_main_ms": 1212.9617629998393,
+        "launch_to_frame_ms": 4043.8225969992345,
+        "main_to_frame_ms": 2833.347905
+      },
+      {
+        "launch_to_main_ms": 1042.933188000461,
+        "launch_to_frame_ms": 3777.477576999445,
+        "main_to_frame_ms": 2735.869606
+      },
+      {
+        "launch_to_main_ms": 1056.7416159992717,
+        "launch_to_frame_ms": 3685.0886489992263,
+        "main_to_frame_ms": 2632.680873
+      },
+      {
+        "launch_to_main_ms": 826.6936960008024,
+        "launch_to_frame_ms": 3075.6310140004643,
+        "main_to_frame_ms": 2249.462292
+      },
+      {
+        "launch_to_main_ms": 834.5390209997277,
+        "launch_to_frame_ms": 3473.1423240009462,
+        "main_to_frame_ms": 2638.932516
+      },
+      {
+        "launch_to_main_ms": 944.5900589998928,
+        "launch_to_frame_ms": 3887.632886000574,
+        "main_to_frame_ms": 2945.203555
+      },
+      {
+        "launch_to_main_ms": 915.51137299939,
+        "launch_to_frame_ms": 3876.5537990002485,
+        "main_to_frame_ms": 2966.445621
+      },
+      {
+        "launch_to_main_ms": 852.6122019993636,
+        "launch_to_frame_ms": 3364.730511999369,
+        "main_to_frame_ms": 2512.929053
+      },
+      {
+        "launch_to_main_ms": 958.899683000709,
+        "launch_to_frame_ms": 3362.297073999798,
+        "main_to_frame_ms": 2404.471368
+      },
+      {
+        "launch_to_main_ms": 938.8188570010243,
+        "launch_to_frame_ms": 3265.5371590008144,
+        "main_to_frame_ms": 2327.880167
+      }
+    ]
+  }
+}

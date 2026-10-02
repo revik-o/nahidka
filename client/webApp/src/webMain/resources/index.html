@@ -3,18 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#090913">
     <title>nahidka</title>
-    <link type="text/css" rel="stylesheet" href="styles.css">
+    <style>
+        html, body, #app { width: 100%; height: 100%; margin: 0; background: #090913; overflow: hidden; }
+        #launch-splash { position: fixed; inset: 0; z-index: 1; display: grid; place-content: center;
+            justify-items: center; gap: 12px; background: #090913; color: white; font: 24px system-ui, sans-serif; }
+        #launch-status, noscript { max-width: 300px; text-align: center; font-size: 14px; color: #b4afce; }
+    </style>
 </head>
-<body style="text-align: center; align-content: center">
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 50 50" role="presentation">
-        <circle cx="25" cy="25" r="20" stroke="#ccc" stroke-width="4" fill="none"/>
-        <circle cx="25" cy="25" r="20" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"
-                stroke-dasharray="90 125">
-            <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s"
-                              repeatCount="indefinite"/>
-        </circle>
-    </svg>
-    <script type="application/javascript" src="webApp.js"></script>
+<body>
+    <div id="app"></div>
+    <div id="launch-splash" role="status" aria-live="polite" aria-label="Opening Nahidka">
+        <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 96 96" aria-hidden="true">
+            <rect x="8" y="8" width="80" height="80" rx="22" fill="#963cff"/>
+            <path d="M48 69 28 50C12 34 34 20 48 36 62 20 84 34 68 50Z" fill="#fff"/>
+        </svg>
+        <span>nahidka</span>
+        <span id="launch-status"></span>
+        <noscript>Enable JavaScript to open Nahidka.</noscript>
+    </div>
+    <script>
+        performance.mark('nahidka-page');
+        function showLaunchError() {
+            const splash = document.getElementById('launch-splash');
+            if (!splash) return;
+            splash.setAttribute('aria-label', 'Nahidka could not start');
+            document.getElementById('launch-status').textContent = 'Could not open Nahidka. Please reload the page.';
+        }
+        // Register before loading Kotlin/Skiko, including asynchronous Wasm failures.
+        window.addEventListener('error', showLaunchError, true);
+        window.addEventListener('unhandledrejection', showLaunchError);
+    </script>
+    <script defer src="webApp.js"></script>
 </body>
 </html>

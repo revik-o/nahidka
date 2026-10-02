@@ -1,0 +1,281 @@
+{
+  "session": "x11",
+  "scale": 1.0,
+  "fallback": true,
+  "launcher": "/home/oleg/Documents/git/nahidka/client/desktopApp/build/compose/binaries/main/app/org.orev.nahidka/bin/org.orev.nahidka",
+  "checks": [
+    {
+      "check": "packaged dashboard first frame",
+      "passed": true,
+      "window": "0x800007"
+    },
+    {
+      "check": "initial floating bounds",
+      "passed": true,
+      "bounds": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "minimum size hints",
+      "passed": true,
+      "hints": "WM_NORMAL_HINTS(WM_SIZE_HINTS):\n\t\tuser specified location: 48, 48\n\t\tprogram specified location: 48, 48\n\t\tprogram specified size: 800 by 600\n\t\tprogram specified minimum size: 360 by 480\n\t\twindow gravity: NorthWest\n_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x3, 0x1, 0x0, 0x0, 0x0\n"
+    },
+    {
+      "check": "custom maximize",
+      "passed": true,
+      "bounds": [
+        0,
+        0,
+        2560,
+        1920
+      ]
+    },
+    {
+      "check": "custom restore preserves bounds",
+      "passed": true,
+      "bounds": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "native caption move",
+      "passed": true,
+      "bounds": [
+        220,
+        200,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "native resize NW",
+      "passed": true,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        115,
+        115,
+        825,
+        625
+      ]
+    },
+    {
+      "check": "native resize N",
+      "passed": true,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        115,
+        800,
+        625
+      ]
+    },
+    {
+      "check": "native resize NE",
+      "passed": true,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        115,
+        825,
+        625
+      ]
+    },
+    {
+      "check": "native resize E",
+      "passed": true,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        825,
+        600
+      ]
+    },
+    {
+      "check": "native resize SE",
+      "passed": true,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        825,
+        625
+      ]
+    },
+    {
+      "check": "native resize S",
+      "passed": true,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        800,
+        625
+      ]
+    },
+    {
+      "check": "native resize SW",
+      "passed": true,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        115,
+        140,
+        825,
+        625
+      ]
+    },
+    {
+      "check": "native resize W",
+      "passed": true,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        115,
+        140,
+        825,
+        600
+      ]
+    },
+    {
+      "check": "minimum resize clamp",
+      "passed": true,
+      "bounds": [
+        140,
+        140,
+        360,
+        480
+      ]
+    },
+    {
+      "check": "fallback keyboard move",
+      "passed": true,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        150,
+        150,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "fallback keyboard move Escape restore",
+      "passed": true,
+      "bounds": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "fallback keyboard resize",
+      "passed": true,
+      "before": [
+        140,
+        140,
+        800,
+        600
+      ],
+      "after": [
+        140,
+        140,
+        810,
+        610
+      ]
+    },
+    {
+      "check": "fallback keyboard resize Escape restore",
+      "passed": true,
+      "bounds": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "caption double click",
+      "passed": true,
+      "bounds": [
+        0,
+        0,
+        2560,
+        1920
+      ]
+    },
+    {
+      "check": "drag control cancels without moving",
+      "passed": true,
+      "bounds": [
+        140,
+        140,
+        800,
+        600
+      ]
+    },
+    {
+      "check": "custom minimize",
+      "passed": true,
+      "state": [
+        3,
+        0
+      ]
+    },
+    {
+      "check": "custom close",
+      "passed": true,
+      "exit_code": 0
+    }
+  ]
+}
