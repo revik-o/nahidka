@@ -4,12 +4,17 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
+    alias(libs.plugins.metro)
 }
 
 kotlin {
     listOf(iosArm64(), iosSimulatorArm64()).forEach { it.binaries.framework { baseName = "financialmanagement"; isStatic = true } }
     jvm()
-    js { browser() }
+    js {
+        browser {
+            testTask { useMocha { timeout = "10s" } }
+        }
+    }
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs { browser() }
     android {
@@ -21,8 +26,20 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":shared:core:lib:api"))
-            implementation(libs.kotlinx.coroutines.core)
+            api(libs.kotlinx.coroutines.core)
+            api(libs.kotlinx.collections.immutable)
+            api(libs.kotlinx.datetime)
+            implementation(libs.metro.runtime)
         }
-        commonTest.dependencies { implementation(libs.kotlin.test) }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
+        jsMain.dependencies {
+            implementation(npm("@js-joda/timezone", "2.23.0"))
+        }
+        wasmJsMain.dependencies {
+            implementation(npm("@js-joda/timezone", "2.23.0"))
+        }
     }
 }

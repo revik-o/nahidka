@@ -1,37 +1,80 @@
 package org.orev.nahidka.ui.dashboard
 
+import androidx.lifecycle.viewModelScope
 import dev.zacsweers.metro.Inject
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.YearMonth
+import kotlinx.datetime.toLocalDateTime
+import org.orev.nahidka.feature.financial.calculation.checkedAdd
+import org.orev.nahidka.feature.financial.dto.FinancialSessionConfig
+import org.orev.nahidka.feature.financial.dto.Money
+import org.orev.nahidka.feature.financial.dto.MonthlyQuery
+import org.orev.nahidka.feature.financial.dto.OperationKind
+import org.orev.nahidka.feature.financial.dto.PlanningConfigured
+import org.orev.nahidka.feature.financial.service.FinancialContext
+import org.orev.nahidka.feature.financial.support.ExactMoneyFormatter
+import org.orev.nahidka.feature.financial.support.FinancialClock
 import org.orev.nahidka.ui.common.state.StateHolder
 
-data class DashboardPromise(val id: Int, val title: String, val date: String, val priority: String, val completed: Boolean = false)
-
-/** Sample content until the dashboard API exposes the individual feature summaries. */
-data class DashboardState(
-    val socialBatteryLevel: Float = .87f,
-    val upcomingTasks: List<String> = emptyList(),
-    val goals: List<String> = emptyList(),
-    val promises: List<DashboardPromise> = listOf(
-        DashboardPromise(1, "Plan a weekend getaway", "May 30, 2024", "High"),
-        DashboardPromise(2, "Morning coffee in bed", "May 26, 2024", "Medium"),
-        DashboardPromise(3, "Take a dance class together", "", "Low", true)
-    ),
-    val activity: List<String> = listOf("Added a new memory", "Completed a promise", "Updated budget", "Added a note", "Charged social battery"),
-    val loveNote: String = "Thanks for always being my favorite person to do life with. 💕"
-)
-
-sealed interface DashboardEvent {
-    data class TogglePromise(val id: Int) : DashboardEvent
-    data class SetBattery(val value: Float) : DashboardEvent
-    data class AddEntry(val kind: String, val text: String) : DashboardEvent
-}
-
-class DashboardViewModel @Inject constructor() : StateHolder<DashboardState, DashboardEvent>() {
+@Inject
+class DashboardViewModel(
+    private val financialContext: FinancialContext,
+    private val config: FinancialSessionConfig,
+    private val clock: FinancialClock,
+    private val moneyFormatter: ExactMoneyFormatter,
+) : StateHolder<DashboardState, DashboardEvent>() {
     private val _state = MutableStateFlow(DashboardState())
     override val state: StateFlow<DashboardState> = _state.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            try {
+                val localDate = clock.now().toLocalDateTime(TimeZone.of(config.reportingTimeZone)).date
+                val month = YearMonth(localDate.year, localDate.month.ordinal + 1)
+                financialContext.observeFinancialSnapshot(MonthlyQuery(month, config.defaultAssetId)).collect { snapshot ->
+                    var income = 0L
+                    snapshot.operations.filter { it.kind == OperationKind.INCOME }.forEach { income = checkedAdd(income, it.amount.units) }
+                    val plan = snapshot.planning as? PlanningConfigured
+                    val available = plan?.table?.totals?.projectedAvailableAfterPlanning
+                    _state.update {
+                        it.copy(
+                            financialOverview = FinancialOverviewUi(
+                                formattedSpent = moneyFormatter.format(snapshot.spending.netExpense, snapshot.asset),
+                                formattedIncome = moneyFormatter.format(Money(snapshot.asset.id, income), snapshot.asset),
+                                formattedAvailableAfterPlanning = available?.let { amount -> moneyFormatter.format(amount, snapshot.asset) },
+                                spending = snapshot.spending,
+                                assetDisplayCode = snapshot.asset.displayCode,
+                                spendingSlices = snapshot.spending.slices.map { slice ->
+                                    FinancialSpendingSliceUi(
+                                        categoryId = slice.categoryId,
+                                        label = slice.label,
+                                        formattedAmount = moneyFormatter.format(slice.amount, snapshot.asset),
+                                        percentageBasisPoints = slice.percentageBasisPoints,
+                                        isOtherGroup = slice.isOtherGroup,
+                                    )
+                                }.toPersistentList(),
+                                formattedRefundCredits = moneyFormatter.format(snapshot.spending.refundCredits, snapshot.asset),
+                                planningConfigured = plan != null,
+                            ),
+                            financialError = null,
+                        )
+                    }
+                }
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (failure: Exception) {
+                _state.update { it.copy(financialError = failure.message ?: "Could not load financial summary") }
+            }
+        }
+    }
 
     override fun handleEvent(event: DashboardEvent) {
         _state.update { state ->

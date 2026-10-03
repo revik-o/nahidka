@@ -5,7 +5,8 @@ import org.orev.nahidka.window.NahidkaWindow
 
 fun main() {
     val startup = DesktopStartupTrace()
+
     application {
-        NahidkaWindow(onCloseRequest = ::exitApplication, onFirstFrame = startup::onFirstFrame)
+        NahidkaWindow(::exitApplication, startup::onFirstFrame)
     }
 }

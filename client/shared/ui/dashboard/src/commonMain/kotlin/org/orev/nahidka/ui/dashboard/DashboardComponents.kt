@@ -250,22 +250,24 @@ internal fun PromisesCard(state: DashboardState, modifier: Modifier, toggle: (In
 }
 
 @Composable
-internal fun FinanceCard(modifier: Modifier, onClick: () -> Unit) {
+internal fun FinanceCard(summary: FinancialOverviewUi?, error: String?, modifier: Modifier, onClick: () -> Unit) {
     Tile(modifier.heightIn(min = 280.dp)) {
         Label("Finance Overview")
         Caption("This month")
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                Text("$3,428.75", color = Color.White, fontSize = 23.sp)
-                Caption("Spent this month")
+        if (summary == null) {
+            Caption(error ?: "Loading this month’s financial summary")
+        } else {
+            Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                Text(summary.formattedSpent, color = Color.White, fontSize = 23.sp)
+                Caption("Net spent this month")
                 Spacer(Modifier.height(9.dp))
-                Caption("Income")
-                Text("$6,250.00", color = Mint, fontSize = 16.sp)
+                Caption("Posted income")
+                Text(summary.formattedIncome, color = Mint, fontSize = 16.sp)
+                Spacer(Modifier.height(5.dp))
+                Caption(summary.formattedAvailableAfterPlanning?.let { "Available after planning · $it" }
+                    ?: "Set up a monthly plan to see funds after planning")
             }
-            Ring(.55f, "$2,821", Modifier.size(114.dp))
         }
-        Caption("Savings Goal                         72%")
-        Progress(.72f, Mint)
         Link("Go to Finance", onClick)
     }
 }
@@ -290,27 +292,15 @@ internal fun SavingsCard(modifier: Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-internal fun SpendingCard(modifier: Modifier) {
+internal fun SpendingCard(summary: FinancialOverviewUi?, error: String?, modifier: Modifier) {
     Tile(modifier.heightIn(min = 280.dp)) {
         Label("Monthly Spending")
-        Caption("This month · USD")
-        Canvas(Modifier.fillMaxWidth().height(140.dp).semantics {
-            contentDescription = "Monthly spending bar chart, days 1 through 30"
+        if (summary == null) {
+            Caption(error ?: "Loading this month’s category totals")
+        } else {
+            Caption("${summary.spending.period.month} · ${summary.assetDisplayCode}")
+            CategorySpendingDonut(summary)
         }
-        ) {
-            repeat(4) {
-                i -> val y = size.height * i / 3
-                drawLine(Edge, Offset(0f, y), Offset(size.width, y), 1f)
-            }
-            repeat(30) {
-                i -> val h = size.height * (.18f + ((i * 17 + 13) % 37) / 50f)
-                val w = size.width / 30
-                drawRoundRect(Brush.verticalGradient(listOf(Purple, Pink.copy(alpha = .5f))), Offset(i * w + 2, size.height - h), Size(w * .65f, h), androidx.compose.ui.geometry.CornerRadius(3f))
-            }
-        }
-        Caption("1         5         10         15         20         25         30")
-        Caption("● Home     ● Food     ● Fun     ● Other")
-        Caption("$1,245       $642       $512       $1,029")
     }
 }
 

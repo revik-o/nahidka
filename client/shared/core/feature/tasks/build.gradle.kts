@@ -7,8 +7,15 @@ plugins {
 }
 
 kotlin {
-    listOf(iosArm64(), iosSimulatorArm64()).forEach { it.binaries.framework { baseName = "tasks"; isStatic = true } }
-    jvm()
+    listOf(iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "tasks"
+            isStatic = true
+        }
+    }
+    jvm {
+        compilerOptions { jvmTarget = JvmTarget.JVM_11 }
+    }
     js { browser() }
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs { browser() }
@@ -21,8 +28,12 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":shared:core:lib:api"))
-            implementation(libs.kotlinx.coroutines.core)
+            api(libs.kotlinx.coroutines.core)
+            implementation(libs.metro.runtime)
         }
-        commonTest.dependencies { implementation(libs.kotlin.test) }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
     }
 }

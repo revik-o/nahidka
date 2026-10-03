@@ -11,14 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import org.orev.nahidka.ui.models.TransactionEntity
-import org.orev.nahidka.ui.common.WindowSize
-import org.orev.nahidka.ui.common.rememberWindowSizeClass
 
 @Composable
 fun FinancialManagementTable(
     transactions: List<TransactionEntity>,
+    selectedIds: Set<String>,
     selectMode: Boolean,
     onToggleSelect: (TransactionEntity) -> Unit,
     onEdit: (TransactionEntity) -> Unit,
@@ -26,9 +27,6 @@ fun FinancialManagementTable(
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(modifier = modifier) {
-        val windowSize = rememberWindowSizeClass(maxWidth)
-        val isDesktop = windowSize == WindowSize.EXPANDED
-        
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(transactions, key = { it.id }) { transaction ->
                 Row(
@@ -39,7 +37,7 @@ fun FinancialManagementTable(
                 ) {
                     if (selectMode) {
                         Checkbox(
-                            checked = transaction.isSelected,
+                            checked = transaction.id in selectedIds,
                             onCheckedChange = { onToggleSelect(transaction) }
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -58,24 +56,22 @@ fun FinancialManagementTable(
                         modifier = Modifier.weight(1f)
                     )
                     
-                    val moneyColor = if (transaction.amount < 0) Color.Red else Color.Green
+                    val moneyColor = if (transaction.isOutflow) Color.Red else Color.Green
                     Text(
-                        text = "${if (transaction.amount > 0) "+" else ""}${transaction.amount}",
+                        text = transaction.formattedAmount,
                         color = moneyColor,
                         style = MaterialTheme.typography.bodyLarge
                     )
                     
-                    if (isDesktop) {
-                        Spacer(modifier = Modifier.width(16.dp))
-                        IconButton(onClick = { onEdit(transaction) }) {
-                            Text("Edit")
-                        }
-                        IconButton(onClick = { onDelete(transaction) }) {
-                            Text("Del")
-                        }
+                    Spacer(modifier = Modifier.width(4.dp))
+                    IconButton(onClick = { onEdit(transaction) }, modifier = Modifier.semantics { contentDescription = "Edit ${transaction.title}" }) {
+                        Text("✎")
+                    }
+                    IconButton(onClick = { onDelete(transaction) }, modifier = Modifier.semantics { contentDescription = "Delete ${transaction.title}" }) {
+                        Text("×")
                     }
                 }
-                Divider()
+                HorizontalDivider()
             }
         }
     }
@@ -87,9 +83,10 @@ fun FinancialManagementTablePreview() {
     NahidkaTheme {
         FinancialManagementTable(
             transactions = listOf(
-                TransactionEntity(id = "1", title = "Groceries", amount = -50.0, iconName = "cart"),
-                TransactionEntity(id = "2", title = "Salary", amount = 1000.0, iconName = "money")
+                TransactionEntity(id = "1", version = 1, title = "Groceries", formattedAmount = "-50.00 USD", isOutflow = true, iconName = "cart"),
+                TransactionEntity(id = "2", version = 1, title = "Salary", formattedAmount = "+1,000.00 USD", isOutflow = false, iconName = "money")
             ),
+            selectedIds = emptySet(),
             selectMode = false,
             onToggleSelect = {},
             onEdit = {},

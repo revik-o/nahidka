@@ -63,6 +63,7 @@ kotlin {
             api(project(":shared:core:feature:goals"))
             api(project(":shared:core:feature:dashboard"))
             api(project(":shared:ui:dashboard"))
+            implementation(project(":shared:ui:financialmanagement"))
             implementation(project(":shared:ui:common"))
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -73,6 +74,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.metro.runtime)
         }
 
         commonTest.dependencies {

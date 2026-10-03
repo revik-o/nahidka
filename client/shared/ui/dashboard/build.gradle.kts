@@ -34,9 +34,13 @@ kotlin {
             implementation(project(":shared:ui:models"))
             implementation(project(":shared:ui:common"))
             implementation(project(":shared:ui:socialbattery"))
+            implementation(project(":shared:core:feature:financial-management"))
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.metro.runtime)
         }
-        commonTest.dependencies { implementation(libs.kotlin.test) }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
     }
 }

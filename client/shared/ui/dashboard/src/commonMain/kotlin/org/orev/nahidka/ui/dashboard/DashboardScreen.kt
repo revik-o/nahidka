@@ -12,12 +12,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun DashboardScreen(modifier: Modifier = Modifier, viewModel: DashboardViewModel = viewModel {
-    DashboardViewModel()
-}
+fun DashboardScreen(
+    viewModel: DashboardViewModel,
+    onOpenFinance: () -> Unit,
+    onAddExpense: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsState()
     var detail by remember {
@@ -35,7 +36,7 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: DashboardViewModel
         Column {
             Row(Modifier.weight(1f)) {
                 if (desktop) Sidebar {
-                    detail = it
+                    if (it == "Finance Manager") onOpenFinance() else detail = it
                 }
                 LazyColumn(
                     modifier = Modifier.weight(1f).fillMaxHeight(),
@@ -100,16 +101,19 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: DashboardViewModel
                     item(key = "finance", contentType = "card-row") {
                         if (desktop) {
                             Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                                FinanceCard(Modifier.weight(1f)) { detail = "Finance Manager" }
-                                SpendingCard(Modifier.weight(1.1f))
+                                FinanceCard(state.financialOverview, state.financialError, Modifier.weight(1f), onOpenFinance)
+                                SpendingCard(state.financialOverview, state.financialError, Modifier.weight(1.1f))
                                 SavingsCard(Modifier.weight(.9f)) { detail = "Shared Goals" }
                             }
                         } else {
                             AdaptivePair(
-                                { m -> FinanceCard(m) { detail = "Finance Manager" } },
-                                { m -> SavingsCard(m) { detail = "Shared Goals" } }
+                                { modifier -> FinanceCard(state.financialOverview, state.financialError, modifier, onOpenFinance) },
+                                { modifier -> SavingsCard(modifier) { detail = "Shared Goals" } },
                             )
                         }
+                    }
+                    if (!desktop) item(key = "spending", contentType = "card") {
+                        SpendingCard(state.financialOverview, state.financialError, Modifier.fillMaxWidth())
                     }
                     if (!wide) item(key = "activity", contentType = "card") {
                         ActivityCard(state) { detail = "Recent Activity" }
@@ -122,7 +126,7 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: DashboardViewModel
                         detail = "Recent Activity"
                     }
                     QuickActions {
-                        action = it
+                        if (it == "Add Expense") onAddExpense() else action = it
                     }
                     if (noteVisible) Tile {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -146,7 +150,7 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: DashboardViewModel
                         when (i) {
                             0 -> Unit
                             2 -> action = "Quick Action"
-                            else -> detail = listOf("", "Social Battery", "", "Promise Tracker", "Finance Manager")[i]
+                            else -> if (i == 4) onOpenFinance() else detail = listOf("", "Social Battery", "", "Promise Tracker", "Finance Manager")[i]
                         }
                     }
                     .padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -188,7 +192,6 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: DashboardViewModel
                     "Calendar" -> eventRows.forEach {
                         Text("${it[1]}\n${it[2]} · ${it[3]}")
                     }
-                    "Finance Manager" -> Text("This month\n\nSpent: $3,428.75\nIncome: $6,250.00\nLeft to spend: $2,821.25\n\nHome  $1,245\nFood  $642\nFun  $512\nOther  $1,029.75")
                     "Shared Goals" -> Text("New Camera\n\n$1,440 saved of $2,000 · 72%\n$560 remaining")
                     "Relationship Score" -> Text("92% — Amazing!\n\nA sample overview of your shared time, promises, and connection.")
                     "Recent Activity" -> state.activity.forEach {
@@ -223,8 +226,13 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: DashboardViewModel
         , text = {
             if (title == "Quick Action") Column {
                 listOf("Add Promise", "Add Expense", "New Note", "Add Memory").forEach {
-                    option -> TextButton(onClick = {
-                        action = option
+                        option -> TextButton(onClick = {
+                        if (option == "Add Expense") {
+                            action = null
+                            onAddExpense()
+                        } else {
+                            action = option
+                        }
                     }
                     ) {
                         Text(option)
@@ -237,7 +245,7 @@ fun DashboardScreen(modifier: Modifier = Modifier, viewModel: DashboardViewModel
                     input = it
                 }
                 , label = {
-                    Text(if (title == "Add Expense") "Expense description" else "Write something")
+                    Text("Write something")
                 }
                 , maxLines = 4)
             }
