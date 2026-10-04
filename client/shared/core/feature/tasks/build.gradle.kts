@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
+    alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -27,7 +28,8 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":shared:core:lib:api"))
+            api(project(":shared:core:common"))
+            api(project(":shared:core:lib:api"))
             api(libs.kotlinx.coroutines.core)
             implementation(libs.metro.runtime)
         }

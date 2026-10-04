@@ -1,11 +1,20 @@
 package org.orev.nahidka.feature.goals.dto
 
-class GoalsSnapshot(
-    override val revision: Long,
-    goals: List<GoalRecord>
-) : GoalsNotification {
-    private val goalRecords = goals.toMutableList()
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentMap
 
-    val goals: List<GoalRecord>
-        get() = goalRecords.toMutableList()
+data class GoalsSnapshot(
+    val revision: Long,
+    private val recordsByIdentifier: PersistentMap<String, GoalRecord>
+) {
+
+    val goals: ImmutableList<GoalRecord> by lazy { recordsByIdentifier.values.toPersistentList() }
+
+    constructor(revision: Long, goals: List<GoalRecord>) : this(
+        revision, goals.associateBy { it.identifier }.toPersistentMap()
+    ) {
+        require(goals.size == recordsByIdentifier.size) { "Snapshot identifiers must be unique" }
+    }
 }

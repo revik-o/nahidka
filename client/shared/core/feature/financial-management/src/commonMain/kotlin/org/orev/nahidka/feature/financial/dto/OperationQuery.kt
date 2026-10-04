@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.persistentSetOf
 
 data class OperationQuery(
     val period: ReportingPeriod? = null,
-    val assetId: String? = null,
-    val categoryId: String? = null,
+    val assetIdentifier: String? = null,
+    val categoryIdentifier: String? = null,
     val kinds: PersistentSet<OperationKind> = persistentSetOf(),
 )

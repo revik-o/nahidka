@@ -4,5 +4,5 @@ import kotlinx.datetime.YearMonth
 
 data class MonthlyQuery(
     val month: YearMonth,
-    val assetId: String,
+    val assetIdentifier: String,
 )

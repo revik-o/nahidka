@@ -2,6 +2,7 @@ package org.orev.nahidka.ui.common.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 
 val NahidkaBackground = Color(0xFF090913)
 val NahidkaPrimary = Color(0xFFD042C3)
@@ -25,4 +26,17 @@ val NahidkaDarkColorScheme = darkColorScheme(
     onSurface = NahidkaOnSurface,
     error = NahidkaError,
     onError = NahidkaOnError
+)
+
+val NahidkaLightColorScheme = lightColorScheme(
+    primary = Color(0xFF8E2685),
+    onPrimary = Color.White,
+    secondary = Color(0xFF6633AE),
+    onSecondary = Color.White,
+    background = Color(0xFFFCF8FF),
+    onBackground = Color(0xFF211A25),
+    surface = Color(0xFFFCF8FF),
+    onSurface = Color(0xFF211A25),
+    error = Color(0xFFBA1A1A),
+    onError = Color.White,
 )

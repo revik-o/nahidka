@@ -6,9 +6,9 @@ import org.orev.nahidka.feature.financial.dto.Money
 import org.orev.nahidka.feature.financial.dto.SavingsGuidelinePolicy
 
 data class FinancialPlanningTableInput(
-    val id: String,
+    val identifier: String,
     val month: YearMonth,
-    val assetId: String,
+    val assetIdentifier: String,
     val openingAvailable: Money,
     val savingsPolicy: SavingsGuidelinePolicy?,
     val rows: PersistentList<PlanningRowInput>,

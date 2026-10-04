@@ -29,8 +29,8 @@ fun GoalsTable(
     val sortedGoals = remember(goals, sortField, sortAscending) {
         val comparator = when (sortField) {
             GoalSortField.TITLE -> compareBy<GoalEntity> { it.title }
-            GoalSortField.PROGRESS -> compareBy { it.progress }
-            GoalSortField.DEADLINE -> compareBy { it.deadline }
+            GoalSortField.PROGRESS -> compareBy { it.progressPercentage }
+            GoalSortField.DEADLINE -> compareBy { it.deadlineInstant }
         }
         if (sortAscending) goals.sortedWith(comparator) else goals.sortedWith(comparator.reversed())
     }
@@ -53,7 +53,7 @@ fun GoalsTable(
         Divider()
         
         LazyColumn {
-            items(sortedGoals, key = { it.id }) { goal ->
+            items(sortedGoals, key = { it.identifier }) { goal ->
                 GoalLinearItem(
                     goal = goal,
                     onClick = onGoalClick
@@ -91,8 +91,8 @@ fun GoalsTablePreview() {
     NahidkaTheme {
         GoalsTable(
             goals = listOf(
-                GoalEntity(id = "1", title = "Learn Compose", progress = 0.75f, deadline = "2026-12-31"),
-                GoalEntity(id = "2", title = "Build App", progress = 0.3f, deadline = "2026-10-15")
+                GoalEntity(identifier = "1", title = "Learn Compose", progressPercentage = 75f, deadlineInstant = kotlin.time.Instant.parse("2026-12-31T00:00:00Z")),
+                GoalEntity(identifier = "2", title = "Build App", progressPercentage = 30f, deadlineInstant = kotlin.time.Instant.parse("2026-10-15T00:00:00Z"))
             ),
             onGoalClick = {}
         )

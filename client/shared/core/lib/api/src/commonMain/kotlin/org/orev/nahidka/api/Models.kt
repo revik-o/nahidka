@@ -1,13 +1,13 @@
 package org.orev.nahidka.api
 
 data class User(
-    val id: String,
+    val identifier: String,
     val username: String,
     val email: String
 )
 
 data class UserProfile(
-    val id: String,
+    val identifier: String,
     val bio: String
 )
 
@@ -21,9 +21,11 @@ data class Dashboard(
 )
 
 data class Task(
-    val id: String,
+    val identifier: String,
     val title: String,
-    val description: String
+    val description: String = "",
+    val status: TaskStatus = TaskStatus.TO_DO,
+    val priority: Int = 0
 )
 
 data class SocialBattery(
@@ -31,6 +33,8 @@ data class SocialBattery(
 )
 
 data class Goal(
-    val id: String,
-    val title: String
+    val identifier: String,
+    val title: String,
+    val progressPercentage: Float = 0f,
+    val deadlineInstant: kotlin.time.Instant? = null
 )

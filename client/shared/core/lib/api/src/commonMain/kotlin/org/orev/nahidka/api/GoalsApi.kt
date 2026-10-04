@@ -9,6 +9,6 @@ class GoalsApi {
     suspend fun createGoal(goal: Goal) {
     }
 
-    suspend fun updateGoal(goalId: String, title: String) {
+    suspend fun updateGoal(identifier: String, title: String) {
     }
 }

@@ -51,7 +51,7 @@ fun TaskColumnItem(
 fun TaskColumnItemPreview() {
     NahidkaTheme {
         TaskColumnItem(
-            task = TaskEntity(id = "1", title = "Mock Task", description = "Mock description", status = "To Do", priority = 1),
+            task = TaskEntity(identifier = "1", title = "Mock Task", description = "Mock description", status = org.orev.nahidka.api.TaskStatus.TO_DO, priority = 1),
             onClick = {}
         )
     }

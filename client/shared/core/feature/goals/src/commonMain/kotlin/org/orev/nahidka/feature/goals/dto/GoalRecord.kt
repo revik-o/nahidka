@@ -1,6 +1,3 @@
 package org.orev.nahidka.feature.goals.dto
 
-data class GoalRecord(
-    val goalIdentifier: String,
-    val title: String
-)
+typealias GoalRecord = org.orev.nahidka.api.Goal

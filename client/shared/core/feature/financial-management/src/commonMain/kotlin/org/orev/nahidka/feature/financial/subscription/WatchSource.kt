@@ -6,12 +6,12 @@ import org.orev.nahidka.feature.financial.dto.EntitySnapshot
 import org.orev.nahidka.feature.financial.dto.FinancialChangeBatch
 import org.orev.nahidka.feature.financial.store.FinancialCommit
 import org.orev.nahidka.feature.financial.store.InternalFrame
-import org.orev.nahidka.feature.financial.support.FinancialErrorReporter
+import org.orev.nahidka.core.common.ErrorReporter
 
 internal interface WatchSource<T> {
     val frames: StateFlow<InternalFrame>
     val sessionLifetime: Job
-    val errorReporter: FinancialErrorReporter
+    val errorReporter: ErrorReporter
     fun currentFrame(): InternalFrame
     fun snapshot(frame: InternalFrame): EntitySnapshot<T>
     fun project(commit: FinancialCommit): FinancialChangeBatch<T>?

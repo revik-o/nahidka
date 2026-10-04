@@ -1,7 +1,7 @@
 package org.orev.nahidka.ui.models
 
 data class TransactionEntity(
-    val id: String,
+    val identifier: String,
     val version: Long,
     val title: String,
     val formattedAmount: String,

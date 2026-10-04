@@ -1,8 +1,14 @@
 package org.orev.nahidka.feature.financial.dto
 
-import org.orev.nahidka.feature.financial.command.FinancialPlanningTableInput
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.datetime.YearMonth
 
 data class FinancialPlanningTable(
     val version: Long,
-    val input: FinancialPlanningTableInput,
+    val identifier: String,
+    val month: YearMonth,
+    val assetIdentifier: String,
+    val openingAvailable: Money,
+    val savingsPolicy: SavingsGuidelinePolicy?,
+    val rows: PersistentList<PlanningRow>,
 )

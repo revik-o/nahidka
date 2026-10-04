@@ -19,16 +19,16 @@ import org.orev.nahidka.feature.financial.dto.Money
 import org.orev.nahidka.feature.financial.dto.MonthlyQuery
 import org.orev.nahidka.feature.financial.dto.OperationKind
 import org.orev.nahidka.feature.financial.dto.PlanningConfigured
-import org.orev.nahidka.feature.financial.service.FinancialContext
+import org.orev.nahidka.feature.financial.gateway.FinancialGateway
 import org.orev.nahidka.feature.financial.support.ExactMoneyFormatter
-import org.orev.nahidka.feature.financial.support.FinancialClock
+import org.orev.nahidka.core.common.ApplicationClock
 import org.orev.nahidka.ui.common.state.StateHolder
 
 @Inject
 class DashboardViewModel(
-    private val financialContext: FinancialContext,
+    private val financialGateway: FinancialGateway,
     private val config: FinancialSessionConfig,
-    private val clock: FinancialClock,
+    private val clock: ApplicationClock,
     private val moneyFormatter: ExactMoneyFormatter,
 ) : StateHolder<DashboardState, DashboardEvent>() {
     private val _state = MutableStateFlow(DashboardState())
@@ -39,7 +39,7 @@ class DashboardViewModel(
             try {
                 val localDate = clock.now().toLocalDateTime(TimeZone.of(config.reportingTimeZone)).date
                 val month = YearMonth(localDate.year, localDate.month.ordinal + 1)
-                financialContext.observeFinancialSnapshot(MonthlyQuery(month, config.defaultAssetId)).collect { snapshot ->
+                financialGateway.observeFinancialSnapshot(MonthlyQuery(month, config.defaultAssetIdentifier)).collect { snapshot ->
                     var income = 0L
                     snapshot.operations.filter { it.kind == OperationKind.INCOME }.forEach { income = checkedAdd(income, it.amount.units) }
                     val plan = snapshot.planning as? PlanningConfigured
@@ -48,13 +48,13 @@ class DashboardViewModel(
                         it.copy(
                             financialOverview = FinancialOverviewUi(
                                 formattedSpent = moneyFormatter.format(snapshot.spending.netExpense, snapshot.asset),
-                                formattedIncome = moneyFormatter.format(Money(snapshot.asset.id, income), snapshot.asset),
+                                formattedIncome = moneyFormatter.format(Money(snapshot.asset.identifier, income), snapshot.asset),
                                 formattedAvailableAfterPlanning = available?.let { amount -> moneyFormatter.format(amount, snapshot.asset) },
                                 spending = snapshot.spending,
                                 assetDisplayCode = snapshot.asset.displayCode,
                                 spendingSlices = snapshot.spending.slices.map { slice ->
                                     FinancialSpendingSliceUi(
-                                        categoryId = slice.categoryId,
+                                        categoryIdentifier = slice.categoryIdentifier,
                                         label = slice.label,
                                         formattedAmount = moneyFormatter.format(slice.amount, snapshot.asset),
                                         percentageBasisPoints = slice.percentageBasisPoints,
@@ -79,10 +79,10 @@ class DashboardViewModel(
     override fun handleEvent(event: DashboardEvent) {
         _state.update { state ->
             when (event) {
-                is DashboardEvent.TogglePromise -> state.copy(promises = state.promises.map { if (it.id == event.id) it.copy(completed = !it.completed) else it })
+                is DashboardEvent.TogglePromise -> state.copy(promises = state.promises.map { if (it.identifier == event.identifier) it.copy(completed = !it.completed) else it })
                 is DashboardEvent.SetBattery -> state.copy(socialBatteryLevel = event.value.coerceIn(0f, 1f))
                 is DashboardEvent.AddEntry -> if (event.text.isBlank()) state else state.copy(
-                    promises = if (event.kind == "Add Promise") state.promises + DashboardPromise((state.promises.maxOfOrNull { it.id } ?: 0) + 1, event.text, "No due date", "Medium") else state.promises,
+                    promises = if (event.kind == "Add Promise") state.promises + DashboardPromise((state.promises.maxOfOrNull { it.identifier } ?: 0) + 1, event.text, "No due date", "Medium") else state.promises,
                     loveNote = if (event.kind == "New Note") event.text else state.loveNote,
                     activity = listOf("${event.kind}: ${event.text}") + state.activity
                 )

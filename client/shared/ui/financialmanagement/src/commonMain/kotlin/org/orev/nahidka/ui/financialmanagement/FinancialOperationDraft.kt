@@ -7,11 +7,11 @@ import org.orev.nahidka.feature.financial.dto.PaymentMethod
 data class FinancialOperationDraft(
     val original: FinancialOperation?,
     val amountText: String,
-    val assetId: String,
+    val assetIdentifier: String,
     val kind: OperationKind,
-    val categoryId: String?,
+    val categoryIdentifier: String?,
     val paymentMethod: PaymentMethod,
-    val occurredAtText: String,
+    val occurredAtInstant: kotlin.time.Instant,
     val descriptionText: String,
-    val refundOfOperationId: String?,
+    val refundOfOperationIdentifier: String?,
 )

@@ -10,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -19,7 +18,7 @@ import org.orev.nahidka.ui.models.TransactionEntity
 @Composable
 fun FinancialManagementTable(
     transactions: List<TransactionEntity>,
-    selectedIds: Set<String>,
+    selectedIdentifiers: Set<String>,
     selectMode: Boolean,
     onToggleSelect: (TransactionEntity) -> Unit,
     onEdit: (TransactionEntity) -> Unit,
@@ -28,7 +27,7 @@ fun FinancialManagementTable(
 ) {
     BoxWithConstraints(modifier = modifier) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(transactions, key = { it.id }) { transaction ->
+            items(transactions, key = { it.identifier }) { transaction ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -37,7 +36,7 @@ fun FinancialManagementTable(
                 ) {
                     if (selectMode) {
                         Checkbox(
-                            checked = transaction.id in selectedIds,
+                            checked = transaction.identifier in selectedIdentifiers,
                             onCheckedChange = { onToggleSelect(transaction) }
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -56,7 +55,7 @@ fun FinancialManagementTable(
                         modifier = Modifier.weight(1f)
                     )
                     
-                    val moneyColor = if (transaction.isOutflow) Color.Red else Color.Green
+                    val moneyColor = if (transaction.isOutflow) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
                     Text(
                         text = transaction.formattedAmount,
                         color = moneyColor,
@@ -83,10 +82,10 @@ fun FinancialManagementTablePreview() {
     NahidkaTheme {
         FinancialManagementTable(
             transactions = listOf(
-                TransactionEntity(id = "1", version = 1, title = "Groceries", formattedAmount = "-50.00 USD", isOutflow = true, iconName = "cart"),
-                TransactionEntity(id = "2", version = 1, title = "Salary", formattedAmount = "+1,000.00 USD", isOutflow = false, iconName = "money")
+                TransactionEntity(identifier = "1", version = 1, title = "Groceries", formattedAmount = "-50.00 USD", isOutflow = true, iconName = "cart"),
+                TransactionEntity(identifier = "2", version = 1, title = "Salary", formattedAmount = "+1,000.00 USD", isOutflow = false, iconName = "money")
             ),
-            selectedIds = emptySet(),
+            selectedIdentifiers = emptySet(),
             selectMode = false,
             onToggleSelect = {},
             onEdit = {},

@@ -9,12 +9,12 @@ import org.orev.nahidka.feature.financial.di.FinancialSessionScope
 import org.orev.nahidka.feature.financial.dto.FinancialSessionConfig
 import org.orev.nahidka.feature.financial.gateway.FinancialGateway
 import org.orev.nahidka.feature.financial.gateway.InMemoryFinancialGateway
-import org.orev.nahidka.feature.financial.support.FinancialClock
-import org.orev.nahidka.feature.financial.support.FinancialErrorReporter
-import org.orev.nahidka.feature.financial.support.FinancialIdGenerator
-import org.orev.nahidka.feature.financial.support.NoOpFinancialErrorReporter
-import org.orev.nahidka.feature.financial.support.RandomFinancialIdGenerator
-import org.orev.nahidka.feature.financial.support.SystemFinancialClock
+import org.orev.nahidka.core.common.ApplicationClock
+import org.orev.nahidka.core.common.ErrorReporter
+import org.orev.nahidka.core.common.IdentifierGenerator
+import org.orev.nahidka.core.common.NoOpErrorReporter
+import org.orev.nahidka.core.common.RandomIdentifierGenerator
+import org.orev.nahidka.core.common.SystemApplicationClock
 import org.orev.nahidka.ui.dashboard.DashboardViewModel
 import org.orev.nahidka.ui.financialmanagement.FinancialManagementViewModel
 
@@ -29,18 +29,18 @@ interface FinancialSessionGraph {
     @SingleIn(FinancialSessionScope::class)
     fun provideGateway(
         config: FinancialSessionConfig,
-        errorReporter: FinancialErrorReporter,
+        errorReporter: ErrorReporter,
         calendar: FinancialCalendar,
     ): FinancialGateway = InMemoryFinancialGateway(config, errorReporter, calendar)
 
     @Provides
-    fun provideFinancialErrorReporter(): FinancialErrorReporter = NoOpFinancialErrorReporter()
+    fun provideErrorReporter(): ErrorReporter = NoOpErrorReporter()
 
     @Provides
-    fun provideFinancialClock(): FinancialClock = SystemFinancialClock()
+    fun provideApplicationClock(): ApplicationClock = SystemApplicationClock()
 
     @Provides
-    fun provideFinancialIdGenerator(): FinancialIdGenerator = RandomFinancialIdGenerator()
+    fun provideIdentifierGenerator(): IdentifierGenerator = RandomIdentifierGenerator()
 
     @DependencyGraph.Factory
     interface Factory {

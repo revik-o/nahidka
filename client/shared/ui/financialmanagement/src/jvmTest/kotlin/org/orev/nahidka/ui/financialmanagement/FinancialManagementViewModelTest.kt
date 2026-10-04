@@ -25,7 +25,7 @@ import org.orev.nahidka.feature.financial.command.CommandMeta
 import org.orev.nahidka.feature.financial.command.CreateFinancialCategory
 import org.orev.nahidka.feature.financial.command.FinancialOperationPatch
 import org.orev.nahidka.feature.financial.command.NewFinancialOperation
-import org.orev.nahidka.feature.financial.command.NullablePatch
+import org.orev.nahidka.core.common.NullablePatch
 import org.orev.nahidka.feature.financial.command.UpdateFinancialOperation
 import org.orev.nahidka.feature.financial.di.FinancialModule
 import org.orev.nahidka.feature.financial.dto.AssetDefinition
@@ -36,14 +36,9 @@ import org.orev.nahidka.feature.financial.dto.MutationResult
 import org.orev.nahidka.feature.financial.dto.OperationKind
 import org.orev.nahidka.feature.financial.dto.PaymentMethod
 import org.orev.nahidka.feature.financial.gateway.InMemoryFinancialGateway
-import org.orev.nahidka.feature.financial.service.FinancialCategoryContext
-import org.orev.nahidka.feature.financial.service.FinancialContext
-import org.orev.nahidka.feature.financial.service.FinancialPlanningContext
-import org.orev.nahidka.feature.financial.service.FinancialPlanningService
-import org.orev.nahidka.feature.financial.service.FinancialService
 import org.orev.nahidka.feature.financial.support.ExactMoneyFormatter
-import org.orev.nahidka.feature.financial.support.FinancialClock
-import org.orev.nahidka.feature.financial.support.FinancialErrorReporter
+import org.orev.nahidka.core.common.ApplicationClock
+import org.orev.nahidka.core.common.ErrorReporter
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FinancialManagementViewModelTest {
@@ -66,7 +61,7 @@ class FinancialManagementViewModelTest {
             assertEquals(1_234, added.amount.units)
             assertEquals("Lunch", added.description)
 
-            viewModel.handleEvent(FinancialManagementEvent.EditOperation(added.id))
+            viewModel.handleEvent(FinancialManagementEvent.EditOperation(added.identifier))
             val edit = viewModel.state.value.operationDraft!!
             viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(edit.copy(descriptionText = "")))
             viewModel.handleEvent(FinancialManagementEvent.SaveOperation)
@@ -74,8 +69,8 @@ class FinancialManagementViewModelTest {
             val updated = gateway.observeFinancialSnapshot(org.orev.nahidka.feature.financial.dto.MonthlyQuery(YearMonth(2024, 5), "iso4217:USD")).first()
                 .operations.single()
             assertNull(updated.description)
-            assertEquals(2L, updated.version)
-            assertEquals(category.id, updated.categoryId)
+            assertEquals(added.version + 1, updated.version)
+            assertEquals(category.identifier, updated.categoryIdentifier)
         }
     }
 
@@ -86,7 +81,7 @@ class FinancialManagementViewModelTest {
                 gateway.addOperation(
                     AddFinancialOperation(
                         CommandMeta("seed-operation"),
-                        NewFinancialOperation("seed", Money("iso4217:USD", 1_000), OperationKind.EXPENSE, category.id, PaymentMethod.CARD, instant, "Original"),
+                        NewFinancialOperation("seed", Money("iso4217:USD", 1_000), OperationKind.EXPENSE, category.identifier, PaymentMethod.CARD, instant, "Original"),
                     ),
                 )
             },
@@ -100,7 +95,7 @@ class FinancialManagementViewModelTest {
                     UpdateFinancialOperation(
                         CommandMeta("remote-edit"),
                         "seed",
-                        1,
+                        draft.original!!.version,
                         FinancialOperationPatch(description = NullablePatch.Set("Remote change")),
                     ),
                 ),
@@ -123,13 +118,52 @@ class FinancialManagementViewModelTest {
         }
     }
 
+    @Test
+    fun unchangedEditKeepsVersionAndKindCannotBeChanged() = runTest {
+        withFinance { viewModel, gateway, _ ->
+            viewModel.handleEvent(FinancialManagementEvent.OpenAddOperation)
+            val initial = viewModel.state.value.operationDraft!!
+            viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(initial.copy(amountText = "5.00")))
+            viewModel.handleEvent(FinancialManagementEvent.SaveOperation)
+            runCurrent()
+            val query = org.orev.nahidka.feature.financial.dto.MonthlyQuery(YearMonth(2024, 5), "iso4217:USD")
+            val added = gateway.observeFinancialSnapshot(query).first().operations.single()
+            viewModel.handleEvent(FinancialManagementEvent.EditOperation(added.identifier))
+            viewModel.handleEvent(FinancialManagementEvent.SaveOperation)
+            runCurrent()
+            assertEquals(added, gateway.observeFinancialSnapshot(query).first().operations.single())
+            viewModel.handleEvent(FinancialManagementEvent.EditOperation(added.identifier))
+            val edit = viewModel.state.value.operationDraft!!
+            viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(edit.copy(kind = OperationKind.INCOME)))
+            viewModel.handleEvent(FinancialManagementEvent.SaveOperation)
+            assertTrue(viewModel.state.value.feedback.orEmpty().contains("kind cannot change"))
+            assertEquals(added, gateway.observeFinancialSnapshot(query).first().operations.single())
+        }
+    }
+
+    @Test
+    fun unsupportedAssetShowsFeedbackInsteadOfCrashingEdit() = runTest {
+        withFinance(
+            includeEuroAsset = true,
+            seed = { gateway, _, instant ->
+                gateway.addOperation(AddFinancialOperation(CommandMeta("euro-operation"),
+                    NewFinancialOperation("unsupported", Money("iso4217:EUR", 500), OperationKind.INCOME, null, PaymentMethod.CARD, instant, null)))
+            },
+        ) { viewModel, _, _ ->
+            viewModel.handleEvent(FinancialManagementEvent.EditOperation("unsupported"))
+            assertNull(viewModel.state.value.operationDraft)
+            assertTrue(viewModel.state.value.feedback.orEmpty().contains("not supported"))
+        }
+    }
+
     private suspend fun TestScope.withFinance(
+        includeEuroAsset: Boolean = false,
         seed: suspend (InMemoryFinancialGateway, org.orev.nahidka.feature.financial.dto.FinancialCategory, Instant) -> Unit = { _, _, _ -> },
         block: suspend (FinancialManagementViewModel, InMemoryFinancialGateway, org.orev.nahidka.feature.financial.dto.FinancialCategory) -> Unit,
     ) {
         val asset = AssetDefinition("iso4217:USD", "USD", 2)
-        val config = FinancialSessionConfig("finance-ui-test", "finance-workspace", persistentListOf(asset), asset.id, "Europe/Kyiv")
-        val gateway = InMemoryFinancialGateway(config, FinancialErrorReporter { }, FinancialCalendar())
+        val config = FinancialSessionConfig("finance-ui-test", "finance-workspace", if (includeEuroAsset) persistentListOf(asset, AssetDefinition("iso4217:EUR", "EUR", 2)) else persistentListOf(asset), asset.identifier, "Europe/Kyiv")
+        val gateway = InMemoryFinancialGateway(config, ErrorReporter { }, FinancialCalendar())
         val categoryResult = gateway.createCategory(CreateFinancialCategory(CommandMeta("create-ui-category"), "ui-food", "Food"))
         val category = assertIs<MutationResult.Committed<org.orev.nahidka.feature.financial.dto.FinancialCategory>>(categoryResult).value
         val instant = Instant.parse("2024-05-12T10:30:00Z")
@@ -138,20 +172,11 @@ class FinancialManagementViewModelTest {
         val viewModelStore = ViewModelStore()
         Dispatchers.setMain(UnconfinedTestDispatcher(testScheduler))
         try {
-            val context = FinancialContext(gateway)
-            val planningContext = FinancialPlanningContext(gateway)
-            val finance = FinancialModule(
-                FinancialService(gateway),
-                context,
-                FinancialPlanningService(gateway),
-                planningContext,
-                org.orev.nahidka.feature.financial.service.FinancialCategoryService(gateway),
-                FinancialCategoryContext(gateway),
-            )
+            val finance = FinancialModule(gateway)
             val model = FinancialManagementViewModel(
                 finance,
-                config,
-                FinancialClock { instant },
+                config.copy(assets = persistentListOf(asset)),
+                ApplicationClock { instant },
                 { "ui-${++generated}" },
                 ExactMoneyFormatter(),
             )

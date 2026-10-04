@@ -7,6 +7,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.*
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
@@ -57,7 +58,7 @@ class StartupUiTest {
         runOnIdle { width.value = 800.dp }
         onNodeWithText("Home", substring = false).assertIsDisplayed()
         onNodeWithText("Dashboard", substring = false).assertDoesNotExist()
-        onNode(hasScrollAction()).performScrollToNode(hasText("New Camera"))
+        onNode(hasScrollAction() and SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange)).performScrollToNode(hasText("New Camera"))
         onNodeWithText("New Camera").assertIsDisplayed()
         runOnIdle {
             assertEquals(1, frames)

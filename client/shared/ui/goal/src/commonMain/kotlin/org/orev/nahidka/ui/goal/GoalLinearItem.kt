@@ -29,15 +29,19 @@ fun GoalLinearItem(
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(text = goal.title, style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = goal.deadlineInstant?.let { "Deadline: ${it.toString().substringBefore('T')} (UTC)" } ?: "No deadline",
+                style = MaterialTheme.typography.bodySmall,
+            )
             Spacer(modifier = Modifier.height(8.dp))
             LinearProgressIndicator(
-                progress = { goal.progress },
+                progress = { goal.progressPercentage / 100f },
                 modifier = Modifier.fillMaxWidth(),
             )
         }
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = "${(goal.progress * 100).toInt()}%",
+            text = "${(goal.progressPercentage).toInt()}%",
             style = MaterialTheme.typography.bodyMedium
         )
     }
@@ -48,7 +52,7 @@ fun GoalLinearItem(
 fun GoalLinearItemPreview() {
     NahidkaTheme {
         GoalLinearItem(
-            goal = GoalEntity(id = "1", title = "Learn Compose", progress = 0.75f, deadline = "2026-12-31"),
+            goal = GoalEntity(identifier = "1", title = "Learn Compose", progressPercentage = 75f, deadlineInstant = kotlin.time.Instant.parse("2026-12-31T00:00:00Z")),
             onClick = {}
         )
     }

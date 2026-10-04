@@ -8,7 +8,7 @@ import org.orev.nahidka.feature.financial.subscription.EntityDelta
 
 internal data class FinancialCommit(
     val revision: Long,
-    val commandId: String,
+    val commandIdentifier: String,
     val before: FinancialData,
     val after: FinancialData,
     val operationDeltas: PersistentList<EntityDelta<FinancialOperation>>,

@@ -11,7 +11,7 @@ fun NahidkaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = NahidkaDarkColorScheme
+    val colorScheme = if (darkTheme) NahidkaDarkColorScheme else NahidkaLightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,

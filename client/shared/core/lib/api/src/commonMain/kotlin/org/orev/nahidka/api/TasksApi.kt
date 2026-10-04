@@ -9,6 +9,6 @@ class TasksApi {
     suspend fun createTask(task: Task) {
     }
 
-    suspend fun updateTaskField(taskId: String, fieldKey: String, newValue: String) {
+    suspend fun updateTaskField(identifier: String, fieldKey: String, newValue: String) {
     }
 }

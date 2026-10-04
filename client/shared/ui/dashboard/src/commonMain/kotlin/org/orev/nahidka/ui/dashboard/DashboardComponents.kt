@@ -230,7 +230,7 @@ internal fun PromisesCard(state: DashboardState, modifier: Modifier, toggle: (In
         state.promises.take(3).forEach {
             promise -> Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(promise.completed, {
-                    toggle(promise.id)
+                    toggle(promise.identifier)
                 }
                 , modifier = Modifier.size(32.dp), colors = CheckboxDefaults.colors(checkedColor = Color(0xFF51446F), uncheckedColor = Color(0xFF74698D)))
                 Column(Modifier.weight(1f).padding(horizontal = 6.dp)) {

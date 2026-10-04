@@ -6,9 +6,9 @@ import org.orev.nahidka.feature.settings.di.SettingsSessionScope
 import org.orev.nahidka.feature.settings.dto.Settings
 import org.orev.nahidka.feature.settings.dto.SettingsSaveResult
 
-@Inject
 @SingleIn(SettingsSessionScope::class)
-class SettingsManager(private val settingsContext: SettingsContext) {
+class SettingsManager @Inject constructor(private val settingsContext: SettingsContext) {
+
     suspend fun saveSettings(settings: Settings): SettingsSaveResult =
         settingsContext.applySettingsSave(settings)
 }

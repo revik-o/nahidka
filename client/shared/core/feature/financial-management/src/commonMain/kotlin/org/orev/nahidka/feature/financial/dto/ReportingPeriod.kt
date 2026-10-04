@@ -5,7 +5,7 @@ import kotlinx.datetime.YearMonth
 
 data class ReportingPeriod(
     val month: YearMonth,
-    val timeZoneId: String,
+    val timeZoneIdentifier: String,
     val startInclusive: Instant,
     val endExclusive: Instant,
 )

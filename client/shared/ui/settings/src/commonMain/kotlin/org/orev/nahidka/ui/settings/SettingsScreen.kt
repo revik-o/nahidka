@@ -1,49 +1,41 @@
 package org.orev.nahidka.ui.settings
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
-import org.orev.nahidka.ui.common.theme.NahidkaTheme
+import org.orev.nahidka.feature.settings.dto.*
 
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier) {
-    var darkModeEnabled by remember { mutableStateOf(false) }
-    var notificationsEnabled by remember { mutableStateOf(true) }
-
-    Column(modifier = modifier.fillMaxSize().padding(16.dp)) {
-        Text(text = "Settings", style = MaterialTheme.typography.headlineMedium)
-        Spacer(modifier = Modifier.height(24.dp))
-        
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text("Dark Mode", style = MaterialTheme.typography.bodyLarge)
-            Switch(checked = darkModeEnabled, onCheckedChange = { darkModeEnabled = it })
+fun SettingsScreen(
+    settings: Settings,
+    onSettingsChange: (Settings) -> Unit,
+    modifier: Modifier = Modifier,
+    errorMessage: String? = null,
+) {
+    Column(modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Text("Settings", style = MaterialTheme.typography.headlineMedium)
+        Text("Theme", style = MaterialTheme.typography.titleMedium)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            SettingsTheme.entries.forEach { theme ->
+                FilterChip(
+                    selected = settings.theme == theme,
+                    onClick = { onSettingsChange(settings.copy(theme = theme)) },
+                    label = { Text(theme.name.lowercase().replace('_', ' ')) },
+                )
+            }
         }
-        
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text("Enable Notifications", style = MaterialTheme.typography.bodyLarge)
-            Switch(checked = notificationsEnabled, onCheckedChange = { notificationsEnabled = it })
+        Text("Language", style = MaterialTheme.typography.titleMedium)
+        Column {
+            SettingsLanguage.entries.forEach { language ->
+                FilterChip(
+                    selected = settings.language == language,
+                    onClick = { onSettingsChange(settings.copy(language = language)) },
+                    label = { Text(language.name.lowercase().replace('_', ' ')) },
+                )
+            }
         }
-    }
-}
-
-@Preview
-@Composable
-fun SettingsScreenPreview() {
-    NahidkaTheme {
-        SettingsScreen()
+        errorMessage?.let { Text(it, color = MaterialTheme.colorScheme.error) }
     }
 }

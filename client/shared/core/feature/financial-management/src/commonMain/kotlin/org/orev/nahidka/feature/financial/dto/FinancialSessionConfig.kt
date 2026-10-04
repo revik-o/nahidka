@@ -6,7 +6,7 @@ data class FinancialSessionConfig(
     val sessionIdentity: String,
     val workspaceIdentity: String,
     val assets: PersistentList<AssetDefinition>,
-    val defaultAssetId: String,
+    val defaultAssetIdentifier: String,
     val reportingTimeZone: String,
     val journalCapacity: Int = 256,
     val commandReceiptCapacity: Int = 512,
@@ -17,13 +17,14 @@ data class FinancialSessionConfig(
     val maxDescriptionLength: Int = 2_000,
     val maxCategoryNameLength: Int = 80,
 ) {
+
     init {
         require(sessionIdentity.isNotBlank())
         require(workspaceIdentity.isNotBlank())
         require(assets.isNotEmpty())
-        require(assets.map { it.id }.toSet().size == assets.size)
-        require(assets.all { it.id.isNotBlank() && it.displayCode.isNotBlank() && it.fractionDigits in 0..18 })
-        require(assets.any { it.id == defaultAssetId })
+        require(assets.map { it.identifier }.toSet().size == assets.size)
+        require(assets.all { it.identifier.isNotBlank() && it.displayCode.isNotBlank() && it.fractionDigits in 0..18 })
+        require(assets.any { it.identifier == defaultAssetIdentifier })
         require(journalCapacity > 0)
         require(commandReceiptCapacity > 0)
         require(maxOperations > 0 && maxCategories > 0 && maxPlanningTables > 0 && maxPlanningRows > 0)

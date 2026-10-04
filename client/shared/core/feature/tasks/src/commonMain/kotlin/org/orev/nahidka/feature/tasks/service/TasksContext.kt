@@ -1,252 +1,134 @@
 package org.orev.nahidka.feature.tasks.service
 
-import org.orev.nahidka.feature.tasks.dto.TaskChange
-import org.orev.nahidka.feature.tasks.dto.TaskCreationRequest
-import org.orev.nahidka.feature.tasks.dto.TaskRecord
-import org.orev.nahidka.feature.tasks.dto.TaskUpdateRequest
-import org.orev.nahidka.feature.tasks.dto.TasksDeleted
-import org.orev.nahidka.feature.tasks.dto.TasksInserted
-import org.orev.nahidka.feature.tasks.dto.TasksMutationResult
-import org.orev.nahidka.feature.tasks.dto.TasksNotification
-import org.orev.nahidka.feature.tasks.dto.TasksSnapshot
-import org.orev.nahidka.feature.tasks.dto.TasksUpdated
-import org.orev.nahidka.feature.tasks.subscription.TasksSubscriptionBuilder
-import org.orev.nahidka.feature.tasks.subscription.TasksSubscriptionCallbacks
-import org.orev.nahidka.feature.tasks.subscription.TasksSubscriptionOverflowException
-
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.channels.Channel
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
+import org.orev.nahidka.core.common.NullablePatch
+import org.orev.nahidka.core.common.incrementRevision
+import org.orev.nahidka.feature.tasks.dto.*
 
-class TasksContext(initialTasks: List<TaskRecord> = emptyList()) {
+class TasksContext : TasksRepository {
+
     private val stateMutex = Mutex()
-    private var tasksByIdentifier = linkedMapOf<String, TaskRecord>()
-    private var revision = 0L
-    private val subscribers = mutableSetOf<Channel<TasksNotification>>()
+    private var tasksByIdentifier = persistentMapOf<String, TaskRecord>()
+    private val mutableTasksState: MutableStateFlow<TasksSnapshot>
 
-    init {
-        initialTasks.forEach { task ->
+    override val tasksState: StateFlow<TasksSnapshot>
+
+    constructor(initialTasks: List<TaskRecord> = emptyList()) {
+        for (task in initialTasks) {
             validateTask(task)
-
-            require(task.taskIdentifier !in tasksByIdentifier) {
-                "Duplicate initial task identifier: ${task.taskIdentifier}"
-            }
-
-            tasksByIdentifier[task.taskIdentifier] = task
-        }
-    }
-
-    fun subscribe(
-        subscriptionBufferCapacity: Int = DEFAULT_SUBSCRIPTION_BUFFER_CAPACITY
-    ): TasksSubscriptionBuilder {
-        require(subscriptionBufferCapacity in 1 until Channel.UNLIMITED) {
-            "Subscription buffer capacity must be positive and bounded"
+            require(task.identifier !in tasksByIdentifier) { "Duplicate initial task identifier: ${task.identifier}" }
+            tasksByIdentifier = tasksByIdentifier.putting(task.identifier, task)
         }
 
-        return TasksSubscriptionBuilder(this, subscriptionBufferCapacity)
+        mutableTasksState = MutableStateFlow(TasksSnapshot(0, tasksByIdentifier))
+        tasksState = mutableTasksState.asStateFlow()
     }
 
-    suspend fun currentSnapshot(): TasksSnapshot = stateMutex.withLock {
-        currentCoroutineContext().ensureActive()
-        TasksSnapshot(revision, tasksByIdentifier.values.toList())
-    }
+    fun currentSnapshot(): TasksSnapshot = tasksState.value
 
-    internal suspend fun insertTasks(
-        taskCreationRequests: List<TaskCreationRequest>
-    ): TasksMutationResult = stateMutex.withLock {
+    override suspend fun createTasks(requests: List<TaskCreationRequest>): TasksMutationResult = stateMutex.withLock {
         currentCoroutineContext().ensureActive()
-        validateIdentifiers(taskCreationRequests.map { request -> request.taskIdentifier })
-        val insertedTasks = taskCreationRequests.map { request ->
-            val task = TaskRecord(request.taskIdentifier, request.title, request.description, request.status)
+        var nextTasks = tasksByIdentifier
+        val insertedTasks = ArrayList<TaskRecord>(requests.size)
+
+        for (request in requests) {
+            val task =
+                TaskRecord(request.identifier, request.title, request.description, request.status, request.priority)
 
             validateTask(task)
-
-            require(task.taskIdentifier !in tasksByIdentifier) {
-                "Task already exists: ${task.taskIdentifier}"
+            require(task.identifier !in nextTasks) {
+                "Task already exists: ${task.identifier}"
             }
 
-            task
+            nextTasks = nextTasks.putting(task.identifier, task)
+            insertedTasks.add(task)
         }
-        if (insertedTasks.isEmpty()) {
-            return@withLock TasksMutationResult(revision, emptyList())
-        }
-        val nextTasksByIdentifier = LinkedHashMap(tasksByIdentifier)
-        insertedTasks.forEach { task -> nextTasksByIdentifier[task.taskIdentifier] = task }
-        val nextRevision = nextRevision()
-        val notification = TasksInserted(nextRevision, insertedTasks)
-        val result = TasksMutationResult(nextRevision, insertedTasks)
-        currentCoroutineContext().ensureActive()
-        commitTasks(nextTasksByIdentifier, notification)
-        result
+
+        commit(nextTasks, insertedTasks)
     }
 
-    internal suspend fun deleteTasks(
-        taskIdentifiers: List<String>
-    ): TasksMutationResult = stateMutex.withLock {
+    override suspend fun deleteTasks(taskIdentifiers: List<String>): TasksMutationResult = stateMutex.withLock {
         currentCoroutineContext().ensureActive()
-        validateIdentifiers(taskIdentifiers)
-        val deletedTasks = taskIdentifiers.map { taskIdentifier ->
-            requireNotNull(tasksByIdentifier[taskIdentifier]) {
-                "Unknown task identifier: $taskIdentifier"
+        var nextTasks = tasksByIdentifier
+        val deletedTasks = ArrayList<TaskRecord>(taskIdentifiers.size)
+
+        for (identifier in taskIdentifiers) {
+            require(identifier.isNotBlank()) { "Task identifier must not be blank" }
+            val task = requireNotNull(nextTasks[identifier]) { "Unknown or duplicate task identifier: $identifier" }
+            nextTasks = nextTasks.removing(identifier)
+            deletedTasks.add(task)
+        }
+
+        commit(nextTasks, deletedTasks)
+    }
+
+    override suspend fun updateTasks(requests: List<TaskUpdateRequest>): TasksMutationResult = stateMutex.withLock {
+        currentCoroutineContext().ensureActive()
+        var nextTasks = tasksByIdentifier
+        val updatedTasks = ArrayList<TaskRecord>(requests.size)
+        val identifiers = HashSet<String>(requests.size)
+
+        for (request in requests) {
+            require(identifiers.add(request.identifier)) {
+                "Duplicate task identifier: ${request.identifier}"
             }
-        }
 
-        if (deletedTasks.isEmpty()) {
-            return@withLock TasksMutationResult(revision, emptyList())
-        }
-
-        val nextTasksByIdentifier = LinkedHashMap(tasksByIdentifier)
-
-        taskIdentifiers.forEach { taskIdentifier -> nextTasksByIdentifier.remove(taskIdentifier) }
-
-        val nextRevision = nextRevision()
-        val notification = TasksDeleted(nextRevision, deletedTasks)
-        val result = TasksMutationResult(nextRevision, deletedTasks)
-
-        currentCoroutineContext().ensureActive()
-        commitTasks(nextTasksByIdentifier, notification)
-
-        result
-    }
-
-    internal suspend fun applyTaskUpdates(
-        taskUpdateRequests: List<TaskUpdateRequest>
-    ): TasksMutationResult = stateMutex.withLock {
-        currentCoroutineContext().ensureActive()
-        validateIdentifiers(taskUpdateRequests.map { request -> request.taskIdentifier })
-        val taskChanges = taskUpdateRequests.mapNotNull { request ->
-            val previousTask = requireNotNull(tasksByIdentifier[request.taskIdentifier]) {
-                "Unknown task identifier: ${request.taskIdentifier}"
+            val previousTask = requireNotNull(nextTasks[request.identifier]) {
+                "Unknown task identifier: ${request.identifier}"
             }
 
             val currentTask = previousTask.copy(
                 title = request.title ?: previousTask.title,
-                description = request.description ?: previousTask.description,
-                status = request.status ?: previousTask.status
+                description = when (val patch = request.descriptionPatch) {
+                    NullablePatch.Keep -> previousTask.description
+                    NullablePatch.Clear -> ""
+                    is NullablePatch.Set -> patch.value
+                },
+                status = request.status ?: previousTask.status,
+                priority = request.priority ?: previousTask.priority
             )
 
             validateTask(currentTask)
 
-            if (previousTask == currentTask) {
-                null
-            } else {
-                TaskChange(previousTask, currentTask)
+            if (previousTask != currentTask) {
+                nextTasks = nextTasks.putting(currentTask.identifier, currentTask)
+                updatedTasks.add(currentTask)
             }
         }
 
-        if (taskChanges.isEmpty()) {
-            return@withLock TasksMutationResult(revision, emptyList())
+        commit(nextTasks, updatedTasks)
+    }
+
+    private suspend fun commit(
+        nextTasks: kotlinx.collections.immutable.PersistentMap<String, TaskRecord>,
+        affectedTasks: List<TaskRecord>
+    ): TasksMutationResult {
+        val previousSnapshot = mutableTasksState.value
+
+        if (affectedTasks.isEmpty()) {
+            return TasksMutationResult(previousSnapshot.revision, affectedTasks)
         }
 
-        val nextTasksByIdentifier = LinkedHashMap(tasksByIdentifier)
-
-        taskChanges.forEach { change ->
-            nextTasksByIdentifier[change.currentTask.taskIdentifier] = change.currentTask
-        }
-
-        val affectedTasks = taskChanges.map { change -> change.currentTask }
-        val nextRevision = nextRevision()
-        val notification = TasksUpdated(nextRevision, taskChanges)
+        val nextRevision = incrementRevision(previousSnapshot.revision)
+        val nextSnapshot = TasksSnapshot(nextRevision, nextTasks)
         val result = TasksMutationResult(nextRevision, affectedTasks)
 
         currentCoroutineContext().ensureActive()
-        commitTasks(nextTasksByIdentifier, notification)
+        tasksByIdentifier = nextTasks
+        mutableTasksState.value = nextSnapshot
 
-        result
-    }
-
-    internal suspend fun collectNotifications(
-        notifications: Channel<TasksNotification>,
-        callbacks: TasksSubscriptionCallbacks,
-        registrationCompleted: CompletableDeferred<Unit>
-    ) {
-        var subscriptionFailure: Throwable? = null
-
-        try {
-            stateMutex.withLock {
-                currentCoroutineContext().ensureActive()
-                check(notifications.trySend(TasksSnapshot(revision, tasksByIdentifier.values.toList())).isSuccess)
-                subscribers.add(notifications)
-            }
-            registrationCompleted.complete(Unit)
-            for (notification in notifications) {
-                stateMutex.withLock {
-                    currentCoroutineContext().ensureActive()
-                }
-                when (notification) {
-                    is TasksSnapshot -> callbacks.onSnapshot(notification)
-                    is TasksUpdated -> callbacks.onUpdate(notification)
-                    is TasksDeleted -> callbacks.onDelete(notification)
-                    is TasksInserted -> callbacks.onInsert(notification)
-                }
-            }
-        } catch (cancellation: CancellationException) {
-            throw cancellation
-        } catch (failure: Throwable) {
-            registrationCompleted.completeExceptionally(failure)
-            subscriptionFailure = failure
-        } finally {
-            withContext(NonCancellable) {
-                stateMutex.withLock { subscribers.remove(notifications) }
-                notifications.cancel()
-            }
-        }
-
-        subscriptionFailure?.let { failure ->
-            currentCoroutineContext().ensureActive()
-            callbacks.onFailure(failure)
-        }
-    }
-
-    private fun commitTasks(
-        nextTasksByIdentifier: LinkedHashMap<String, TaskRecord>,
-        notification: TasksNotification
-    ) {
-        tasksByIdentifier = nextTasksByIdentifier
-        revision = notification.revision
-
-        val subscribersIterator = subscribers.iterator()
-
-        while (subscribersIterator.hasNext()) {
-            val notifications = subscribersIterator.next()
-            val deliveryResult = notifications.trySend(notification)
-
-            if (deliveryResult.isFailure) {
-                subscribersIterator.remove()
-
-                if (!deliveryResult.isClosed) {
-                    notifications.close(TasksSubscriptionOverflowException(notification.revision))
-                }
-            }
-        }
-    }
-
-    private fun nextRevision(): Long {
-        check(revision < Long.MAX_VALUE) { "Task revision limit reached" }
-        return revision + 1
+        return result
     }
 
     private fun validateTask(task: TaskRecord) {
-        require(task.taskIdentifier.isNotBlank()) { "Task identifier must not be blank" }
+        require(task.identifier.isNotBlank()) { "Task identifier must not be blank" }
         require(task.title.isNotBlank()) { "Task title must not be blank" }
-    }
-
-    private fun validateIdentifiers(taskIdentifiers: List<String>) {
-        require(taskIdentifiers.all { taskIdentifier -> taskIdentifier.isNotBlank() }) {
-            "Task identifier must not be blank"
-        }
-        require(taskIdentifiers.size == taskIdentifiers.toSet().size) {
-            "Task identifiers must be unique within a batch"
-        }
-    }
-
-    private companion object {
-        const val DEFAULT_SUBSCRIPTION_BUFFER_CAPACITY = 64
     }
 }

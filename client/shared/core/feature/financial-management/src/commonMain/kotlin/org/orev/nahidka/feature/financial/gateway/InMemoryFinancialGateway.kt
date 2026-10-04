@@ -1,5 +1,6 @@
 package org.orev.nahidka.feature.financial.gateway
 
+import org.orev.nahidka.feature.financial.store.awaitRelease
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
@@ -33,13 +34,14 @@ import org.orev.nahidka.feature.financial.subscription.FinancialSessionClosedExc
 import org.orev.nahidka.feature.financial.subscription.FinancialSubscription
 import org.orev.nahidka.feature.financial.subscription.OperationWatchSource
 import org.orev.nahidka.feature.financial.subscription.PlanningWatchSource
-import org.orev.nahidka.feature.financial.support.FinancialErrorReporter
+import org.orev.nahidka.core.common.ErrorReporter
 
 class InMemoryFinancialGateway @Inject constructor(
     private val config: FinancialSessionConfig,
-    private val errorReporter: FinancialErrorReporter,
+    private val errorReporter: ErrorReporter,
     private val calendar: FinancialCalendar,
 ) : FinancialGateway {
+
     private val store = FinancialStore(config, FinancialReducer(config, calendar), errorReporter)
 
     override suspend fun addOperation(command: AddFinancialOperation): MutationResult<FinancialOperation> =
@@ -73,15 +75,28 @@ class InMemoryFinancialGateway @Inject constructor(
         FinancialSubscription(OperationWatchSource(store.frames, store.sessionLifetime, errorReporter, query))
 
     override fun subscribePlanning(query: PlanningQuery): FinancialSubscription<PlanningTableView> =
-        FinancialSubscription(PlanningWatchSource(store.frames, store.sessionLifetime, errorReporter, query, config, calendar))
+        FinancialSubscription(
+            PlanningWatchSource(
+                store.frames,
+                store.sessionLifetime,
+                errorReporter,
+                query,
+                config,
+                calendar
+            )
+        )
 
     override fun subscribeCategories(query: CategoryQuery): FinancialSubscription<FinancialCategory> =
         FinancialSubscription(CategoryWatchSource(store.frames, store.sessionLifetime, errorReporter, query))
 
     override fun observeFinancialSnapshot(query: MonthlyQuery): Flow<FinancialSnapshot> =
         store.frames.transform { frame ->
-            frame.released.await()
-            if (frame.closed) throw FinancialSessionClosedException()
+            frame.awaitRelease()
+
+            if (frame.closed) {
+                throw FinancialSessionClosedException()
+            }
+
             emit(calculateFinancialSnapshot(frame, query, config, calendar))
         }
 
@@ -95,6 +110,7 @@ class InMemoryFinancialGateway @Inject constructor(
         is MutationResult.Committed -> {
             val value = decode(result.value.value)
                 ?: error("Financial command receipt type does not match its command")
+
             MutationResult.Committed(value, result.value.storeRevision, result.value.changed)
         }
     }

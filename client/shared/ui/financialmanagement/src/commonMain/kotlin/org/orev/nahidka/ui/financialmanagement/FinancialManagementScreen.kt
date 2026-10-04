@@ -1,5 +1,6 @@
 package org.orev.nahidka.ui.financialmanagement
 
+import org.orev.nahidka.feature.financial.command.toInput
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -80,8 +81,8 @@ fun FinancialManagementScreen(
                 Spacer(Modifier.weight(1f))
                 ChoiceField(
                     label = "Asset",
-                    selected = state.selectedAssetId,
-                    options = viewModel.supportedAssets.map { it.id to it.displayCode },
+                    selected = state.selectedAssetIdentifier,
+                    options = viewModel.supportedAssets.map { it.identifier to it.displayCode },
                     onSelect = { viewModel.handleEvent(FinancialManagementEvent.SelectAsset(it)) },
                 )
             }
@@ -103,11 +104,11 @@ fun FinancialManagementScreen(
                 if (rows.isEmpty()) Text("No posted operations for this asset and month.")
                 else FinancialManagementTable(
                     transactions = rows,
-                    selectedIds = state.selectedIds,
+                    selectedIdentifiers = state.selectedIdentifiers,
                     selectMode = selectMode,
-                    onToggleSelect = { viewModel.handleEvent(FinancialManagementEvent.ToggleSelection(it.id)) },
-                    onEdit = { viewModel.handleEvent(FinancialManagementEvent.EditOperation(it.id)) },
-                    onDelete = { row -> deleteCandidate = snapshot.operations.firstOrNull { it.id == row.id } },
+                    onToggleSelect = { viewModel.handleEvent(FinancialManagementEvent.ToggleSelection(it.identifier)) },
+                    onEdit = { viewModel.handleEvent(FinancialManagementEvent.EditOperation(it.identifier)) },
+                    onDelete = { row -> deleteCandidate = snapshot.operations.firstOrNull { it.identifier == row.identifier } },
                     modifier = Modifier.fillMaxWidth().height(360.dp),
                 )
 
@@ -157,20 +158,20 @@ fun FinancialManagementScreen(
         )
     }
     editingCategory?.let { category ->
-        var name by remember(category.id, category.version) { mutableStateOf(category.name) }
-        val openingToken = remember(category.id) { state.categorySaveToken }
-        LaunchedEffect(state.categorySaveToken, category.id) { if (state.categorySaveToken != openingToken) editingCategory = null }
+        var name by remember(category.identifier, category.version) { mutableStateOf(category.name) }
+        val openingToken = remember(category.identifier) { state.categorySaveToken }
+        LaunchedEffect(state.categorySaveToken, category.identifier) { if (state.categorySaveToken != openingToken) editingCategory = null }
         AlertDialog(
             onDismissRequest = { editingCategory = null },
             title = { Text("Manage ${category.name}") },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedTextField(name, { name = it }, label = { Text("Category name") }, singleLine = true)
-                    if (!category.archived) TextButton(onClick = { viewModel.handleEvent(FinancialManagementEvent.ArchiveCategory(category.id, category.version)) }) { Text("Archive") }
-                    TextButton(onClick = { viewModel.handleEvent(FinancialManagementEvent.DeleteCategory(category.id, category.version)) }) { Text("Delete if unused") }
+                    if (!category.archived) TextButton(onClick = { viewModel.handleEvent(FinancialManagementEvent.ArchiveCategory(category.identifier, category.version)) }) { Text("Archive") }
+                    TextButton(onClick = { viewModel.handleEvent(FinancialManagementEvent.DeleteCategory(category.identifier, category.version)) }) { Text("Delete if unused") }
                 }
             },
-            confirmButton = { TextButton(onClick = { viewModel.handleEvent(FinancialManagementEvent.RenameCategory(category.id, category.version, name)) }) { Text("Rename") } },
+            confirmButton = { TextButton(onClick = { viewModel.handleEvent(FinancialManagementEvent.RenameCategory(category.identifier, category.version, name)) }) { Text("Rename") } },
             dismissButton = { TextButton(onClick = { editingCategory = null }) { Text("Close") } },
         )
     }
@@ -179,7 +180,7 @@ fun FinancialManagementScreen(
             onDismissRequest = { deleteCandidate = null },
             title = { Text("Remove operation?") },
             text = { Text(operation.description ?: "This operation will be removed from the ledger.") },
-            confirmButton = { TextButton(onClick = { viewModel.handleEvent(FinancialManagementEvent.RemoveOperation(operation.id)); deleteCandidate = null }) { Text("Remove") } },
+            confirmButton = { TextButton(onClick = { viewModel.handleEvent(FinancialManagementEvent.RemoveOperation(operation.identifier)); deleteCandidate = null }) { Text("Remove") } },
             dismissButton = { TextButton(onClick = { deleteCandidate = null }) { Text("Cancel") } },
         )
     }
@@ -227,7 +228,7 @@ private fun PlanningTable(viewModel: FinancialManagementViewModel, planning: org
         table.rows.forEach { row ->
             val payment = PaymentMethod.entries.joinToString(" · ") { method ->
                 val actual = row.actualByPaymentMethod[method]?.netSpent
-                "${method.displayName()} ${actual?.let(viewModel::formatMoney) ?: viewModel.formatMoney(Money(row.input.plannedAmount.assetId, 0))}"
+                "${method.displayName()} ${actual?.let(viewModel::formatMoney) ?: viewModel.formatMoney(Money(row.input.plannedAmount.assetIdentifier, 0))}"
             }
             Row(verticalAlignment = Alignment.Top) {
                 TableValue(row.categoryName, 150.dp)
@@ -255,7 +256,7 @@ private fun TableValue(text: String, width: androidx.compose.ui.unit.Dp) {
 private fun OperationEditor(viewModel: FinancialManagementViewModel, state: FinancialManagementState, initial: FinancialOperationDraft) {
     val draft = initial
     val categories = state.snapshot?.categories.orEmpty()
-    val selectedAsset = viewModel.assetDefinition(draft.assetId)
+    val selectedAsset = viewModel.assetDefinition(draft.assetIdentifier)
     AlertDialog(
         onDismissRequest = { viewModel.handleEvent(FinancialManagementEvent.CloseOperationEditor) },
         title = { Text(if (draft.original == null) "Add financial operation" else "Edit financial operation") },
@@ -270,18 +271,22 @@ private fun OperationEditor(viewModel: FinancialManagementViewModel, state: Fina
                         singleLine = true,
                     )
                 }
-                ChoiceField("Asset", draft.assetId, viewModel.supportedAssets.map { it.id to it.displayCode }) {
-                    viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(assetId = it, amountText = if (it == draft.original?.amount?.assetId) viewModel.amountInput(draft.original.amount) else "")))
+                ChoiceField("Asset", draft.assetIdentifier, viewModel.supportedAssets.map { it.identifier to it.displayCode }) {
+                    viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(assetIdentifier = it, amountText = if (it == draft.original?.amount?.assetIdentifier) viewModel.amountInput(draft.original.amount) else "")))
                 }
-                ChoiceField("Kind", draft.kind, OperationKind.entries.map { it to it.displayName() }) {
-                    viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(kind = it, refundOfOperationId = if (it == OperationKind.REFUND) draft.refundOfOperationId else null)))
+                if (draft.original == null) {
+                    ChoiceField("Kind", draft.kind, OperationKind.entries.map { it to it.displayName() }) {
+                        viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(kind = it, refundOfOperationIdentifier = if (it == OperationKind.REFUND) draft.refundOfOperationIdentifier else null)))
+                    }
+                } else {
+                    Text("Kind: ${draft.original.kind.displayName()}")
                 }
                 ChoiceField(
                     "Category",
-                    draft.categoryId,
-                    (categories.filter { !it.archived || it.id == draft.categoryId }.map { it.id to (it.name + if (it.archived) " · archived" else "") } + listOf(null to "No category")),
-                ) { viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(categoryId = it))) }
-                if (categories.none { !it.archived || it.id == draft.categoryId }) {
+                    draft.categoryIdentifier,
+                    (categories.filter { !it.archived || it.identifier == draft.categoryIdentifier }.map { it.identifier to (it.name + if (it.archived) " · archived" else "") } + listOf(null to "No category")),
+                ) { viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(categoryIdentifier = it))) }
+                if (categories.none { !it.archived || it.identifier == draft.categoryIdentifier }) {
                     Text("Create a category before adding an expense.")
                     TextButton(onClick = { viewModel.handleEvent(FinancialManagementEvent.OpenCategoryEditor) }) { Text("Manage categories") }
                 }
@@ -289,18 +294,14 @@ private fun OperationEditor(viewModel: FinancialManagementViewModel, state: Fina
                     viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(paymentMethod = it)))
                 }
                 if (draft.kind == OperationKind.REFUND) {
-                    val refundOptions = state.operations.filter { it.kind == OperationKind.EXPENSE && it.amount.assetId == draft.assetId }
-                    ChoiceField("Refund of", draft.refundOfOperationId, refundOptions.map { it.id to "${it.description ?: it.id} · ${viewModel.formatMoney(it.amount)}" }) {
-                        viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(refundOfOperationId = it)))
+                    val refundOptions = state.operations.filter { it.kind == OperationKind.EXPENSE && it.amount.assetIdentifier == draft.assetIdentifier }
+                    ChoiceField("Refund of", draft.refundOfOperationIdentifier, refundOptions.map { it.identifier to "${it.description ?: it.identifier} · ${viewModel.formatMoney(it.amount)}" }) {
+                        viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(refundOfOperationIdentifier = it)))
                     }
                 }
-                OutlinedTextField(
-                    draft.occurredAtText,
-                    { viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(occurredAtText = it))) },
-                    label = { Text("Occurrence date and time (ISO-8601 with offset)") },
-                    supportingText = { Text("Example: 2026-10-03T14:30:00+03:00") },
-                    singleLine = true,
-                )
+                OccurrenceDateTimeField(draft.occurredAtInstant, viewModel.reportingTimeZone) { occurredAt ->
+                    viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(occurredAtInstant = occurredAt)))
+                }
                 OutlinedTextField(
                     draft.descriptionText,
                     { viewModel.handleEvent(FinancialManagementEvent.UpdateOperationDraft(draft.copy(descriptionText = it))) },
@@ -366,32 +367,32 @@ private fun <T> ChoiceField(label: String, selected: T, options: List<Pair<T, St
 @Composable
 private fun PlanningEditor(viewModel: FinancialManagementViewModel, state: FinancialManagementState) {
     val configured = (state.snapshot?.planning as? PlanningConfigured)?.table
-    val existing = configured?.document?.input
-    val categories = state.snapshot?.categories.orEmpty().filter { !it.archived || existing?.rows?.any { row -> row.categoryId == it.id } == true }
-    val asset = viewModel.assetDefinition(state.selectedAssetId) ?: return
+    val existing = configured?.document?.toInput()
+    val categories = state.snapshot?.categories.orEmpty().filter { !it.archived || existing?.rows?.any { row -> row.categoryIdentifier == it.identifier } == true }
+    val asset = viewModel.assetDefinition(state.selectedAssetIdentifier) ?: return
     val documentVersion = configured?.document?.version
-    var opening by remember(state.selectedMonth, state.selectedAssetId, documentVersion) {
+    var opening by remember(state.selectedMonth, state.selectedAssetIdentifier, documentVersion) {
         mutableStateOf(existing?.openingAvailable?.let { formatMoneyInput(it, asset) } ?: "")
     }
-    var reserve by remember(state.selectedMonth, state.selectedAssetId, documentVersion) {
+    var reserve by remember(state.selectedMonth, state.selectedAssetIdentifier, documentVersion) {
         mutableStateOf(existing?.savingsPolicy?.reserve?.let { formatMoneyInput(it, asset) } ?: "")
     }
-    var allocationRate by remember(state.selectedMonth, state.selectedAssetId, documentVersion) {
+    var allocationRate by remember(state.selectedMonth, state.selectedAssetIdentifier, documentVersion) {
         mutableStateOf(existing?.savingsPolicy?.allocationBasisPoints?.let { formatBasisPoints(it) } ?: "")
     }
-    val initialRows = remember(state.selectedMonth, state.selectedAssetId, documentVersion, categories.map { it.id }) {
-        existing?.rows?.associateBy { it.categoryId }.orEmpty()
+    val initialRows = remember(state.selectedMonth, state.selectedAssetIdentifier, documentVersion, categories.map { it.identifier }) {
+        existing?.rows?.associateBy { it.categoryIdentifier }.orEmpty()
     }
-    val amounts = remember(state.selectedMonth, state.selectedAssetId, documentVersion, categories.map { it.id }) {
+    val amounts = remember(state.selectedMonth, state.selectedAssetIdentifier, documentVersion, categories.map { it.identifier }) {
         mutableStateMapOf<String, String>().apply {
-            categories.forEach { category -> put(category.id, initialRows[category.id]?.plannedAmount?.let { formatMoneyInput(it, asset) } ?: "0") }
+            categories.forEach { category -> put(category.identifier, initialRows[category.identifier]?.plannedAmount?.let { formatMoneyInput(it, asset) } ?: "0") }
         }
     }
-    val included = remember(state.selectedMonth, state.selectedAssetId, documentVersion, categories.map { it.id }) {
-        mutableStateMapOf<String, Boolean>().apply { categories.forEach { put(it.id, initialRows[it.id]?.included ?: true) } }
+    val included = remember(state.selectedMonth, state.selectedAssetIdentifier, documentVersion, categories.map { it.identifier }) {
+        mutableStateMapOf<String, Boolean>().apply { categories.forEach { put(it.identifier, initialRows[it.identifier]?.included ?: true) } }
     }
-    val methods = remember(state.selectedMonth, state.selectedAssetId, documentVersion, categories.map { it.id }) {
-        mutableStateMapOf<String, PaymentMethod?>().apply { categories.forEach { put(it.id, initialRows[it.id]?.preferredPaymentMethod) } }
+    val methods = remember(state.selectedMonth, state.selectedAssetIdentifier, documentVersion, categories.map { it.identifier }) {
+        mutableStateMapOf<String, PaymentMethod?>().apply { categories.forEach { put(it.identifier, initialRows[it.identifier]?.preferredPaymentMethod) } }
     }
     var validationError by remember(state.selectedMonth, documentVersion) { mutableStateOf<String?>(null) }
     AlertDialog(
@@ -406,13 +407,13 @@ private fun PlanningEditor(viewModel: FinancialManagementViewModel, state: Finan
                 categories.forEach { category ->
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(category.name + if (category.archived) " · archived" else "")
-                        OutlinedTextField(amounts[category.id].orEmpty(), { amounts[category.id] = it }, label = { Text("Monthly planned cost") }, singleLine = true)
+                        OutlinedTextField(amounts[category.identifier].orEmpty(), { amounts[category.identifier] = it }, label = { Text("Monthly planned cost") }, singleLine = true)
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Checkbox(checked = included[category.id] ?: true, onCheckedChange = { included[category.id] = it })
+                            Checkbox(checked = included[category.identifier] ?: true, onCheckedChange = { included[category.identifier] = it })
                             Text("Take into account")
                         }
-                        ChoiceField("Preferred payment", methods[category.id], listOf(null to "Any method") + PaymentMethod.entries.map { it to it.displayName() }) {
-                            methods[category.id] = it
+                        ChoiceField("Preferred payment", methods[category.identifier], listOf(null to "Any method") + PaymentMethod.entries.map { it to it.displayName() }) {
+                            methods[category.identifier] = it
                         }
                     }
                 }
@@ -443,23 +444,23 @@ private fun PlanningEditor(viewModel: FinancialManagementViewModel, state: Finan
                 }
                 val rows = mutableListOf<PlanningRowInput>()
                 for (category in categories) {
-                    val planned = parseMoneyText(amounts[category.id].orEmpty(), asset)
+                    val planned = parseMoneyText(amounts[category.identifier].orEmpty(), asset)
                     if (planned == null || planned.units < 0) {
                         validationError = "${category.name}: enter a non-negative planned amount"
                         return@TextButton
                     }
                     rows += PlanningRowInput(
-                        id = initialRows[category.id]?.id ?: viewModel.newId(),
-                        categoryId = category.id,
+                        identifier = initialRows[category.identifier]?.identifier ?: viewModel.newIdentifier(),
+                        categoryIdentifier = category.identifier,
                         plannedAmount = planned,
-                        included = included[category.id] ?: true,
-                        preferredPaymentMethod = methods[category.id],
+                        included = included[category.identifier] ?: true,
+                        preferredPaymentMethod = methods[category.identifier],
                     )
                 }
                 val input = FinancialPlanningTableInput(
-                    id = existing?.id ?: viewModel.newId(),
+                    identifier = existing?.identifier ?: viewModel.newIdentifier(),
                     month = state.selectedMonth,
-                    assetId = asset.id,
+                    assetIdentifier = asset.identifier,
                     openingAvailable = openingMoney,
                     savingsPolicy = if (reserveMoney != null && basisPoints != null) SavingsGuidelinePolicy(reserveMoney, basisPoints) else null,
                     rows = rows.toPersistentList(),
@@ -474,12 +475,12 @@ private fun PlanningEditor(viewModel: FinancialManagementViewModel, state: Finan
 
 private fun FinancialOperation.toTransactionEntity(viewModel: FinancialManagementViewModel, categories: List<FinancialCategory>) =
     TransactionEntity(
-        id = id,
+        identifier = identifier,
         version = version,
-        title = description?.takeIf { it.isNotBlank() } ?: "${kind.displayName()} · ${categories.firstOrNull { it.id == categoryId }?.name ?: "Uncategorized"}",
+        title = description?.takeIf { it.isNotBlank() } ?: "${kind.displayName()} · ${categories.firstOrNull { it.identifier == categoryIdentifier }?.name ?: "Uncategorized"}",
         formattedAmount = (if (kind == OperationKind.EXPENSE) "−" else "+") + viewModel.formatMoney(amount),
         isOutflow = kind == OperationKind.EXPENSE,
-        iconName = categories.firstOrNull { it.id == categoryId }?.iconName ?: "money",
+        iconName = categories.firstOrNull { it.identifier == categoryIdentifier }?.iconName ?: "money",
     )
 
 private fun OperationKind.displayName(): String = when (this) {

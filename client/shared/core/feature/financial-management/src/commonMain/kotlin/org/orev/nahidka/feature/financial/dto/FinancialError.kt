@@ -1,9 +1,10 @@
 package org.orev.nahidka.feature.financial.dto
 
 sealed interface FinancialError {
+
     data class Validation(val field: String, val message: String) : FinancialError
 
-    data class NotFound(val entity: String, val id: String) : FinancialError
+    data class NotFound(val entity: String, val identifier: String) : FinancialError
 
     data class OperationConflict(
         val expectedVersion: Long,
@@ -20,9 +21,9 @@ sealed interface FinancialError {
         val current: FinancialCategory,
     ) : FinancialError
 
-    data class CategoryInUse(val id: String) : FinancialError
+    data class CategoryInUse(val identifier: String) : FinancialError
 
-    data class CommandIdReused(val commandId: String) : FinancialError
+    data class CommandIdentifierReused(val commandIdentifier: String) : FinancialError
 
     data object SessionClosed : FinancialError
 

@@ -4,6 +4,6 @@ import kotlinx.collections.immutable.PersistentList
 
 data class FinancialChangeBatch<T>(
     val storeRevision: Long,
-    val commandId: String,
+    val commandIdentifier: String,
     val changes: PersistentList<EntityChange<T>>,
 )

@@ -11,10 +11,10 @@ import org.orev.nahidka.feature.financial.dto.FinancialSnapshot
 
 data class FinancialManagementState(
     val selectedMonth: YearMonth,
-    val selectedAssetId: String,
+    val selectedAssetIdentifier: String,
     val snapshot: FinancialSnapshot? = null,
     val operations: PersistentList<FinancialOperation> = persistentListOf(),
-    val selectedIds: PersistentSet<String> = persistentSetOf(),
+    val selectedIdentifiers: PersistentSet<String> = persistentSetOf(),
     val operationDraft: FinancialOperationDraft? = null,
     val conflictingOperation: FinancialOperation? = null,
     val operationError: FinancialError? = null,

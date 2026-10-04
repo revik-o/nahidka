@@ -183,7 +183,7 @@ fun DashboardScreen(
                     "Promise Tracker" -> state.promises.forEach {
                         promise -> Row(verticalAlignment = Alignment.CenterVertically) {
                             Checkbox(promise.completed, {
-                                viewModel.handleEvent(DashboardEvent.TogglePromise(promise.id))
+                                viewModel.handleEvent(DashboardEvent.TogglePromise(promise.identifier))
                             }
                             )
                             Text(promise.title)

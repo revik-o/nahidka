@@ -22,6 +22,7 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
+            api(project(":shared:core:feature:settings"))
             implementation(project(":shared:core:lib:api"))
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.compose.runtime)

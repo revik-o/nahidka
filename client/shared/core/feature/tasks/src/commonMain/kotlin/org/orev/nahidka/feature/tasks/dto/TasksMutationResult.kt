@@ -1,11 +1,14 @@
 package org.orev.nahidka.feature.tasks.dto
 
-class TasksMutationResult(
-    val revision: Long,
-    affectedTasks: List<TaskRecord>
-) {
-    private val taskRecords = affectedTasks.toMutableList()
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
-    val affectedTasks: List<TaskRecord>
-        get() = taskRecords.toMutableList()
+data class TasksMutationResult(
+    val revision: Long,
+    val affectedTasks: ImmutableList<TaskRecord>
+) {
+
+    constructor(revision: Long, affectedTasks: List<TaskRecord>) : this(revision, affectedTasks.toPersistentList())
+
+    val changed: Boolean get() = affectedTasks.isNotEmpty()
 }

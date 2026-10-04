@@ -58,7 +58,7 @@ fun TasksTable(
         
         // Table Body
         LazyColumn {
-            items(sortedTasks, key = { it.id }) { task ->
+            items(sortedTasks, key = { it.identifier }) { task ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -67,7 +67,7 @@ fun TasksTable(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(task.title, modifier = Modifier.weight(1f))
-                    Text(task.status, modifier = Modifier.weight(1f))
+                    Text(task.status.name.lowercase().replace('_', ' '), modifier = Modifier.weight(1f))
                     Text(task.priority.toString(), modifier = Modifier.weight(1f))
                 }
                 Divider()
@@ -103,8 +103,8 @@ fun TasksTablePreview() {
     NahidkaTheme {
         TasksTable(
             tasks = listOf(
-                TaskEntity(id = "1", title = "Mock Task 1", description = "Mock desc", status = "To Do", priority = 1),
-                TaskEntity(id = "2", title = "Mock Task 2", description = "Mock desc", status = "In Progress", priority = 2)
+                TaskEntity(identifier = "1", title = "Mock Task 1", description = "Mock desc", status = org.orev.nahidka.api.TaskStatus.TO_DO, priority = 1),
+                TaskEntity(identifier = "2", title = "Mock Task 2", description = "Mock desc", status = org.orev.nahidka.api.TaskStatus.IN_PROGRESS, priority = 2)
             ),
             onTaskClick = {}
         )

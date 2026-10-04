@@ -1,8 +1,11 @@
 package org.orev.nahidka.feature.tasks.dto
 
+import org.orev.nahidka.core.common.NullablePatch
+
 data class TaskUpdateRequest(
-    val taskIdentifier: String,
+    val identifier: String,
     val title: String? = null,
-    val description: String? = null,
-    val status: TaskStatus? = null
+    val descriptionPatch: NullablePatch<String> = NullablePatch.Keep,
+    val status: TaskStatus? = null,
+    val priority: Int? = null
 )

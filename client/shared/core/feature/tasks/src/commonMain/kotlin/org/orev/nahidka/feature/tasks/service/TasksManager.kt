@@ -9,16 +9,17 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 
 @SingleIn(TasksSessionScope::class)
-class TasksManager @Inject constructor(private val tasksContext: TasksContext) {
-    suspend fun addNewTasks(
-        vararg taskCreationRequests: TaskCreationRequest
-    ): TasksMutationResult = tasksContext.insertTasks(taskCreationRequests.toList())
+class TasksManager @Inject constructor(private val tasksRepository: TasksRepository) {
 
-    suspend fun removeTasks(
-        vararg taskIdentifiers: String
-    ): TasksMutationResult = tasksContext.deleteTasks(taskIdentifiers.toList())
+    suspend fun createTasks(
+        taskCreationRequests: List<TaskCreationRequest>
+    ): TasksMutationResult = tasksRepository.createTasks(taskCreationRequests)
+
+    suspend fun deleteTasks(
+        taskIdentifiers: List<String>
+    ): TasksMutationResult = tasksRepository.deleteTasks(taskIdentifiers)
 
     suspend fun updateTasks(
-        vararg taskUpdateRequests: TaskUpdateRequest
-    ): TasksMutationResult = tasksContext.applyTaskUpdates(taskUpdateRequests.toList())
+        taskUpdateRequests: List<TaskUpdateRequest>
+    ): TasksMutationResult = tasksRepository.updateTasks(taskUpdateRequests)
 }

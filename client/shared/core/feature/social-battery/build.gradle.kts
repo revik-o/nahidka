@@ -28,6 +28,7 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
+            api(project(":shared:core:common"))
             api(libs.kotlinx.coroutines.core)
             implementation(libs.metro.runtime)
         }

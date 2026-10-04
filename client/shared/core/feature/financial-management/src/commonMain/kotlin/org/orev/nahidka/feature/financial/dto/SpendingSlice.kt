@@ -1,7 +1,7 @@
 package org.orev.nahidka.feature.financial.dto
 
 data class SpendingSlice(
-    val categoryId: String,
+    val categoryIdentifier: String,
     val label: String,
     val amount: Money,
     val percentageBasisPoints: Int,

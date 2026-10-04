@@ -16,6 +16,7 @@ class FinancialSubscription<T> internal constructor(
     private val source: WatchSource<T>,
     private val handlers: Handlers<T> = Handlers(),
 ) {
+
     internal data class Handlers<T>(
         val onSnapshot: (suspend (EntitySnapshot<T>) -> Unit)? = null,
         val onResync: (suspend (EntitySnapshot<T>) -> Unit)? = null,
@@ -49,12 +50,20 @@ class FinancialSubscription<T> internal constructor(
 
     fun launchIn(scope: CoroutineScope): Job {
         val configured = handlers
-        val replace = requireNotNull(configured.onSnapshot) { "Configure onSnapshot before launchIn" }
+        val replace = requireNotNull(configured.onSnapshot) {
+            "Configure onSnapshot before launchIn"
+        }
+
         val messages = openWatch(source)
-        val parent = requireNotNull(scope.coroutineContext[Job]) { "A subscription requires a lifecycle-owned scope Job" }
+
+        val parent = requireNotNull(scope.coroutineContext[Job]) {
+            "A subscription requires a lifecycle-owned scope Job"
+        }
+
         val supervisor = SupervisorJob(parent)
         val uncaught = CoroutineExceptionHandler { _, failure -> source.errorReporter.report(failure) }
         val isolatedScope = CoroutineScope(scope.coroutineContext + supervisor + uncaught)
+
         val job = isolatedScope.launch(start = CoroutineStart.LAZY) {
             try {
                 messages.collect { message ->
@@ -63,6 +72,7 @@ class FinancialSubscription<T> internal constructor(
                         is WatchMessage.Resync -> (configured.onResync ?: replace)(message.snapshot)
                         is WatchMessage.Batch -> {
                             configured.onBatch?.invoke(message.batch)
+
                             for (change in message.batch.changes) {
                                 when (change) {
                                     is EntityChange.Insert -> configured.onInsert?.invoke(change)
@@ -77,7 +87,11 @@ class FinancialSubscription<T> internal constructor(
                 throw cancelled
             } catch (failure: Exception) {
                 val report = configured.onError
-                if (report == null) throw failure
+
+                if (report == null) {
+                    throw failure
+                }
+
                 try {
                     report(failure)
                 } catch (cancelled: CancellationException) {
@@ -87,13 +101,16 @@ class FinancialSubscription<T> internal constructor(
                 }
             }
         }
+
         val sessionHook = source.sessionLifetime.invokeOnCompletion { cause ->
             job.cancel(CancellationException("Financial session closed", cause))
         }
+
         job.invokeOnCompletion {
             sessionHook.dispose()
             supervisor.complete()
         }
+
         job.start()
         return job
     }

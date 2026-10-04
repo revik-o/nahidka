@@ -27,7 +27,7 @@ fun NotificationHistoryScreen(
         )
         
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(notifications, key = { it.id }) { notification ->
+            items(notifications, key = { it.identifier }) { notification ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
@@ -57,7 +57,7 @@ fun NotificationHistoryScreenPreview() {
         NotificationHistoryScreen(
             notifications = listOf(
                 NotificationEntity(
-                    id = "1",
+                    identifier = "1",
                     title = "New Message",
                     message = "Hello!",
                     timestamp = 1670000000000L

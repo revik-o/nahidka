@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.PersistentList
 data class SpendingSummary(
     val storeRevision: Long,
     val period: ReportingPeriod,
-    val assetId: String,
+    val assetIdentifier: String,
     val grossExpense: Money,
     val refunds: Money,
     val netExpense: Money,
