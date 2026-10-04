@@ -1,9 +1,9 @@
 package org.orev.nahidka.feature.financial.command
 
-import kotlin.time.Instant
 import org.orev.nahidka.feature.financial.dto.Money
 import org.orev.nahidka.feature.financial.dto.OperationKind
 import org.orev.nahidka.feature.financial.dto.PaymentMethod
+import kotlin.time.Instant
 
 data class NewFinancialOperation(
     val identifier: String,

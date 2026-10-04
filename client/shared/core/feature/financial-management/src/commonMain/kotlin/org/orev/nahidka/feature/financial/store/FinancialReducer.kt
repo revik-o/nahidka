@@ -1,35 +1,11 @@
 package org.orev.nahidka.feature.financial.store
 
-import org.orev.nahidka.feature.financial.command.toPlanningTable
-import dev.zacsweers.metro.Inject
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.toPersistentMap
-import kotlinx.collections.immutable.toPersistentSet
-import org.orev.nahidka.feature.financial.calculation.FinancialCalendar
-import org.orev.nahidka.feature.financial.calculation.apply
-import org.orev.nahidka.feature.financial.calculation.calculatePlanningTableView
-import org.orev.nahidka.feature.financial.calculation.validateFinancialTotals
-import org.orev.nahidka.feature.financial.calculation.checkedAdd
-import org.orev.nahidka.core.common.incrementRevision
-import org.orev.nahidka.feature.financial.calculation.financialMonthFor
-import org.orev.nahidka.feature.financial.command.ArchiveFinancialCategory
-import org.orev.nahidka.feature.financial.command.CreateFinancialCategory
-import org.orev.nahidka.feature.financial.command.DeleteFinancialCategory
-import org.orev.nahidka.feature.financial.command.DeletePlanningTable
-import org.orev.nahidka.feature.financial.command.FinancialPlanningTableInput
-import org.orev.nahidka.feature.financial.command.NewFinancialOperation
-import org.orev.nahidka.feature.financial.command.RemoveFinancialOperation
-import org.orev.nahidka.feature.financial.command.SavePlanningTable
-import org.orev.nahidka.feature.financial.command.UpdateFinancialCategory
-import org.orev.nahidka.feature.financial.command.UpdateFinancialOperation
-import org.orev.nahidka.core.common.applyTo
-import org.orev.nahidka.feature.financial.dto.FinancialCategory
-import org.orev.nahidka.feature.financial.dto.FinancialError
-import org.orev.nahidka.feature.financial.dto.FinancialOperation
-import org.orev.nahidka.feature.financial.dto.FinancialPlanningTable
-import org.orev.nahidka.feature.financial.dto.FinancialSessionConfig
-import org.orev.nahidka.feature.financial.dto.OperationKind
 import org.orev.nahidka.core.common.ArithmeticOverflowException
+import org.orev.nahidka.core.common.applyTo
+import org.orev.nahidka.core.common.incrementRevision
+import org.orev.nahidka.feature.financial.calculation.*
+import org.orev.nahidka.feature.financial.command.*
+import org.orev.nahidka.feature.financial.dto.*
 
 internal class FinancialReducer(
     private val config: FinancialSessionConfig,

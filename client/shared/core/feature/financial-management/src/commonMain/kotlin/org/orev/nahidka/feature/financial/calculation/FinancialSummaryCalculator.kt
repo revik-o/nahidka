@@ -1,33 +1,11 @@
 package org.orev.nahidka.feature.financial.calculation
 
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.PersistentMap
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.YearMonth
 import kotlinx.datetime.toLocalDateTime
-import org.orev.nahidka.feature.financial.dto.FinancialCategory
-import org.orev.nahidka.feature.financial.dto.FinancialOperation
-import org.orev.nahidka.feature.financial.dto.FinancialPlanningTable
-import org.orev.nahidka.feature.financial.dto.FinancialSessionConfig
-import org.orev.nahidka.feature.financial.dto.FinancialSnapshot
-import org.orev.nahidka.feature.financial.dto.Money
-import org.orev.nahidka.feature.financial.dto.MonthlyQuery
-import org.orev.nahidka.feature.financial.dto.OperationKind
-import org.orev.nahidka.feature.financial.dto.PaymentActuals
-import org.orev.nahidka.feature.financial.dto.PaymentMethod
-import org.orev.nahidka.feature.financial.dto.PlanningConfigured
-import org.orev.nahidka.feature.financial.dto.PlanningNotConfigured
-import org.orev.nahidka.feature.financial.dto.PlanningRowView
-import org.orev.nahidka.feature.financial.dto.PlanningTableView
-import org.orev.nahidka.feature.financial.dto.PlanningTotals
-import org.orev.nahidka.feature.financial.dto.ReportingPeriod
-import org.orev.nahidka.feature.financial.dto.ShareDivision
-import org.orev.nahidka.feature.financial.dto.SpendingSlice
-import org.orev.nahidka.feature.financial.dto.SpendingSummary
+import org.orev.nahidka.feature.financial.dto.*
 import org.orev.nahidka.feature.financial.store.InternalFrame
 
 private const val UNCATEGORIZED_IDENTIFIER = "projection:uncategorized"

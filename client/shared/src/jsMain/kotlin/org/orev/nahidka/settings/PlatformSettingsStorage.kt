@@ -2,7 +2,8 @@ package org.orev.nahidka.settings
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import org.orev.nahidka.feature.settings.service.*
+import org.orev.nahidka.feature.settings.service.KeyValueSettingsLocalDataSource
+import org.orev.nahidka.feature.settings.service.SettingsLocalDataSource
 
 private fun readSettings(): String? = js("window.localStorage.getItem('nahidka-settings')") as String?
 private fun writeSettings(value: String) { js("window.localStorage.setItem('nahidka-settings', value)") }

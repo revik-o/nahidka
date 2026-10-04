@@ -1,6 +1,9 @@
 package org.orev.nahidka.feature.financial.calculation
 
-import org.orev.nahidka.feature.financial.dto.*
+import org.orev.nahidka.feature.financial.dto.FinancialOperation
+import org.orev.nahidka.feature.financial.dto.FinancialPlanningTable
+import org.orev.nahidka.feature.financial.dto.OperationKind
+import org.orev.nahidka.feature.financial.dto.ReportingPeriod
 
 internal fun validateFinancialTotals(
     operations: Iterable<FinancialOperation>,

@@ -7,21 +7,16 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.YearMonth
 import kotlinx.datetime.toLocalDateTime
+import org.orev.nahidka.core.common.ApplicationClock
 import org.orev.nahidka.feature.financial.calculation.checkedAdd
-import org.orev.nahidka.feature.financial.dto.FinancialSessionConfig
-import org.orev.nahidka.feature.financial.dto.Money
-import org.orev.nahidka.feature.financial.dto.MonthlyQuery
-import org.orev.nahidka.feature.financial.dto.OperationKind
-import org.orev.nahidka.feature.financial.dto.PlanningConfigured
+import org.orev.nahidka.feature.financial.dto.*
 import org.orev.nahidka.feature.financial.gateway.FinancialGateway
 import org.orev.nahidka.feature.financial.support.ExactMoneyFormatter
-import org.orev.nahidka.core.common.ApplicationClock
 import org.orev.nahidka.ui.common.state.StateHolder
 
 @Inject

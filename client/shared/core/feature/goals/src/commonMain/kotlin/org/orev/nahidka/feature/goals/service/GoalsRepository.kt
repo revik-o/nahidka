@@ -1,7 +1,10 @@
 package org.orev.nahidka.feature.goals.service
 
 import kotlinx.coroutines.flow.StateFlow
-import org.orev.nahidka.feature.goals.dto.*
+import org.orev.nahidka.feature.goals.dto.GoalCreationRequest
+import org.orev.nahidka.feature.goals.dto.GoalUpdateRequest
+import org.orev.nahidka.feature.goals.dto.GoalsMutationResult
+import org.orev.nahidka.feature.goals.dto.GoalsSnapshot
 
 interface GoalsRepository {
 

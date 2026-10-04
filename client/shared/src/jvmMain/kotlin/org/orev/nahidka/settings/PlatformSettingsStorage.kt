@@ -2,10 +2,11 @@ package org.orev.nahidka.settings
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import java.util.prefs.Preferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.orev.nahidka.feature.settings.service.*
+import org.orev.nahidka.feature.settings.service.KeyValueSettingsLocalDataSource
+import org.orev.nahidka.feature.settings.service.SettingsLocalDataSource
+import java.util.prefs.Preferences
 
 @Composable
 actual fun rememberSettingsLocalDataSource(): SettingsLocalDataSource = remember {

@@ -1,7 +1,10 @@
 package org.orev.nahidka.feature.tasks.service
 
 import kotlinx.coroutines.flow.StateFlow
-import org.orev.nahidka.feature.tasks.dto.*
+import org.orev.nahidka.feature.tasks.dto.TaskCreationRequest
+import org.orev.nahidka.feature.tasks.dto.TaskUpdateRequest
+import org.orev.nahidka.feature.tasks.dto.TasksMutationResult
+import org.orev.nahidka.feature.tasks.dto.TasksSnapshot
 
 interface TasksRepository {
 

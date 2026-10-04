@@ -1,7 +1,7 @@
 package org.orev.nahidka.feature.financial.dto
 
-import kotlin.time.Instant
 import kotlinx.datetime.YearMonth
+import kotlin.time.Instant
 
 data class ReportingPeriod(
     val month: YearMonth,

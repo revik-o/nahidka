@@ -2,8 +2,9 @@ package org.orev.nahidka.settings
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import org.orev.nahidka.feature.settings.service.KeyValueSettingsLocalDataSource
+import org.orev.nahidka.feature.settings.service.SettingsLocalDataSource
 import platform.Foundation.NSUserDefaults
-import org.orev.nahidka.feature.settings.service.*
 
 @Composable
 actual fun rememberSettingsLocalDataSource(): SettingsLocalDataSource = remember {

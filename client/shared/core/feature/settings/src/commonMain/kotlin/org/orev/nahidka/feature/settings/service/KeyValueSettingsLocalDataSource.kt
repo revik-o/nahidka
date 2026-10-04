@@ -1,6 +1,8 @@
 package org.orev.nahidka.feature.settings.service
 
-import org.orev.nahidka.feature.settings.dto.*
+import org.orev.nahidka.feature.settings.dto.Settings
+import org.orev.nahidka.feature.settings.dto.SettingsLanguage
+import org.orev.nahidka.feature.settings.dto.SettingsTheme
 
 class KeyValueSettingsLocalDataSource(
     private val readValue: () -> String?,

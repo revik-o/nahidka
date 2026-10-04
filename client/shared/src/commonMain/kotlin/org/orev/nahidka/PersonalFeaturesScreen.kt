@@ -5,11 +5,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.orev.nahidka.feature.tasks.dto.*
 import org.orev.nahidka.feature.goals.dto.*
-import org.orev.nahidka.ui.task.TasksTable
+import org.orev.nahidka.feature.tasks.dto.*
 import org.orev.nahidka.ui.goal.GoalsTable
 import org.orev.nahidka.ui.socialbattery.SocialBatteryWidget
+import org.orev.nahidka.ui.task.TasksTable
 
 @Composable
 internal fun PersonalFeaturesScreen(

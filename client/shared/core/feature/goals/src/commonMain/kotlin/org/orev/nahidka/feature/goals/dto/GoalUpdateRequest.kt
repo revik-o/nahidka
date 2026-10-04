@@ -1,7 +1,7 @@
 package org.orev.nahidka.feature.goals.dto
 
-import kotlin.time.Instant
 import org.orev.nahidka.core.common.NullablePatch
+import kotlin.time.Instant
 
 data class GoalUpdateRequest(
     val identifier: String,

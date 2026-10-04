@@ -1,7 +1,7 @@
 package org.orev.nahidka.feature.financial.calculation
 
-import org.orev.nahidka.feature.financial.dto.Money
 import org.orev.nahidka.core.common.ArithmeticOverflowException
+import org.orev.nahidka.feature.financial.dto.Money
 
 fun checkedAdd(left: Long, right: Long): Long {
     if (right > 0 && left > Long.MAX_VALUE - right) {

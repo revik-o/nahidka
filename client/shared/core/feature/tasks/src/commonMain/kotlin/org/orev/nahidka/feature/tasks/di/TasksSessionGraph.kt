@@ -1,12 +1,11 @@
 package org.orev.nahidka.feature.tasks.di
 
-import org.orev.nahidka.feature.tasks.service.TasksContext
-import org.orev.nahidka.feature.tasks.service.TasksManager
-import org.orev.nahidka.feature.tasks.service.TasksRepository
-
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
+import org.orev.nahidka.feature.tasks.service.TasksContext
+import org.orev.nahidka.feature.tasks.service.TasksManager
+import org.orev.nahidka.feature.tasks.service.TasksRepository
 
 @DependencyGraph(TasksSessionScope::class)
 interface TasksSessionGraph {

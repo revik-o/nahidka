@@ -2,11 +2,11 @@ package org.orev.nahidka.feature.financial.subscription
 
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
+import org.orev.nahidka.core.common.ErrorReporter
 import org.orev.nahidka.feature.financial.dto.EntitySnapshot
 import org.orev.nahidka.feature.financial.dto.FinancialChangeBatch
 import org.orev.nahidka.feature.financial.store.FinancialCommit
 import org.orev.nahidka.feature.financial.store.InternalFrame
-import org.orev.nahidka.core.common.ErrorReporter
 
 internal interface WatchSource<T> {
     val frames: StateFlow<InternalFrame>
