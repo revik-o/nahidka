@@ -65,7 +65,7 @@ kotlin {
             api(project(":shared:ui:dashboard"))
             implementation(project(":shared:ui:financial-management"))
             implementation(project(":shared:ui:settings"))
-            implementation(project(":shared:ui:task"))
+            implementation(project(":shared:ui:tasks"))
             implementation(project(":shared:ui:goal"))
             implementation(project(":shared:ui:social-battery"))
             implementation(libs.compose.runtime)
