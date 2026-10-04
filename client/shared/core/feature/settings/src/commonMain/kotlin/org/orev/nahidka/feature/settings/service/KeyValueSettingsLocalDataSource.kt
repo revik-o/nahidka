@@ -16,7 +16,7 @@ class KeyValueSettingsLocalDataSource(
             } ?: SettingsTheme.FOLLOW_SYSTEM,
             language = SettingsLanguage.entries.firstOrNull {
                 it.name == fields.getOrNull(1)
-            } ?: SettingsLanguage.FOLLOW_SYSTEM,
+            } ?: SettingsLanguage.ENGLISH,
         )
     }
 

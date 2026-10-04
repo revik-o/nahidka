@@ -6,7 +6,6 @@ import org.orev.nahidka.feature.tasks.service.TasksContext
 import org.orev.nahidka.feature.tasks.service.TasksManager
 import org.orev.nahidka.feature.tasks.dto.TaskCreationRequest
 import org.orev.nahidka.feature.tasks.dto.TaskUpdateRequest
-import org.orev.nahidka.feature.tasks.dto.TaskStatus
 import org.orev.nahidka.feature.goals.service.GoalsContext
 import org.orev.nahidka.feature.goals.service.GoalsManager
 import org.orev.nahidka.feature.goals.dto.GoalCreationRequest
@@ -45,6 +44,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.collections.immutable.persistentListOf
+import org.orev.nahidka.api.TaskStatus
 import org.orev.nahidka.di.rememberFinancialSession
 import org.orev.nahidka.feature.financial.dto.AssetDefinition
 import org.orev.nahidka.feature.financial.dto.FinancialSessionConfig

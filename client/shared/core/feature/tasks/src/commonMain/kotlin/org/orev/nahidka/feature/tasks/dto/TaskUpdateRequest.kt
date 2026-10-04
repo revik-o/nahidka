@@ -1,5 +1,6 @@
 package org.orev.nahidka.feature.tasks.dto
 
+import org.orev.nahidka.api.TaskStatus
 import org.orev.nahidka.core.common.NullablePatch
 
 data class TaskUpdateRequest(
