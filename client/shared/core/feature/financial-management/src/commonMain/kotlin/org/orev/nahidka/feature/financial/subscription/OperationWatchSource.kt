@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
 import org.orev.nahidka.core.common.ErrorReporter
+import org.orev.nahidka.feature.financial.calculation.FinancialOperationRecencyComparator
 import org.orev.nahidka.feature.financial.dto.*
 import org.orev.nahidka.feature.financial.store.FinancialCommit
 import org.orev.nahidka.feature.financial.store.InternalFrame
@@ -19,7 +20,7 @@ internal class OperationWatchSource(
     override fun snapshot(frame: InternalFrame): EntitySnapshot<FinancialOperation> {
         val entities = frame.data.operations.values
             .filter(::matches)
-            .sortedWith(compareByDescending<FinancialOperation> { it.occurredAt }.thenBy { it.identifier })
+            .sortedWith(FinancialOperationRecencyComparator)
             .toPersistentList()
 
         return EntitySnapshot(frame.sessionIdentity, frame.revision, entities)

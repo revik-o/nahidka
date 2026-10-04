@@ -251,7 +251,8 @@ MonthlyQuery(month: YearMonth, assetIdentifier: String)
 // Query membership changes produce Insert/Delete, even when the entity was updated.
 // Snapshot order: operations = occurredAt descending, then identifier;
 // categories = name ignoring case, then identifier; planning = month, asset, identifier.
-// Re-sort UI lists yourself after applying deltas. Change.index is a commit delta
+// Re-sort UI lists yourself after applying deltas (FinancialOperationRecencyComparator,
+// FinancialCategoryNameComparator reproduce the snapshot orders). Change.index is a commit delta
 // index, NOT a position in the query result.
 EntitySnapshot<T>(sessionIdentity: String, storeRevision: Long, entities: PersistentList<T>)
 FinancialChangeBatch<T>(storeRevision: Long, commandIdentifier: String, changes: PersistentList<EntityChange<T>>)
@@ -321,7 +322,7 @@ unplannedNetExpense             = expense - refunds for categories absent from A
 suggestedSavings                = floor(max(projectedAvailableAfterPlanning - reserve, 0) * rate / 10_000)
 
 PlanningState = PlanningConfigured(table: PlanningTableView) | PlanningNotConfigured
-PlanningNotConfigured = period, income, grossExpenses, refunds, netExpense
+PlanningNotConfigured = period, income, grossExpenses, refunds, netExpense, currentAvailable
 SpendingSummary = storeRevision, period, assetIdentifier, grossExpense, refunds, netExpense,
                   drawableTotal, refundCredits, slices: PersistentList<SpendingSlice>
 SpendingSlice = categoryIdentifier, label, amount, percentageBasisPoints, isOtherGroup
@@ -362,9 +363,9 @@ fun projectPlan(table: FinancialPlanningTable, snapshot: FinancialSnapshot): Pla
 // Use a period matching table.month and operations for table.assetIdentifier.
 // Calculators filter by asset/period, use checked arithmetic, and do not validate
 // imported documents as gateway mutations do. Supply valid domain records.
-// financialMonthFor(operation, reportingTimeZone): YearMonth
+// financialMonthFor(operation, reportingTimeZone) / financialMonthFor(instant, reportingTimeZone): YearMonth
 // calendar.reportingPeriod(month, timeZoneIdentifier): ReportingPeriod
 // ReportingPeriod: month, timeZoneIdentifier, startInclusive: Instant, endExclusive: Instant.
 ```
 
-Source: [gateway contract](src/commonMain/kotlin/org/orev/nahidka/feature/financial/gateway/FinancialGateway.kt), [mutation rules](src/commonMain/kotlin/org/orev/nahidka/feature/financial/store/FinancialReducer.kt), [calculations](src/commonMain/kotlin/org/orev/nahidka/feature/financial/calculation/FinancialSummaryCalculator.kt). Host integration: [FinancialSessionGraph](../../../src/commonMain/kotlin/org/orev/nahidka/di/FinancialSessionGraph.kt), [session owner](../../../src/commonMain/kotlin/org/orev/nahidka/di/FinancialSessionOwner.kt). Usage/tests: [FinancialManagementViewModel](../../../ui/financialmanagement/src/commonMain/kotlin/org/orev/nahidka/ui/financialmanagement/FinancialManagementViewModel.kt), [view-model tests](../../../ui/financialmanagement/src/jvmTest/kotlin/org/orev/nahidka/ui/financialmanagement/FinancialManagementViewModelTest.kt).
+Source: [gateway contract](src/commonMain/kotlin/org/orev/nahidka/feature/financial/gateway/FinancialGateway.kt), [mutation rules](src/commonMain/kotlin/org/orev/nahidka/feature/financial/store/FinancialReducer.kt), [calculations](src/commonMain/kotlin/org/orev/nahidka/feature/financial/calculation/FinancialSummaryCalculator.kt). Host integration: [FinancialSessionGraph](../../../src/commonMain/kotlin/org/orev/nahidka/di/FinancialSessionGraph.kt), [session owner](../../../src/commonMain/kotlin/org/orev/nahidka/di/FinancialSessionOwner.kt). Usage/tests: [FinancialHistoryViewModel](../../../ui/financial-management/src/commonMain/kotlin/org/orev/nahidka/ui/financialmanagement/history/FinancialHistoryViewModel.kt), [FinancialPlanningViewModel](../../../ui/financial-management/src/commonMain/kotlin/org/orev/nahidka/ui/financialmanagement/planning/FinancialPlanningViewModel.kt), [view-model tests](../../../ui/financial-management/src/jvmTest/kotlin/org/orev/nahidka/ui/financialmanagement).

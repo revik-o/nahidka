@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_action_cancel">Отмена</string>
+    <string name="common_action_select">Выбрать</string>
+    <string name="common_action_clear">Очистить</string>
+    <string name="common_action_more">Другие действия</string>
+</resources>

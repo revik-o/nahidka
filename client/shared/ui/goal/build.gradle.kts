@@ -22,6 +22,7 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
+            api(project(":shared:core:feature:goals"))
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)

@@ -5,8 +5,10 @@ import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.YearMonth
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.yearMonth
 import org.orev.nahidka.feature.financial.dto.*
 import org.orev.nahidka.feature.financial.store.InternalFrame
+import kotlin.time.Instant
 
 private const val UNCATEGORIZED_IDENTIFIER = "projection:uncategorized"
 private const val OTHER_IDENTIFIER = "projection:other"
@@ -264,7 +266,7 @@ internal fun calculateFinancialSnapshot(
     val operations = frame.data.operations.values
         .asSequence()
         .filter { it.amount.assetIdentifier == query.assetIdentifier && it.occurredAt >= period.startInclusive && it.occurredAt < period.endExclusive }
-        .sortedWith(compareByDescending<FinancialOperation> { it.occurredAt }.thenBy { it.identifier })
+        .sortedWith(FinancialOperationRecencyComparator)
         .toPersistentList()
 
     val categories = frame.data.categories.values.sortedWith(FinancialCategoryNameComparator).toPersistentList()
@@ -286,12 +288,15 @@ internal fun calculateFinancialSnapshot(
             }
         }
 
+        val netExpense = checkedSubtract(grossExpenses, refunds)
+
         PlanningNotConfigured(
             period = period,
             income = Money(query.assetIdentifier, income),
             grossExpenses = Money(query.assetIdentifier, grossExpenses),
             refunds = Money(query.assetIdentifier, refunds),
-            netExpense = Money(query.assetIdentifier, checkedSubtract(grossExpenses, refunds)),
+            netExpense = Money(query.assetIdentifier, netExpense),
+            currentAvailable = Money(query.assetIdentifier, checkedSubtract(income, netExpense)),
         )
     } else {
         PlanningConfigured(calculatePlanningTableView(table, operations, categories, period))
@@ -309,7 +314,8 @@ internal fun calculateFinancialSnapshot(
     )
 }
 
+fun financialMonthFor(instant: Instant, reportingTimeZone: String): YearMonth =
+    instant.toLocalDateTime(TimeZone.of(reportingTimeZone)).date.yearMonth
+
 fun financialMonthFor(operation: FinancialOperation, reportingTimeZone: String): YearMonth =
-    operation.occurredAt.toLocalDateTime(TimeZone.of(reportingTimeZone)).date.let { date ->
-        YearMonth(date.year, date.month.ordinal + 1)
-    }
+    financialMonthFor(operation.occurredAt, reportingTimeZone)

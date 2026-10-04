@@ -2,7 +2,7 @@ package org.orev.nahidka.feature.financial.calculation
 
 import org.orev.nahidka.feature.financial.dto.FinancialCategory
 
-internal object FinancialCategoryNameComparator : Comparator<FinancialCategory> {
+object FinancialCategoryNameComparator : Comparator<FinancialCategory> {
 
     override fun compare(first: FinancialCategory, second: FinancialCategory): Int {
         val nameOrder = first.name.compareTo(second.name, ignoreCase = true)

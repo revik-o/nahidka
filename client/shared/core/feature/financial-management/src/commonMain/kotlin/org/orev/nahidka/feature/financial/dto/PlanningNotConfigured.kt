@@ -6,4 +6,5 @@ data class PlanningNotConfigured(
     val grossExpenses: Money,
     val refunds: Money,
     val netExpense: Money,
+    val currentAvailable: Money,
 ) : PlanningState

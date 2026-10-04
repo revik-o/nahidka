@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_action_cancel">Cancel</string>
+    <string name="common_action_select">Select</string>
+    <string name="common_action_clear">Clear</string>
+    <string name="common_action_more">More actions</string>
+</resources>

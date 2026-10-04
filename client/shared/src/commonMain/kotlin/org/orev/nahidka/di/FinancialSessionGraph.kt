@@ -11,13 +11,16 @@ import org.orev.nahidka.feature.financial.dto.FinancialSessionConfig
 import org.orev.nahidka.feature.financial.gateway.FinancialGateway
 import org.orev.nahidka.feature.financial.gateway.InMemoryFinancialGateway
 import org.orev.nahidka.ui.dashboard.DashboardViewModel
+import org.orev.nahidka.ui.financialmanagement.history.FinancialHistoryViewModel
+import org.orev.nahidka.ui.financialmanagement.planning.FinancialPlanningViewModel
 
 @DependencyGraph(FinancialSessionScope::class)
 interface FinancialSessionGraph {
     val finance: FinancialModule
     val gateway: FinancialGateway
     val dashboardViewModel: DashboardViewModel
-    val financialManagementViewModel: FinancialManagementViewModel
+    val financialHistoryViewModel: FinancialHistoryViewModel
+    val financialPlanningViewModel: FinancialPlanningViewModel
 
     @Provides
     @SingleIn(FinancialSessionScope::class)

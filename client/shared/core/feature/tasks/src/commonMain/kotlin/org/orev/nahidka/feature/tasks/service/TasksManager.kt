@@ -4,11 +4,13 @@ import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import org.orev.nahidka.feature.tasks.di.TasksSessionScope
 import org.orev.nahidka.feature.tasks.dto.TaskCreationRequest
+import org.orev.nahidka.feature.tasks.dto.TaskRatingLevel
 import org.orev.nahidka.feature.tasks.dto.TaskUpdateRequest
 import org.orev.nahidka.feature.tasks.dto.TasksMutationResult
 
+@Inject
 @SingleIn(TasksSessionScope::class)
-class TasksManager @Inject constructor(private val tasksRepository: TasksRepository) {
+class TasksManager(private val tasksRepository: TasksRepository) {
 
     suspend fun createTasks(
         taskCreationRequests: List<TaskCreationRequest>
@@ -21,4 +23,8 @@ class TasksManager @Inject constructor(private val tasksRepository: TasksReposit
     suspend fun updateTasks(
         taskUpdateRequests: List<TaskUpdateRequest>
     ): TasksMutationResult = tasksRepository.updateTasks(taskUpdateRequests)
+
+    suspend fun replaceRatingLevels(
+        ratingLevels: List<TaskRatingLevel>
+    ): TasksMutationResult = tasksRepository.replaceRatingLevels(ratingLevels)
 }

@@ -1,3 +1,10 @@
 package org.orev.nahidka.feature.goals.dto
 
-typealias GoalRecord = org.orev.nahidka.api.Goal
+import kotlin.time.Instant
+
+data class GoalRecord(
+    val identifier: String,
+    val title: String,
+    val progressPercentage: Float = 0f,
+    val deadlineInstant: Instant? = null,
+)

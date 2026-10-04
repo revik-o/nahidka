@@ -23,6 +23,7 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
+            implementation(project(":shared:ui:common"))
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)

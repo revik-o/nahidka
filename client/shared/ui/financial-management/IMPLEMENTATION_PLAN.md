@@ -1,6 +1,6 @@
 # Implementation plan — `shared/ui/financial-management`
 
-**Status:** every code block in this plan was compiled (JVM, JS, Wasm, Android) and tested (8 JVM tests, green on 3 consecutive forced re-runs) in an isolated copy of the repository. No source file in the repository has been changed yet; this document is the only addition. Screenshots of the desktop and phone layouts were rendered headlessly from this exact code and shared in the chat.
+**Status:** Steps 1–9 are implemented in this worktree. Current verification, centralized mock data, and design limitations are recorded in [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md). The code blocks and original verification notes below preserve the implementation proposal.
 
 **Revision 2:** categories are no longer created inside these dialogs. They are selected from existing ones, and creation moves to a separate categories page (see §2.2).
 

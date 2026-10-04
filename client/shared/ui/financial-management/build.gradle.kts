@@ -39,5 +39,10 @@ kotlin {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
         }
+        jvmTest.dependencies {
+            implementation(libs.kotlinx.coroutinesSwing)
+            implementation(compose.desktop.currentOs)
+            implementation(compose.desktop.uiTestJUnit4)
+        }
     }
 }

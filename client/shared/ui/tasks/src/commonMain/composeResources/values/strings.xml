@@ -1,4 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_task_title">Tasks</string>
+    <string name="tasks_view_board">Board</string>
+    <string name="tasks_view_list">List</string>
+    <string name="tasks_create">Create new task</string>
+    <string name="tasks_creation_title">New task</string>
+    <string name="tasks_editing_title">Edit task</string>
+    <string name="tasks_action_save">Save</string>
+    <string name="tasks_action_edit">Edit</string>
+    <string name="tasks_action_delete">Delete</string>
+    <string name="tasks_action_move_to">Move to %1$s</string>
+    <string name="tasks_action_move_up">Move up</string>
+    <string name="tasks_action_move_down">Move down</string>
+    <string name="tasks_field_title">Title</string>
+    <string name="tasks_field_description">Description</string>
+    <string name="tasks_field_status">Status</string>
+    <string name="tasks_field_due_date">Due date</string>
+    <string name="tasks_field_rating">Rating</string>
+    <string name="tasks_status_to_do">To Do</string>
+    <string name="tasks_status_in_progress">In Progress</string>
+    <string name="tasks_status_done">Done</string>
+    <string name="tasks_status_count">%1$s (%2$d)</string>
+    <string name="tasks_column_empty">No tasks</string>
+    <string name="tasks_list_empty">There are no tasks yet</string>
+    <string name="tasks_rating_rate">Rate</string>
+    <string name="tasks_rating_levels">Rating reactions</string>
+    <string name="tasks_rating_levels_hint">Reactions go from the worst to the best. Removing a reaction also removes it from rated tasks.</string>
+    <string name="tasks_rating_level_title">Reaction %1$d</string>
+    <string name="tasks_rating_level_add">＋ Add reaction</string>
+    <string name="tasks_deletion_title">Delete task?</string>
+    <string name="tasks_deletion_message">“%1$s” will be deleted.</string>
+    <string name="tasks_error_unsaved">This change could not be saved</string>
 </resources>

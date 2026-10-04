@@ -5,10 +5,13 @@ import kotlinx.collections.immutable.toPersistentList
 
 data class TasksMutationResult(
     val revision: Long,
-    val affectedTasks: ImmutableList<TaskRecord>
+    val affectedTasks: ImmutableList<TaskRecord>,
+    val changed: Boolean = affectedTasks.isNotEmpty()
 ) {
 
-    constructor(revision: Long, affectedTasks: List<TaskRecord>) : this(revision, affectedTasks.toPersistentList())
-
-    val changed: Boolean get() = affectedTasks.isNotEmpty()
+    constructor(
+        revision: Long,
+        affectedTasks: List<TaskRecord>,
+        changed: Boolean = affectedTasks.isNotEmpty()
+    ) : this(revision, affectedTasks.toPersistentList(), changed)
 }

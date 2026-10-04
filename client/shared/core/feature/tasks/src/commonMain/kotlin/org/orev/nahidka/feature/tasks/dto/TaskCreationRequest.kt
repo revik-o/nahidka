@@ -1,11 +1,13 @@
 package org.orev.nahidka.feature.tasks.dto
 
-import org.orev.nahidka.api.TaskStatus
+import kotlinx.datetime.LocalDate
 
 data class TaskCreationRequest(
     val identifier: String,
     val title: String,
     val description: String = "",
     val status: TaskStatus = TaskStatus.TO_DO,
-    val priority: Int = 0
+    val priority: Int = 0,
+    val dueDate: LocalDate? = null,
+    val ratingIdentifier: String? = null
 )

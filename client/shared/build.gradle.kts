@@ -61,8 +61,8 @@ kotlin {
             api(project(":shared:core:feature:social-battery"))
             api(project(":shared:core:feature:goals"))
             api(project(":shared:core:feature:settings"))
-            api(project(":shared:core:feature:dashboard"))
             api(project(":shared:ui:dashboard"))
+            implementation(project(":shared:ui:common"))
             implementation(project(":shared:ui:financial-management"))
             implementation(project(":shared:ui:settings"))
             implementation(project(":shared:ui:tasks"))
@@ -85,6 +85,7 @@ kotlin {
         }
 
         jvmTest.dependencies {
+            implementation(libs.kotlinx.coroutines.test)
             implementation(compose.desktop.currentOs)
             implementation(compose.desktop.uiTestJUnit4)
         }

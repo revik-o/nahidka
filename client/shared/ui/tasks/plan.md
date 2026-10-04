@@ -1,6 +1,6 @@
 # Implementation plan — `shared/ui/tasks`
 
-**Status:** every code block below was compiled (JVM, JS, Wasm, Android) and tested in an isolated copy of the repository: **21 tests, green on 3 consecutive forced re-runs**. Disabling the drop handler makes both drag-and-drop tests fail, so they test real behavior. Desktop and phone layouts were rendered headlessly from this exact code and shared in the chat. No source file in the repository has been changed; this document is the only addition.
+**Implementation status (2026-10-05):** all eleven steps are implemented in the current worktree, with centralized demo data. **33 module tests passed on three consecutive forced runs**, and the actual app navigation test passed. Desktop, Android, JS, and Wasm app build checks passed. The drag and reaction-removal negative checks failed as expected, and production behavior was restored. Desktop and Ukrainian phone layouts were rendered and inspected. See [the completion audit](IMPLEMENTATION_STATUS.md) for current evidence; the original planning notes below describe the repository before implementation.
 
 **Revision 2:** ratings are shown as **reactions** (😞 😐 🙂 🤩) instead of stars, and the reactions are customizable (§2.1).
 
