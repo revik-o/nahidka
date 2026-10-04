@@ -1,16 +1,68 @@
-# Settings feature
+# Settings
 
-The context exposes `settingsState` as a read-only `StateFlow` of immutable snapshots.
-Collect it in the owner's lifecycle scope, or use Compose `collectAsState`.
-Slow observers receive the latest complete snapshot; there are no event queues,
-overflow disconnections, callback builders, or custom subscription jobs.
-Cancel the collector with its owning lifecycle. Handle collector-specific failures
-in the caller's supervision policy, as with any ordinary Kotlin flow.
+Persisted theme/language preferences. Read through `SettingsContext`; write through `SettingsManager`.
 
-Snapshots have structural equality and carry a revision. Changing writes increment
-the revision once; no-op writes keep it. Settings persist through the required
-`SettingsLocalDataSource` before publishing. Task batches validate completely before
-committing and use persistent maps; invalid batches leave state unchanged.
+```kotlin
+// Consumer build.gradle.kts, commonMain.dependencies:
+implementation(project(":shared:core:feature:settings"))
+// Targets: Android, JVM (11), JS browser, Wasm JS browser, iOS arm64/simulator arm64.
+// Exposes core:common + kotlinx.coroutines; UI and platform storage live outside this lib.
+```
 
-Create the Metro session graph through its factory with a platform local data
-source. Storage failures propagate to the writer and leave published state intact.
+**Create, observe, save** — self-contained example; replace the in-memory string with durable storage.
+
+```kotlin
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import org.orev.nahidka.feature.settings.dto.*
+import org.orev.nahidka.feature.settings.service.*
+
+suspend fun settingsExample(ownerScope: CoroutineScope) {
+    var encoded: String? = null
+    val storage = KeyValueSettingsLocalDataSource(
+        readValue = { encoded },
+        writeValue = { encoded = it },
+    )
+    val context = SettingsContext(storage) // Loads synchronously; revision starts at 0.
+    val manager = SettingsManager(context) // Keep the same context for all readers/writers.
+    val collector = ownerScope.launch {
+        context.settingsState.collect { snapshot ->
+            println("${snapshot.revision}: ${snapshot.settings}")
+        }
+    }
+
+    val saved = manager.saveSettings(
+        context.currentSnapshot().settings.copy(
+            theme = SettingsTheme.DARK,
+            language = SettingsLanguage.UKRAINIAN,
+        ),
+    )
+    check(saved.changed && saved.revision == 1L)
+    check(encoded == "DARK|UKRAINIAN")
+    check(!manager.saveSettings(saved.settings).changed) // No extra write/revision.
+
+    val restored = SettingsContext(storage)
+    check(restored.currentSnapshot() == SettingsSnapshot(0, saved.settings))
+    collector.cancel() // Or let the owning lifecycle cancel ownerScope.
+}
+```
+
+**Metro alternative** — consumer needs the Metro plugin and `implementation(libs.metro.runtime)`.
+
+```kotlin
+import dev.zacsweers.metro.createGraphFactory
+import org.orev.nahidka.feature.settings.di.SettingsSessionGraph
+import org.orev.nahidka.feature.settings.service.SettingsLocalDataSource
+
+fun settingsSession(storage: SettingsLocalDataSource): SettingsSessionGraph =
+    createGraphFactory<SettingsSessionGraph.Factory>().create(storage)
+
+// graph.settingsContext: SettingsContext
+// graph.settingsManager: SettingsManager
+// Factory.create(localDataSource: SettingsLocalDataSource): SettingsSessionGraph
+// SettingsSessionScope is the Metro scope marker: one context/manager per graph.
+// Retain the graph for the desired lifetime. There is no close() or owned coroutine scope.
+```
+
+Sources: [service implementations](src/commonMain/kotlin/org/orev/nahidka/feature/settings/service), [Metro graph](src/commonMain/kotlin/org/orev/nahidka/feature/settings/di/SettingsSessionGraph.kt), [App integration](../../../src/commonMain/kotlin/org/orev/nahidka/App.kt), [JVM persistence test](../../../src/jvmTest/kotlin/org/orev/nahidka/SettingsPersistenceTest.kt), [UI recreation test](../../../src/jvmTest/kotlin/org/orev/nahidka/ReviewFeaturesUiTest.kt).

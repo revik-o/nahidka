@@ -1,16 +1,62 @@
-# SocialBattery feature
+# Social battery
 
-The context exposes `batteryState` as a read-only `StateFlow` of immutable snapshots.
-Collect it in the owner's lifecycle scope, or use Compose `collectAsState`.
-Slow observers receive the latest complete snapshot; there are no event queues,
-overflow disconnections, callback builders, or custom subscription jobs.
-Cancel the collector with its owning lifecycle. Handle collector-specific failures
-in the caller's supervision policy, as with any ordinary Kotlin flow.
+One optional percentage in memory. Read through `SocialBatteryContext`; write through `SocialBatteryManager`.
 
-Snapshots have structural equality and carry a revision. Changing writes increment
-the revision once; no-op writes keep it. Settings persist through the required
-`SettingsLocalDataSource` before publishing. Task batches validate completely before
-committing and use persistent maps; invalid batches leave state unchanged.
+```kotlin
+// Consumer build.gradle.kts, commonMain.dependencies:
+implementation(project(":shared:core:feature:social-battery"))
+// Targets: Android, JVM (11), JS browser, Wasm JS browser, iOS arm64/simulator arm64.
+// Exposes core:common + kotlinx.coroutines; no storage, network, or UI dependency.
+```
 
-`SocialBatteryManager.updateBattery` updates the single optional battery value.
-A percentage must be between 0 and 100. Mutation results expose `changed`.
+**Create, observe, update** — self-contained example.
+
+```kotlin
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import org.orev.nahidka.feature.socialbattery.dto.*
+import org.orev.nahidka.feature.socialbattery.service.*
+
+suspend fun batteryExample(ownerScope: CoroutineScope) {
+    val context = SocialBatteryContext()
+    val manager = SocialBatteryManager(context)
+    check(context.currentSnapshot() == SocialBatterySnapshot(0, null))
+
+    val collector = ownerScope.launch {
+        context.batteryState.collect { snapshot ->
+            val label = snapshot.socialBattery?.let { "${it.percentage}%" } ?: "Not set"
+            println("${snapshot.revision}: $label")
+        }
+    }
+
+    val updated = manager.updateBattery(SocialBattery(80))
+    check(updated == SocialBatteryMutationResult(1, SocialBattery(80), true))
+    val same = manager.updateBattery(SocialBattery(80))
+    check(!same.changed && same.revision == 1L)
+    manager.updateBattery(SocialBattery(0)) // Explicitly empty; differs from an unset value.
+    check(context.currentSnapshot().revision == 2L)
+
+    // Caller-managed restoration creates a NEW context; revision always starts at zero.
+    val restored = SocialBatteryContext(initialSocialBattery = SocialBattery(80))
+    check(restored.currentSnapshot() == SocialBatterySnapshot(0, SocialBattery(80)))
+    collector.cancel() // Or let the owning lifecycle cancel ownerScope.
+}
+```
+
+**Metro alternative** — consumer needs the Metro plugin and `implementation(libs.metro.runtime)`.
+
+```kotlin
+import dev.zacsweers.metro.createGraph
+import org.orev.nahidka.feature.socialbattery.di.SocialBatterySessionGraph
+
+fun batterySession(): SocialBatterySessionGraph = createGraph<SocialBatterySessionGraph>()
+
+// graph.socialBatteryContext: SocialBatteryContext
+// graph.socialBatteryManager: SocialBatteryManager
+// SocialBatterySessionScope is the Metro scope marker: one context/manager per graph.
+// Graph always starts with null; use the direct constructor to seed an initial value.
+// Retain the graph for the session. There is no close() or owned coroutine scope.
+```
+
+Sources: [service implementations](src/commonMain/kotlin/org/orev/nahidka/feature/socialbattery/service), [Metro graph](src/commonMain/kotlin/org/orev/nahidka/feature/socialbattery/di/SocialBatterySessionGraph.kt), [App wiring](../../../src/commonMain/kotlin/org/orev/nahidka/App.kt), [UI percentage conversion](../../../src/commonMain/kotlin/org/orev/nahidka/PersonalFeaturesScreen.kt), [UI integration test](../../../src/jvmTest/kotlin/org/orev/nahidka/ReviewFeaturesUiTest.kt).
