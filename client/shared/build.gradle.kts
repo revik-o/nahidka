@@ -61,6 +61,7 @@ kotlin {
             api(project(":shared:core:feature:financial-management"))
             api(project(":shared:core:feature:social-battery"))
             api(project(":shared:core:feature:goals"))
+            api(project(":shared:core:feature:settings"))
             api(project(":shared:core:feature:dashboard"))
             api(project(":shared:ui:dashboard"))
             implementation(project(":shared:ui:financialmanagement"))

@@ -8,7 +8,12 @@ plugins {
 }
 
 kotlin {
-    listOf(iosArm64(), iosSimulatorArm64()).forEach { it.binaries.framework { baseName = "goals"; isStatic = true } }
+    listOf(iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "settings"
+            isStatic = true
+        }
+    }
     jvm {
         compilerOptions { jvmTarget = JvmTarget.JVM_11 }
     }
@@ -16,10 +21,10 @@ kotlin {
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs { browser() }
     android {
-       namespace = "org.orev.nahidka.feature.goals"
-       compileSdk = libs.versions.android.compileSdk.get().toInt()
-       minSdk = libs.versions.android.minSdk.get().toInt()
-       compilerOptions { jvmTarget = JvmTarget.JVM_11 }
+        namespace = "org.orev.nahidka.feature.settings"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        compilerOptions { jvmTarget = JvmTarget.JVM_11 }
     }
     sourceSets {
         commonMain.dependencies {
