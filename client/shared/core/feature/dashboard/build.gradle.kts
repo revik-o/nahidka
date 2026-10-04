@@ -20,7 +20,6 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":shared:core:lib:api"))
             implementation(libs.kotlinx.coroutines.core)
         }
         commonTest.dependencies { implementation(libs.kotlin.test) }

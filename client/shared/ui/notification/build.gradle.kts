@@ -22,7 +22,6 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":shared:core:lib:api"))
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -30,8 +29,6 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.components.resources)
-            implementation(project(":shared:ui:models"))
-            implementation(project(":shared:ui:common"))
         }
         commonTest.dependencies { implementation(libs.kotlin.test) }
     }

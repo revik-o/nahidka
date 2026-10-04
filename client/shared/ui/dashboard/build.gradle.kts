@@ -23,7 +23,6 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":shared:core:lib:api"))
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -31,9 +30,7 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.components.resources)
-            implementation(project(":shared:ui:models"))
-            implementation(project(":shared:ui:common"))
-            implementation(project(":shared:ui:socialbattery"))
+            implementation(project(":shared:ui:social-battery"))
             implementation(project(":shared:core:feature:financial-management"))
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.metro.runtime)

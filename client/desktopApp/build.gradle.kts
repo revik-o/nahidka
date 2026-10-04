@@ -22,7 +22,6 @@ java {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(project(":shared:ui:common"))
     implementation(libs.compose.material3)
     implementation(libs.jbr.api)
     implementation(libs.jna)

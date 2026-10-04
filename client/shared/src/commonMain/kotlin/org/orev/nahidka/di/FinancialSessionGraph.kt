@@ -16,7 +16,6 @@ import org.orev.nahidka.core.common.NoOpErrorReporter
 import org.orev.nahidka.core.common.RandomIdentifierGenerator
 import org.orev.nahidka.core.common.SystemApplicationClock
 import org.orev.nahidka.ui.dashboard.DashboardViewModel
-import org.orev.nahidka.ui.financialmanagement.FinancialManagementViewModel
 
 @DependencyGraph(FinancialSessionScope::class)
 interface FinancialSessionGraph {

@@ -51,9 +51,7 @@ import org.orev.nahidka.feature.financial.dto.FinancialSessionConfig
 import org.orev.nahidka.ui.common.theme.NahidkaTheme
 import org.orev.nahidka.ui.dashboard.DashboardScreen
 import org.orev.nahidka.ui.dashboard.DashboardViewModel
-import org.orev.nahidka.ui.financialmanagement.FinancialManagementEvent
 import org.orev.nahidka.ui.financialmanagement.FinancialManagementScreen
-import org.orev.nahidka.ui.financialmanagement.FinancialManagementViewModel
 
 @Preview
 @Composable

@@ -56,7 +56,6 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(project(":shared:core:lib:api"))
             api(project(":shared:core:feature:tasks"))
             api(project(":shared:core:feature:financial-management"))
             api(project(":shared:core:feature:social-battery"))
@@ -64,12 +63,11 @@ kotlin {
             api(project(":shared:core:feature:settings"))
             api(project(":shared:core:feature:dashboard"))
             api(project(":shared:ui:dashboard"))
-            implementation(project(":shared:ui:financialmanagement"))
+            implementation(project(":shared:ui:financial-management"))
             implementation(project(":shared:ui:settings"))
             implementation(project(":shared:ui:task"))
             implementation(project(":shared:ui:goal"))
-            implementation(project(":shared:ui:socialbattery"))
-            implementation(project(":shared:ui:common"))
+            implementation(project(":shared:ui:social-battery"))
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
