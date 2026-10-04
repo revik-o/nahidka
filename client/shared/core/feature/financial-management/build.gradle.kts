@@ -25,7 +25,7 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            api(project(":shared:core:common"))
+            api(project(":shared:core:feature:common"))
             implementation(project(":shared:core:lib:api"))
             api(libs.kotlinx.coroutines.core)
             api(libs.kotlinx.collections.immutable)

@@ -7,7 +7,6 @@ In-memory goal CRUD with immutable snapshots. Each context owns an independent s
 kotlin.sourceSets.commonMain.dependencies {
     implementation(project(":shared:core:feature:goals"))
 }
-// Exports: :shared:core:lib:api, :shared:core:common, kotlinx-coroutines-core.
 ```
 
 **Create, update, delete** — self-contained usage:

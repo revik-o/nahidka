@@ -9,7 +9,6 @@ Exact money, operation/category CRUD, monthly planning, and observable projectio
 commonMain.dependencies {
     implementation(project(":shared:core:feature:financial-management"))
 }
-// API dependencies: :shared:core:common, coroutines, immutable collections, datetime.
 ```
 
 The usage fragments below share these imports/setup; run suspending calls in an owner coroutine.

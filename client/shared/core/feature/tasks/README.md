@@ -7,7 +7,6 @@ In-memory task CRUD with atomic batches and immutable snapshots. Each context ow
 kotlin.sourceSets.commonMain.dependencies {
     implementation(project(":shared:core:feature:tasks"))
 }
-// Exports: :shared:core:lib:api, :shared:core:common, kotlinx-coroutines-core.
 ```
 
 **Create, update, delete** — self-contained usage:
