@@ -6,14 +6,9 @@
     <string name="tasks_create">Создать задачу</string>
     <string name="tasks_creation_title">Новая задача</string>
     <string name="tasks_editing_title">Редактирование задачи</string>
-    <string name="tasks_action_save">Сохранить</string>
-    <string name="tasks_action_edit">Редактировать</string>
-    <string name="tasks_action_delete">Удалить</string>
     <string name="tasks_action_move_to">Переместить в «%1$s»</string>
     <string name="tasks_action_move_up">Переместить вверх</string>
     <string name="tasks_action_move_down">Переместить вниз</string>
-    <string name="tasks_field_title">Название</string>
-    <string name="tasks_field_description">Описание</string>
     <string name="tasks_field_status">Статус</string>
     <string name="tasks_field_due_date">Срок</string>
     <string name="tasks_field_rating">Оценка</string>
@@ -30,5 +25,4 @@
     <string name="tasks_rating_level_add">＋ Добавить реакцию</string>
     <string name="tasks_deletion_title">Удалить задачу?</string>
     <string name="tasks_deletion_message">Задача «%1$s» будет удалена.</string>
-    <string name="tasks_error_unsaved">Не удалось сохранить изменения</string>
 </resources>

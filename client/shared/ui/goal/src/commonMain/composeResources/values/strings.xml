@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_goal_title">Goals</string>
+    <string name="goal_create">Create goal</string>
+    <string name="goal_creation_title">New goal</string>
+    <string name="goal_editing_title">Edit goal</string>
+    <string name="goal_field_picture">Picture</string>
+    <string name="goal_field_progress">Progress: %1$d%</string>
+    <string name="goal_field_deadline">Deadline</string>
+    <string name="goal_progress_completed">Completed on %1$d%</string>
+    <string name="goal_action_remove_picture">Remove picture</string>
+    <string name="goal_list_empty">There are no goals yet</string>
+    <string name="goal_deletion_title">Delete goal?</string>
+    <string name="goal_deletion_message">“%1$s” will be deleted.</string>
 </resources>

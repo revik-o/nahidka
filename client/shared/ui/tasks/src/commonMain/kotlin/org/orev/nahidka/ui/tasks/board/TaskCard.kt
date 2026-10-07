@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.orev.nahidka.feature.tasks.dto.TaskRatingLevel
+import org.orev.nahidka.ui.common.component.DateText
 import org.orev.nahidka.ui.common.component.MoreActionsMenu
-import org.orev.nahidka.ui.tasks.component.TaskDueDateText
 import org.orev.nahidka.ui.tasks.component.TaskRatingMenu
 import org.orev.nahidka.ui.tasks.component.taskEditingActions
 import org.orev.nahidka.ui.tasks.component.taskStatusChangeActions
@@ -61,7 +61,7 @@ internal fun TaskCard(
             if (taskItem.task.dueDate != null || taskItem.task.status.acceptsRating) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     taskItem.task.dueDate?.let { dueDate ->
-                        TaskDueDateText(dueDate)
+                        DateText(dueDate)
                     }
                     Spacer(Modifier.weight(1f))
                     TaskRatingMenu(taskItem, ratingLevels, taskInteractions)

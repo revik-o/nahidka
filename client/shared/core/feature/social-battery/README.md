@@ -1,6 +1,6 @@
 # Social battery
 
-One optional percentage in memory. Read through `SocialBatteryContext`; write through `SocialBatteryManager`.
+One optional percentage in memory, within `SocialBattery.PERCENTAGE_RANGE` (`0..100`). Read through `SocialBatteryContext`; write through `SocialBatteryManager`.
 
 ```kotlin
 // Consumer build.gradle.kts, commonMain.dependencies:
@@ -55,8 +55,9 @@ fun batterySession(): SocialBatterySessionGraph = createGraph<SocialBatterySessi
 // graph.socialBatteryContext: SocialBatteryContext
 // graph.socialBatteryManager: SocialBatteryManager
 // SocialBatterySessionScope is the Metro scope marker: one context/manager per graph.
+// Own graphs reuse the providers: @DependencyGraph(SocialBatterySessionScope::class, bindingContainers = [SocialBatteryBindings::class]).
 // Graph always starts with null; use the direct constructor to seed an initial value.
 // Retain the graph for the session. There is no close() or owned coroutine scope.
 ```
 
-Sources: [service implementations](src/commonMain/kotlin/org/orev/nahidka/feature/socialbattery/service), [Metro graph](src/commonMain/kotlin/org/orev/nahidka/feature/socialbattery/di/SocialBatterySessionGraph.kt), [App wiring](../../../src/commonMain/kotlin/org/orev/nahidka/App.kt), [UI percentage conversion](../../../src/commonMain/kotlin/org/orev/nahidka/PersonalFeaturesScreen.kt), [UI integration test](../../../src/jvmTest/kotlin/org/orev/nahidka/ReviewFeaturesUiTest.kt).
+Sources: [service implementations](src/commonMain/kotlin/org/orev/nahidka/feature/socialbattery/service), [Metro bindings](src/commonMain/kotlin/org/orev/nahidka/feature/socialbattery/di/SocialBatteryBindings.kt), [Metro graph](src/commonMain/kotlin/org/orev/nahidka/feature/socialbattery/di/SocialBatterySessionGraph.kt), [App wiring](../../../src/commonMain/kotlin/org/orev/nahidka/App.kt), [Social battery UI](../../../ui/social-battery/README.md), [App integration test](../../../src/jvmTest/kotlin/org/orev/nahidka/SocialBatteryHostTest.kt).

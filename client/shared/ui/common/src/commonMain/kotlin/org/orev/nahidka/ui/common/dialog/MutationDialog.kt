@@ -1,14 +1,13 @@
-package org.orev.nahidka.ui.tasks.dialog
+package org.orev.nahidka.ui.common.dialog
 
 import androidx.compose.runtime.Composable
-import nahidka.shared.ui.tasks.generated.resources.Res
-import nahidka.shared.ui.tasks.generated.resources.tasks_error_unsaved
+import nahidka.shared.ui.common.generated.resources.Res
+import nahidka.shared.ui.common.generated.resources.common_error_unsaved
 import org.jetbrains.compose.resources.stringResource
-import org.orev.nahidka.ui.common.dialog.ControlledDialog
 
 @Composable
-internal fun <Draft> TaskDialog(
-    dialogController: TaskDialogController<Draft>,
+fun <Draft> MutationDialog(
+    dialogController: MutationDialogController<Draft>,
     title: @Composable (Draft) -> String,
     confirmationTitle: String,
     content: @Composable (Draft) -> Unit,
@@ -17,7 +16,7 @@ internal fun <Draft> TaskDialog(
         dialogController = dialogController,
         title = title,
         confirmationTitle = confirmationTitle,
-        rejectionText = { stringResource(Res.string.tasks_error_unsaved) },
+        rejectionText = { stringResource(Res.string.common_error_unsaved) },
         content = content,
     )
 }

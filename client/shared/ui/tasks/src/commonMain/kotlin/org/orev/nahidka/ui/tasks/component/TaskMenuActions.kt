@@ -5,14 +5,16 @@ import nahidka.shared.ui.tasks.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.orev.nahidka.feature.tasks.dto.TaskStatus
 import org.orev.nahidka.ui.common.component.MenuAction
+import org.orev.nahidka.ui.common.component.editingMenuActions
 import org.orev.nahidka.ui.tasks.model.TaskInteractions
 import org.orev.nahidka.ui.tasks.model.TaskItem
 
 @Composable
-internal fun taskEditingActions(taskItem: TaskItem, taskInteractions: TaskInteractions): List<MenuAction> = listOf(
-    MenuAction(stringResource(Res.string.tasks_action_edit)) { taskInteractions.onTaskEdit(taskItem) },
-    MenuAction(stringResource(Res.string.tasks_action_delete)) { taskInteractions.onTaskDelete(taskItem) },
-)
+internal fun taskEditingActions(taskItem: TaskItem, taskInteractions: TaskInteractions): List<MenuAction> =
+    editingMenuActions(
+        onEdit = { taskInteractions.onTaskEdit(taskItem) },
+        onDelete = { taskInteractions.onTaskDelete(taskItem) },
+    )
 
 @Composable
 internal fun taskStatusChangeActions(taskItem: TaskItem, taskInteractions: TaskInteractions): List<MenuAction> =

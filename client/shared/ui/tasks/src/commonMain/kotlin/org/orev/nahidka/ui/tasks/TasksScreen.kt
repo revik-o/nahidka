@@ -9,8 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nahidka.shared.ui.tasks.generated.resources.Res
-import nahidka.shared.ui.tasks.generated.resources.tasks_error_unsaved
+import nahidka.shared.ui.common.generated.resources.common_error_unsaved
 import org.jetbrains.compose.resources.stringResource
 import org.orev.nahidka.ui.common.layout.LayoutWidth
 import org.orev.nahidka.ui.tasks.board.TasksBoard
@@ -18,13 +17,14 @@ import org.orev.nahidka.ui.tasks.dialog.TaskDeletionDialog
 import org.orev.nahidka.ui.tasks.dialog.TaskEditorDialog
 import org.orev.nahidka.ui.tasks.dialog.TaskRatingLevelsDialog
 import org.orev.nahidka.ui.tasks.list.TasksList
+import nahidka.shared.ui.common.generated.resources.Res as CommonResources
 
 @Composable
 fun TasksScreen(tasksViewModel: TasksViewModel, modifier: Modifier = Modifier) {
     val tasksContent by tasksViewModel.tasksContent.collectAsStateWithLifecycle()
     var selectedView by rememberSaveable { mutableStateOf(TasksView.BOARD) }
     val snackbarHostState = remember { SnackbarHostState() }
-    val changeRejectionMessage = stringResource(Res.string.tasks_error_unsaved)
+    val changeRejectionMessage = stringResource(CommonResources.string.common_error_unsaved)
 
     LaunchedEffect(tasksViewModel, changeRejectionMessage) {
         tasksViewModel.changeRejections.collect { snackbarHostState.showSnackbar(changeRejectionMessage) }
@@ -36,7 +36,7 @@ fun TasksScreen(tasksViewModel: TasksViewModel, modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(if (layoutWidth == LayoutWidth.COMPACT) 16.dp else 24.dp),
+                .padding(layoutWidth.screenPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             TasksHeader(

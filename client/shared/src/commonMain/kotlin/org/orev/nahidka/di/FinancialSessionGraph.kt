@@ -14,7 +14,7 @@ import org.orev.nahidka.ui.dashboard.DashboardViewModel
 import org.orev.nahidka.ui.financialmanagement.history.FinancialHistoryViewModel
 import org.orev.nahidka.ui.financialmanagement.planning.FinancialPlanningViewModel
 
-@DependencyGraph(FinancialSessionScope::class)
+@DependencyGraph(FinancialSessionScope::class, bindingContainers = [IdentifierGeneratorBindings::class])
 interface FinancialSessionGraph {
     val finance: FinancialModule
     val gateway: FinancialGateway
@@ -35,9 +35,6 @@ interface FinancialSessionGraph {
 
     @Provides
     fun provideApplicationClock(): ApplicationClock = SystemApplicationClock()
-
-    @Provides
-    fun provideIdentifierGenerator(): IdentifierGenerator = RandomIdentifierGenerator()
 
     @DependencyGraph.Factory
     interface Factory {

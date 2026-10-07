@@ -32,9 +32,19 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
         }
+        androidMain.dependencies {
+            implementation(libs.androidx.activity.compose)
+        }
+        webMain.dependencies {
+            implementation(libs.wrappers.browser)
+        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
 }

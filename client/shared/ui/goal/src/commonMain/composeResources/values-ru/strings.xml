@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_goal_title">Цели</string>
+    <string name="goal_create">Создать цель</string>
+    <string name="goal_creation_title">Новая цель</string>
+    <string name="goal_editing_title">Редактирование цели</string>
+    <string name="goal_field_picture">Изображение</string>
+    <string name="goal_field_progress">Прогресс: %1$d%</string>
+    <string name="goal_field_deadline">Срок</string>
+    <string name="goal_progress_completed">Выполнено на %1$d%</string>
+    <string name="goal_action_remove_picture">Убрать изображение</string>
+    <string name="goal_list_empty">Целей пока нет</string>
+    <string name="goal_deletion_title">Удалить цель?</string>
+    <string name="goal_deletion_message">Цель «%1$s» будет удалена.</string>
 </resources>

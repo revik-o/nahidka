@@ -25,6 +25,7 @@ kotlin {
         commonMain.dependencies {
             api(project(":shared:core:feature:common"))
             api(libs.kotlinx.coroutines.core)
+            api(libs.kotlinx.datetime)
             implementation(libs.metro.runtime)
         }
         commonTest.dependencies {

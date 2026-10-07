@@ -6,21 +6,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import nahidka.shared.ui.common.generated.resources.common_action_delete
+import nahidka.shared.ui.common.generated.resources.common_action_save
 import nahidka.shared.ui.tasks.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.orev.nahidka.ui.common.component.MenuAction
 import org.orev.nahidka.ui.common.component.MoreActionsMenu
+import org.orev.nahidka.ui.common.dialog.MutationDialog
+import org.orev.nahidka.ui.common.dialog.MutationDialogController
 import org.orev.nahidka.ui.tasks.model.TaskRatingLevelsDraft
+import nahidka.shared.ui.common.generated.resources.Res as CommonResources
 
 @Composable
 internal fun TaskRatingLevelsDialog(
-    ratingLevelsEditor: TaskDialogController<TaskRatingLevelsDraft>,
+    ratingLevelsEditor: MutationDialogController<TaskRatingLevelsDraft>,
     onRatingLevelAdd: () -> Unit,
 ) {
-    TaskDialog(
+    MutationDialog(
         dialogController = ratingLevelsEditor,
         title = { stringResource(Res.string.tasks_rating_levels) },
-        confirmationTitle = stringResource(Res.string.tasks_action_save),
+        confirmationTitle = stringResource(CommonResources.string.common_action_save),
     ) { ratingLevelsDraft ->
         Text(
             text = stringResource(Res.string.tasks_rating_levels_hint),
@@ -70,7 +75,7 @@ private fun ratingLevelActions(
         )
     }
     add(
-        MenuAction(stringResource(Res.string.tasks_action_delete)) {
+        MenuAction(stringResource(CommonResources.string.common_action_delete)) {
             onRatingLevelsDraftEdit { draft -> draft.removing(ratingLevelIndex) }
         },
     )

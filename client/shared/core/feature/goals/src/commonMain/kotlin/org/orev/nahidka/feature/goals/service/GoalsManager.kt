@@ -7,8 +7,9 @@ import org.orev.nahidka.feature.goals.dto.GoalCreationRequest
 import org.orev.nahidka.feature.goals.dto.GoalUpdateRequest
 import org.orev.nahidka.feature.goals.dto.GoalsMutationResult
 
+@Inject
 @SingleIn(GoalsSessionScope::class)
-class GoalsManager @Inject constructor(private val goalsRepository: GoalsRepository) {
+class GoalsManager(private val goalsRepository: GoalsRepository) {
 
     suspend fun createGoal(goalCreationRequest: GoalCreationRequest): GoalsMutationResult =
         goalsRepository.createGoal(goalCreationRequest)

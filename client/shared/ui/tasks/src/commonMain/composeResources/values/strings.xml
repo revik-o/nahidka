@@ -6,14 +6,9 @@
     <string name="tasks_create">Create new task</string>
     <string name="tasks_creation_title">New task</string>
     <string name="tasks_editing_title">Edit task</string>
-    <string name="tasks_action_save">Save</string>
-    <string name="tasks_action_edit">Edit</string>
-    <string name="tasks_action_delete">Delete</string>
     <string name="tasks_action_move_to">Move to %1$s</string>
     <string name="tasks_action_move_up">Move up</string>
     <string name="tasks_action_move_down">Move down</string>
-    <string name="tasks_field_title">Title</string>
-    <string name="tasks_field_description">Description</string>
     <string name="tasks_field_status">Status</string>
     <string name="tasks_field_due_date">Due date</string>
     <string name="tasks_field_rating">Rating</string>
@@ -30,5 +25,4 @@
     <string name="tasks_rating_level_add">＋ Add reaction</string>
     <string name="tasks_deletion_title">Delete task?</string>
     <string name="tasks_deletion_message">“%1$s” will be deleted.</string>
-    <string name="tasks_error_unsaved">This change could not be saved</string>
 </resources>

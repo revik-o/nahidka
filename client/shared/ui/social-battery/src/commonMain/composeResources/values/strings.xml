@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_socialbattery_title">Social Battery</string>
+    <string name="socialbattery_unset">How charged do you feel?</string>
+    <string name="socialbattery_charge_low">Drained — time to recharge</string>
+    <string name="socialbattery_charge_medium">Steady — something calm will do</string>
+    <string name="socialbattery_charge_high">Charged — ready to socialize</string>
+    <string name="socialbattery_hint">Tap or drag the battery to set your level</string>
 </resources>

@@ -4,4 +4,11 @@
     <string name="common_action_select">Вибрати</string>
     <string name="common_action_clear">Очистити</string>
     <string name="common_action_more">Інші дії</string>
+    <string name="common_action_save">Зберегти</string>
+    <string name="common_action_edit">Редагувати</string>
+    <string name="common_action_delete">Видалити</string>
+    <string name="common_action_choose_photo">Вибрати фото</string>
+    <string name="common_field_title">Назва</string>
+    <string name="common_field_description">Опис</string>
+    <string name="common_error_unsaved">Не вдалося зберегти зміни</string>
 </resources>

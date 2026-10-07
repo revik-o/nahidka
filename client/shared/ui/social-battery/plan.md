@@ -1,6 +1,8 @@
 # Implementation plan — `shared/ui/social-battery`
 
-**Status (2026-10-07):** plan only, so the repository is unchanged apart from this file and `plan-previews/`. Every code block below was written, compiled and tested in an isolated copy of the repository at `6df8e9d`. **36 / 36 tests pass on three consecutive forced runs** (12 new, 24 existing as a regression check). The app builds for Android, desktop, JS and Wasm. Previews were rendered from this exact code (§5).
+**Status (2026-10-07):** implemented and verified in the current worktree. **41 / 41 tests pass on three consecutive forced runs** (14 social battery tests, 27 regression tests). Android, desktop, JS and Wasm app builds pass. All charge states were rendered in both themes, and Ukrainian phone layouts were inspected. The drag and accessibility negative checks both fail as expected with the corresponding handlers disabled in a temporary source copy. See [README.md](README.md) for current verification details; §5 preserves the original plan's validation and limitations.
+
+**Integration adjustment:** Goals already has its own screen in the current worktree. After moving Social battery to its own entry, the legacy `PersonalFeature` and `PersonalFeaturesScreen` files have no remaining consumers and are removed. Goals navigation remains intact. The implementation also clips particles to the available field and extends the planned tests to cover mouse input and every charge state in both themes.
 
 ---
 

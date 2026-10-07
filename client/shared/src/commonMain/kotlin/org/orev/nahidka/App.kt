@@ -20,21 +20,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.zacsweers.metro.createGraph
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
-import org.orev.nahidka.core.common.RandomIdentifierGenerator
 import org.orev.nahidka.core.common.SystemApplicationClock
 import org.orev.nahidka.ui.financialmanagement.mock.FinancialDemoData
 import org.orev.nahidka.di.rememberFinancialSession
-import org.orev.nahidka.feature.goals.dto.GoalCreationRequest
-import org.orev.nahidka.feature.goals.dto.GoalUpdateRequest
-import org.orev.nahidka.feature.goals.service.GoalsContext
-import org.orev.nahidka.feature.goals.service.GoalsManager
 import org.orev.nahidka.feature.settings.dto.SettingsTheme
 import org.orev.nahidka.feature.settings.service.SettingsContext
 import org.orev.nahidka.feature.settings.service.SettingsLocalDataSource
 import org.orev.nahidka.feature.settings.service.SettingsManager
-import org.orev.nahidka.feature.socialbattery.dto.SocialBattery
-import org.orev.nahidka.feature.socialbattery.service.SocialBatteryContext
-import org.orev.nahidka.feature.socialbattery.service.SocialBatteryManager
 import org.orev.nahidka.settings.rememberSettingsLocalDataSource
 import org.orev.nahidka.ui.common.theme.NahidkaTheme
 import org.orev.nahidka.ui.dashboard.DashboardScreen
@@ -42,7 +34,14 @@ import org.orev.nahidka.ui.dashboard.DashboardViewModel
 import org.orev.nahidka.ui.financialmanagement.FinancialManagementScreen
 import org.orev.nahidka.ui.financialmanagement.history.FinancialHistoryViewModel
 import org.orev.nahidka.ui.financialmanagement.planning.FinancialPlanningViewModel
+import org.orev.nahidka.ui.goal.GoalsScreen
+import org.orev.nahidka.ui.goal.GoalsScreenGraph
+import org.orev.nahidka.ui.goal.GoalsViewModel
+import org.orev.nahidka.ui.goal.mock.GoalsMockData
 import org.orev.nahidka.ui.settings.SettingsScreen
+import org.orev.nahidka.ui.socialbattery.SocialBatteryScreen
+import org.orev.nahidka.ui.socialbattery.SocialBatteryScreenGraph
+import org.orev.nahidka.ui.socialbattery.SocialBatteryViewModel
 import org.orev.nahidka.ui.tasks.TasksScreen
 import org.orev.nahidka.ui.tasks.TasksScreenGraph
 import org.orev.nahidka.ui.tasks.TasksViewModel
@@ -77,31 +76,17 @@ fun App(
     LaunchedEffect(tasksScreenGraph) {
         TasksMockData.seed(tasksScreenGraph.tasksManager)
     }
-    val goalsContext = remember(session) { GoalsContext() }
-    val goalsManager = remember(goalsContext) { GoalsManager(goalsContext) }
-    val batteryContext = remember(session) { SocialBatteryContext() }
-    val batteryManager = remember(batteryContext) { SocialBatteryManager(batteryContext) }
-    val identifierGenerator = remember { RandomIdentifierGenerator() }
-    val goalsSnapshot by goalsContext.goalsState.collectAsState()
-    val batterySnapshot by batteryContext.batteryState.collectAsState()
-    var selectedPersonalFeature by remember { mutableStateOf<PersonalFeature?>(null) }
-    var personalFeatureError by remember { mutableStateOf<String?>(null) }
-    fun mutatePersonalFeature(mutation: suspend () -> Unit) {
-        settingsScope.launch {
-            try {
-                mutation()
-                personalFeatureError = null
-            } catch (cancelled: CancellationException) {
-                throw cancelled
-            } catch (failure: Exception) {
-                personalFeatureError = failure.message ?: "Could not save this change"
-            }
-        }
+    val goalsScreenGraph = remember(session) { createGraph<GoalsScreenGraph>() }
+    LaunchedEffect(goalsScreenGraph) {
+        GoalsMockData.seed(goalsScreenGraph.goalsManager)
     }
+    val socialBatteryScreenGraph = remember(session) { createGraph<SocialBatteryScreenGraph>() }
     var showingFinance by remember {
         mutableStateOf(false)
     }
     var showingTasks by remember { mutableStateOf(false) }
+    var showingGoals by remember { mutableStateOf(false) }
+    var showingSocialBattery by remember { mutableStateOf(false) }
 
     val dashboardViewModel = viewModel<DashboardViewModel>(
         viewModelStoreOwner = session,
@@ -115,6 +100,20 @@ fun App(
         key = "tasks",
     ) {
         tasksScreenGraph.tasksViewModel
+    }
+
+    val goalsViewModel = viewModel<GoalsViewModel>(
+        viewModelStoreOwner = session,
+        key = "goals",
+    ) {
+        goalsScreenGraph.goalsViewModel
+    }
+
+    val socialBatteryViewModel = viewModel<SocialBatteryViewModel>(
+        viewModelStoreOwner = session,
+        key = "social-battery",
+    ) {
+        socialBatteryScreenGraph.socialBatteryViewModel
     }
 
     val financialHistoryViewModel = viewModel<FinancialHistoryViewModel>(
@@ -136,14 +135,11 @@ fun App(
         Column(Modifier.background(MaterialTheme.colorScheme.background).fillMaxSize()) {
             titleBar?.invoke()
             Row(Modifier.horizontalScroll(rememberScrollState())) {
-                TextButton(onClick = { showingSettings = false; showingFinance = false; showingTasks = false; selectedPersonalFeature = null }) { Text("Overview") }
-                TextButton(modifier = Modifier.testTag("open-settings"), onClick = { showingSettings = true; selectedPersonalFeature = null }) { Text("Settings") }
-                TextButton(onClick = { showingSettings = false; showingTasks = true; selectedPersonalFeature = null }) { Text("Tasks") }
-                PersonalFeature.entries.forEach { feature ->
-                    TextButton(onClick = { showingSettings = false; showingTasks = false; selectedPersonalFeature = feature }) {
-                        Text(feature.name.lowercase().replace('_', ' '))
-                    }
-                }
+                TextButton(onClick = { showingSettings = false; showingFinance = false; showingTasks = false; showingGoals = false; showingSocialBattery = false }) { Text("Overview") }
+                TextButton(modifier = Modifier.testTag("open-settings"), onClick = { showingSettings = true }) { Text("Settings") }
+                TextButton(onClick = { showingSettings = false; showingTasks = true }) { Text("Tasks") }
+                TextButton(onClick = { showingSettings = false; showingTasks = false; showingGoals = true }) { Text("Goals") }
+                TextButton(onClick = { showingSettings = false; showingTasks = false; showingGoals = false; showingSocialBattery = true }) { Text("Social battery") }
             }
             Box(Modifier.safeContentPadding().fillMaxSize().onFirstFrame(onFirstFrame)) {
                 if (showingSettings) {
@@ -161,18 +157,10 @@ fun App(
                     }, errorMessage = settingsError)
                 } else if (showingTasks) {
                     TasksScreen(tasksViewModel)
-                } else if (selectedPersonalFeature != null) {
-                    PersonalFeaturesScreen(
-                        feature = requireNotNull(selectedPersonalFeature),
-                        goals = goalsSnapshot.goals,
-                        batteryPercentage = batterySnapshot.socialBattery?.percentage,
-                        onCreateGoal = { title -> mutatePersonalFeature { goalsManager.createGoal(GoalCreationRequest(identifierGenerator.next(), title)) } },
-                        onUpdateGoal = { goal -> mutatePersonalFeature {
-                            goalsManager.updateGoal(GoalUpdateRequest(goal.identifier, progressPercentage = (goal.progressPercentage + 10f).coerceAtMost(100f)))
-                        } },
-                        onUpdateBattery = { percentage -> mutatePersonalFeature { batteryManager.updateBattery(SocialBattery(percentage)) } },
-                        errorMessage = personalFeatureError,
-                    )
+                } else if (showingGoals) {
+                    GoalsScreen(goalsViewModel)
+                } else if (showingSocialBattery) {
+                    SocialBatteryScreen(socialBatteryViewModel)
                 } else if (showingFinance) {
                     FinancialManagementScreen(financialHistoryViewModel, financialPlanningViewModel)
                 } else {

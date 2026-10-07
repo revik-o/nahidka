@@ -6,8 +6,9 @@ import org.orev.nahidka.feature.socialbattery.di.SocialBatterySessionScope
 import org.orev.nahidka.feature.socialbattery.dto.SocialBattery
 import org.orev.nahidka.feature.socialbattery.dto.SocialBatteryMutationResult
 
+@Inject
 @SingleIn(SocialBatterySessionScope::class)
-class SocialBatteryManager @Inject constructor(private val socialBatteryContext: SocialBatteryContext) {
+class SocialBatteryManager(private val socialBatteryContext: SocialBatteryContext) {
 
     suspend fun updateBattery(socialBattery: SocialBattery): SocialBatteryMutationResult =
         socialBatteryContext.applyBatteryUpdate(socialBattery)

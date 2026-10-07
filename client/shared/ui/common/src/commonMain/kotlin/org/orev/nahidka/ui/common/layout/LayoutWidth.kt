@@ -5,9 +5,9 @@ import androidx.compose.ui.unit.dp
 
 private val COMPACT_LAYOUT_WIDTH_LIMIT = 600.dp
 
-enum class LayoutWidth {
-    COMPACT,
-    EXPANDED;
+enum class LayoutWidth(val screenPadding: Dp) {
+    COMPACT(16.dp),
+    EXPANDED(24.dp);
 
     companion object {
 

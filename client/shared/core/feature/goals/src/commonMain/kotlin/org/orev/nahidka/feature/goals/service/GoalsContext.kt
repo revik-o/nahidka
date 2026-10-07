@@ -34,7 +34,14 @@ class GoalsContext : GoalsRepository {
 
     override suspend fun createGoal(request: GoalCreationRequest): GoalsMutationResult = stateMutex.withLock {
         currentCoroutineContext().ensureActive()
-        val goal = GoalRecord(request.identifier, request.title, request.progressPercentage, request.deadlineInstant)
+        val goal = GoalRecord(
+            request.identifier,
+            request.title,
+            request.description,
+            request.picture,
+            request.progressPercentage,
+            request.deadlineDate
+        )
 
         validateGoal(goal)
         require(goal.identifier !in goalsByIdentifier) { "Goal already exists: ${goal.identifier}" }
@@ -57,8 +64,10 @@ class GoalsContext : GoalsRepository {
         }
         val currentGoal = previousGoal.copy(
             title = request.title ?: previousGoal.title,
+            description = request.description ?: previousGoal.description,
+            picture = request.picturePatch.applyTo(previousGoal.picture),
             progressPercentage = request.progressPercentage ?: previousGoal.progressPercentage,
-            deadlineInstant = request.deadlinePatch.applyTo(previousGoal.deadlineInstant)
+            deadlineDate = request.deadlinePatch.applyTo(previousGoal.deadlineDate)
         )
 
         validateGoal(currentGoal)
@@ -88,6 +97,12 @@ class GoalsContext : GoalsRepository {
     private fun validateGoal(goal: GoalRecord) {
         require(goal.identifier.isNotBlank()) { "Goal identifier must not be blank" }
         require(goal.title.isNotBlank()) { "Goal title must not be blank" }
-        require(goal.progressPercentage.isFinite() && goal.progressPercentage in 0f..100f) { "Goal progress must be between 0 and 100" }
+        require(goal.progressPercentage in GoalRecord.PROGRESS_PERCENTAGE_RANGE) { "Goal progress must be between 0 and 100" }
+
+        when (val picture = goal.picture) {
+            is GoalPicture.Emoji -> require(picture.symbol.isNotBlank()) { "Goal emoji must not be blank" }
+            is GoalPicture.Photo -> require(picture.content.isNotEmpty()) { "Goal photo must not be empty" }
+            null -> Unit
+        }
     }
 }

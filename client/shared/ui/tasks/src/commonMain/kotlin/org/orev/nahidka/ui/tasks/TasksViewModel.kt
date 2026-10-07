@@ -11,7 +11,8 @@ import org.orev.nahidka.core.common.nullablePatch
 import org.orev.nahidka.feature.tasks.dto.*
 import org.orev.nahidka.feature.tasks.service.TasksManager
 import org.orev.nahidka.feature.tasks.service.TasksRepository
-import org.orev.nahidka.ui.tasks.dialog.TaskDialogController
+import org.orev.nahidka.ui.common.dialog.MutationDialogController
+import org.orev.nahidka.ui.common.mutation.mutationRejectionOf
 import org.orev.nahidka.ui.tasks.model.*
 
 private const val TASKS_CONTENT_SUBSCRIPTION_TIMEOUT_MILLISECONDS = 5_000L
@@ -35,19 +36,19 @@ class TasksViewModel(
 
     val changeRejections: SharedFlow<IllegalArgumentException> = mutableChangeRejections.asSharedFlow()
 
-    val taskEditor = TaskDialogController<TaskDraft>(viewModelScope, TaskDraft::submittable) { taskDraft ->
-        rejectionOf { saveTask(taskDraft) }
+    val taskEditor = MutationDialogController<TaskDraft>(viewModelScope, TaskDraft::submittable) { taskDraft ->
+        saveTask(taskDraft)
     }
 
-    val taskDeletion = TaskDialogController<TaskItem>(viewModelScope) { taskItem ->
-        rejectionOf { tasksManager.deleteTasks(listOf(taskItem.task.identifier)) }
+    val taskDeletion = MutationDialogController<TaskItem>(viewModelScope) { taskItem ->
+        tasksManager.deleteTasks(listOf(taskItem.task.identifier))
     }
 
-    val ratingLevelsEditor = TaskDialogController<TaskRatingLevelsDraft>(
+    val ratingLevelsEditor = MutationDialogController<TaskRatingLevelsDraft>(
         viewModelScope,
         TaskRatingLevelsDraft::submittable,
     ) { ratingLevelsDraft ->
-        rejectionOf { tasksManager.replaceRatingLevels(ratingLevelsDraft.ratingLevels) }
+        tasksManager.replaceRatingLevels(ratingLevelsDraft.ratingLevels)
     }
 
     val taskInteractions = TaskInteractions(
@@ -92,7 +93,7 @@ class TasksViewModel(
 
     private fun changeTask(taskUpdateRequest: TaskUpdateRequest) {
         viewModelScope.launch {
-            rejectionOf { tasksManager.updateTasks(listOf(taskUpdateRequest)) }
+            mutationRejectionOf { tasksManager.updateTasks(listOf(taskUpdateRequest)) }
                 ?.let(mutableChangeRejections::tryEmit)
         }
     }
@@ -106,12 +107,4 @@ class TasksViewModel(
             tasksManager.updateTasks(listOf(taskDraft.toUpdateRequest(editedTask)))
         }
     }
-
-    private suspend fun rejectionOf(tasksMutation: suspend () -> TasksMutationResult): IllegalArgumentException? =
-        try {
-            tasksMutation()
-            null
-        } catch (rejection: IllegalArgumentException) {
-            rejection
-        }
 }

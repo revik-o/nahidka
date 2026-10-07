@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_socialbattery_title">Соціальна батарея</string>
+    <string name="socialbattery_unset">Наскільки ви заряджені?</string>
+    <string name="socialbattery_charge_low">Розряджено — час перезарядитися</string>
+    <string name="socialbattery_charge_medium">Стабільно — підійде щось спокійне</string>
+    <string name="socialbattery_charge_high">Заряджено — час для спілкування</string>
+    <string name="socialbattery_hint">Торкніться батареї або потягніть її, щоб указати рівень</string>
 </resources>

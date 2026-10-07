@@ -6,14 +6,9 @@
     <string name="tasks_create">Створити завдання</string>
     <string name="tasks_creation_title">Нове завдання</string>
     <string name="tasks_editing_title">Редагування завдання</string>
-    <string name="tasks_action_save">Зберегти</string>
-    <string name="tasks_action_edit">Редагувати</string>
-    <string name="tasks_action_delete">Видалити</string>
     <string name="tasks_action_move_to">Перемістити в «%1$s»</string>
     <string name="tasks_action_move_up">Перемістити вгору</string>
     <string name="tasks_action_move_down">Перемістити вниз</string>
-    <string name="tasks_field_title">Назва</string>
-    <string name="tasks_field_description">Опис</string>
     <string name="tasks_field_status">Статус</string>
     <string name="tasks_field_due_date">Термін</string>
     <string name="tasks_field_rating">Оцінка</string>
@@ -30,5 +25,4 @@
     <string name="tasks_rating_level_add">＋ Додати реакцію</string>
     <string name="tasks_deletion_title">Видалити завдання?</string>
     <string name="tasks_deletion_message">Завдання «%1$s» буде видалено.</string>
-    <string name="tasks_error_unsaved">Не вдалося зберегти зміни</string>
 </resources>

@@ -1,6 +1,6 @@
 # Implementation plan — `shared/ui/goal`
 
-**Status (2026-10-07):** plan only. The repository is unchanged apart from this file and `plan-previews/`. Every code block below was written, compiled and tested in an isolated copy of the repository at `6df8e9d`. **52 / 52 tests pass on three consecutive forced runs** (18 new, plus 34 existing tests re-run because Tasks and `ui/common` change). The app builds for Android, desktop, JS and Wasm. Every changed module also compiles for iOS through klib cross-compilation. The previews were rendered from this exact code (§5).
+**Status (2026-10-07): implemented and verified.** All ten steps are applied. The host also incorporates the concurrent social-battery implementation as described in §5. The 52 tests specified here pass on three consecutive forced runs; the merged host's additional social-battery test also passes. Android, desktop, JS, Wasm and both iOS klib targets build successfully. Current-worktree evidence, the requirement audit and runtime limitations are recorded in [verification.md](verification.md). The implementation blocks below and the original isolated-copy verification in §5 are retained as the specification.
 
 ---
 

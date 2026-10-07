@@ -1,6 +1,6 @@
 # Goals
 
-In-memory goal CRUD with immutable snapshots. Each context owns an independent session; callers supply identifiers and persistence.
+In-memory goal CRUD with immutable snapshots. A goal has a title, a description, an optional picture (an emoji or photo bytes), progress from 0 to 100 % and an optional deadline date. Each context owns an independent session; callers supply identifiers and persistence.
 
 ```kotlin
 // Consumer build.gradle.kts — Android / JVM 11 / iOS arm64 + simulator arm64 / JS / Wasm JS
@@ -12,7 +12,7 @@ kotlin.sourceSets.commonMain.dependencies {
 **Create, update, delete** — self-contained usage:
 
 ```kotlin
-import kotlin.time.Instant
+import kotlinx.datetime.LocalDate
 import org.orev.nahidka.core.common.NullablePatch
 import org.orev.nahidka.feature.goals.dto.*
 import org.orev.nahidka.feature.goals.service.GoalsContext
@@ -25,17 +25,21 @@ suspend fun goalExample() {
 
     val created = manager.createGoal(GoalCreationRequest(
         identifier = "learn-kotlin", title = "Learn Kotlin",
-        // Defaults: progressPercentage = 0f, deadlineInstant = null.
+        picture = GoalPicture.Emoji("📚"),
+        // Defaults: description = "", progressPercentage = 0f, deadlineDate = null.
     ))
     check(created.changed && created.revision == 1L)
 
     val updated = manager.updateGoal(GoalUpdateRequest(
         identifier = created.goal.identifier,
         title = "Ship a Kotlin app",
+        description = "Publish it to the store",
+        picturePatch = NullablePatch.Set(GoalPicture.Photo(byteArrayOf(1, 2, 3))),
         progressPercentage = 25f,
-        deadlinePatch = NullablePatch.Set(Instant.parse("2027-01-01T00:00:00Z")),
+        deadlinePatch = NullablePatch.Set(LocalDate(2027, 1, 1)),
     ))
     check(updated.goal.progressPercentage == 25f)
+    check(updated.goal.picture == GoalPicture.Photo(byteArrayOf(1, 2, 3))) // Photos compare by content.
 
     manager.updateGoal(GoalUpdateRequest("learn-kotlin", deadlinePatch = NullablePatch.Clear))
     val unchanged = manager.updateGoal(GoalUpdateRequest("learn-kotlin"))
@@ -46,6 +50,8 @@ suspend fun goalExample() {
     check(context.currentSnapshot().goals.isEmpty())
 }
 ```
+
+Rejected with `IllegalArgumentException`: a blank identifier or title, a duplicate or unknown identifier, progress outside `GoalRecord.PROGRESS_PERCENTAGE_RANGE`, a blank emoji and an empty photo.
 
 **Observe and scope** — the supplied scope owns collection and error handling:
 
@@ -66,9 +72,6 @@ fun observeGoals(
 }
 // StateFlow immediately supplies current state; slow collectors may skip revisions.
 // Cancel the returned Job or its scope when the owner ends.
-// Compose consumer (with Compose runtime):
-// val snapshot by context.goalsState.collectAsState()
-// val sortedGoals = snapshot.goals.sortedBy { it.title }
 ```
 
 **Metro DI** — consumer needs the Metro plugin and `implementation(libs.metro.runtime)`:
@@ -79,11 +82,10 @@ import org.orev.nahidka.feature.goals.di.GoalsSessionGraph
 
 fun goalsSession(): GoalsSessionGraph = createGraph<GoalsSessionGraph>()
 // Graph exposes goalsContext + goalsManager; GoalsRepository binds to goalsContext.
+// GoalsBindings holds those providers, so other graphs (GoalsScreenGraph in shared/ui/goal) reuse them.
 // GoalsSessionScope scopes one default-empty context and manager per graph.
 // Retain the graph for the session. Use direct construction to seed initialGoals.
 // There is no close()/dispose() API; the caller owns collector cancellation.
-// App.kt uses remember(session) { GoalsContext() } and remembers its manager.
-// Recreating the context starts with the supplied initialGoals at revision 0.
 ```
 
-Source: [repository](src/commonMain/kotlin/org/orev/nahidka/feature/goals/service/GoalsRepository.kt), [context](src/commonMain/kotlin/org/orev/nahidka/feature/goals/service/GoalsContext.kt), [DTOs](src/commonMain/kotlin/org/orev/nahidka/feature/goals/dto), [app usage](../../../src/commonMain/kotlin/org/orev/nahidka/App.kt), [UI smoke test](../../../src/jvmTest/kotlin/org/orev/nahidka/ReviewFeaturesUiTest.kt).
+Source: [repository](src/commonMain/kotlin/org/orev/nahidka/feature/goals/service/GoalsRepository.kt), [context](src/commonMain/kotlin/org/orev/nahidka/feature/goals/service/GoalsContext.kt), [DTOs](src/commonMain/kotlin/org/orev/nahidka/feature/goals/dto), [bindings](src/commonMain/kotlin/org/orev/nahidka/feature/goals/di/GoalsBindings.kt), [tests](src/commonTest/kotlin/org/orev/nahidka/feature/goals/service/GoalsContextTest.kt), [UI](../../../ui/goal/README.md).

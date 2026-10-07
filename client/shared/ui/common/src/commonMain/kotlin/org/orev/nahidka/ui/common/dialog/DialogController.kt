@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class DialogController<Draft, Rejection : Any>(
+open class DialogController<Draft, Rejection : Any>(
     private val coroutineScope: CoroutineScope,
     private val draftValidation: (Draft) -> Boolean = { true },
     private val submission: suspend (Draft) -> Rejection?,

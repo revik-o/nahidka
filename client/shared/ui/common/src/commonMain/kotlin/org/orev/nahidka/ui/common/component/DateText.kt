@@ -1,4 +1,4 @@
-package org.orev.nahidka.ui.tasks.component
+package org.orev.nahidka.ui.common.component
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -9,9 +9,9 @@ import kotlinx.datetime.format
 import org.orev.nahidka.ui.common.format.DAY_FORMAT
 
 @Composable
-internal fun TaskDueDateText(dueDate: LocalDate, modifier: Modifier = Modifier) {
+fun DateText(date: LocalDate, modifier: Modifier = Modifier) {
     Text(
-        text = "📅 ${dueDate.format(DAY_FORMAT)}",
+        text = "📅 ${date.format(DAY_FORMAT)}",
         modifier = modifier,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
