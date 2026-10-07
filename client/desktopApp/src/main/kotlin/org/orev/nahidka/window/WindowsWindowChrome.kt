@@ -201,7 +201,7 @@ internal class WindowsWindowChrome(window: ComposeWindow, controller: DesktopWin
                 return if (snapshot.header.contains(point)) LRESULT(1) else original
             }
             val control = snapshot.controls.entries.firstOrNull { it.value.contains(point) }?.key
-            val caption = snapshot.header.contains(point) && control == null && !snapshot.fullscreen
+            val caption = snapshot.isCaptionHit(point)
             val border = hwnd != root && original.toInt() in 10..17 && !snapshot.fullscreen
             if (hwnd != root) return if (caption || control in snapshot.enabled || border) LRESULT(-1) else original
             return when {

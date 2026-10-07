@@ -13,6 +13,7 @@
     <string name="common_error_unsaved">Не удалось сохранить изменения</string>
     <string name="common_action_back">Назад</string>
     <string name="destination_dashboard">Обзор</string>
+    <string name="destination_dashboard_label">Обзор</string>
     <string name="destination_social_battery">Социальная батарея</string>
     <string name="destination_social_battery_label">Батарея</string>
     <string name="destination_tasks">Задачи</string>
@@ -20,5 +21,6 @@
     <string name="destination_settings">Настройки</string>
     <string name="destination_settings_label">Настройки</string>
     <string name="destination_finance">Финансы</string>
+    <string name="destination_finance_label">Финансы</string>
     <string name="destination_notifications">Уведомления</string>
 </resources>

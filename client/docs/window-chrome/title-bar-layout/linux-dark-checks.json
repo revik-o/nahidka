@@ -1,0 +1,111 @@
+[
+  {
+    "name": "Sidebar reaches the top",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Header follows the selected theme",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Greeting appears directly below the header",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Splash and dashboard frame callbacks fire",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Notification button opens the popup",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Notification click keeps window position",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Sidebar selection updates the window title",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Caption drag moves the window",
+    "passed": true,
+    "details": {
+      "before": {
+        "identifier": 10485768,
+        "x": 48,
+        "y": 48,
+        "width": 800,
+        "height": 600,
+        "visible": true
+      },
+      "after": {
+        "identifier": 10485768,
+        "x": 103,
+        "y": 83,
+        "width": 800,
+        "height": 600,
+        "visible": true
+      }
+    }
+  },
+  {
+    "name": "Maximize button maximizes",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Restore button restores bounds",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Caption double click maximizes",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Native edge resize still works",
+    "passed": true,
+    "details": {
+      "before": {
+        "identifier": 10485768,
+        "x": 103,
+        "y": 83,
+        "width": 800,
+        "height": 600,
+        "visible": true
+      },
+      "after": {
+        "identifier": 10485768,
+        "x": 103,
+        "y": 83,
+        "width": 860,
+        "height": 600,
+        "visible": true
+      }
+    }
+  },
+  {
+    "name": "Minimize button minimizes",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Compact header keeps a visible window",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Close button exits",
+    "passed": true,
+    "details": null
+  }
+]

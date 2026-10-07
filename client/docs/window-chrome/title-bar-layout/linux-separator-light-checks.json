@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Sidebar reaches the top",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Header follows the selected theme",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Greeting appears directly below the header",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Title bar has no bottom separator",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Splash and dashboard frame callbacks fire",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Close button exits",
+    "passed": true,
+    "details": null
+  }
+]

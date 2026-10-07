@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import nahidka.shared.generated.resources.Res
 import nahidka.shared.generated.resources.app_name
@@ -23,6 +24,7 @@ private val SIDEBAR_BRAND_MARK_SIZE = 36.dp
 internal fun NavigationSidebar(
     selectedDestination: ApplicationDestination,
     onDestinationSelect: (ApplicationDestination) -> Unit,
+    navigationSidebarTopInset: Dp = 0.dp,
 ) {
     Surface(
         modifier = Modifier
@@ -31,6 +33,7 @@ internal fun NavigationSidebar(
     ) {
         Column(
             modifier = Modifier
+                .padding(top = navigationSidebarTopInset)
                 .verticalScroll(rememberScrollState())
                 .padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),

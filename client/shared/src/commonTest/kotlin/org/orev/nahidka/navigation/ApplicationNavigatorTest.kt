@@ -12,21 +12,23 @@ class ApplicationNavigatorTest {
 
     @Test
     fun secondaryDestinationReturnsToTheDestinationThatOpenedIt() {
-        applicationNavigator.open(ApplicationDestination.TASKS)
-        applicationNavigator.open(ApplicationDestination.NOTIFICATIONS)
+        listOf(ApplicationDestination.TASKS, ApplicationDestination.FINANCE).forEach { navigationDestination ->
+            applicationNavigator.open(navigationDestination)
+            applicationNavigator.open(ApplicationDestination.NOTIFICATIONS)
 
-        assertTrue(applicationNavigator.canNavigateBack)
-        assertEquals(ApplicationDestination.TASKS, applicationNavigator.navigationDestination)
+            assertTrue(applicationNavigator.canNavigateBack)
+            assertEquals(navigationDestination, applicationNavigator.navigationDestination)
 
-        applicationNavigator.navigateBack()
+            applicationNavigator.navigateBack()
 
-        assertEquals(ApplicationDestination.TASKS, applicationNavigator.currentDestination)
-        assertFalse(applicationNavigator.canNavigateBack)
+            assertEquals(navigationDestination, applicationNavigator.currentDestination)
+            assertFalse(applicationNavigator.canNavigateBack)
+        }
     }
 
     @Test
     fun navigationDestinationReplacesOpenedSecondaryDestinations() {
-        applicationNavigator.open(ApplicationDestination.FINANCE)
+        applicationNavigator.open(ApplicationDestination.NOTIFICATIONS)
         applicationNavigator.open(ApplicationDestination.GOALS)
         applicationNavigator.navigateBack()
 

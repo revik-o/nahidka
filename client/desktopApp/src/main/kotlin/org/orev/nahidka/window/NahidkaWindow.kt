@@ -2,7 +2,6 @@ package org.orev.nahidka.window
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -24,7 +23,7 @@ import org.orev.nahidka.DesktopApplication
 import org.orev.nahidka.DesktopStartupTrace
 import org.orev.nahidka.ui.common.theme.NahidkaBackground
 
-private val WINDOW_BACKGROUND = AwtColor(NahidkaBackground.toArgb())
+private val DESKTOP_WINDOW_BACKGROUND_COLOR = AwtColor(NahidkaBackground.toArgb())
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -32,48 +31,57 @@ internal fun NahidkaWindow(
     onCloseRequest: () -> Unit,
     desktopStartupTrace: DesktopStartupTrace,
 ) {
-    val platform = remember { DesktopPlatform.current() }
-    val state = rememberWindowState()
-    val closeRequest = rememberUpdatedState(onCloseRequest)
-    val controller = remember(state) {
-        DesktopWindowController(state) { closeRequest.value() }
+    val desktopPlatform = remember { DesktopPlatform.current() }
+    val windowState = rememberWindowState()
+    val latestCloseRequest = rememberUpdatedState(onCloseRequest)
+    val desktopWindowController = remember(windowState) {
+        DesktopWindowController(windowState) { latestCloseRequest.value() }
     }
-    val host = remember(platform, controller) {
-        WindowChromeHost(windowChromeFactory(platform), controller)
+    val windowChromeHost = remember(desktopPlatform, desktopWindowController) {
+        WindowChromeHost(windowChromeFactory(desktopPlatform), desktopWindowController)
     }
-    DisposableEffect(host) { onDispose { host.close() } }
+    DisposableEffect(windowChromeHost) { onDispose { windowChromeHost.close() } }
 
     SwingWindow(
-        onCloseRequest = controller::close,
-        state = state,
+        onCloseRequest = desktopWindowController::close,
+        state = windowState,
         title = "nahidka",
-        decoration = if (platform == DesktopPlatform.Linux) {
+        decoration = if (desktopPlatform == DesktopPlatform.Linux) {
             WindowDecoration.Undecorated(resizerThickness = 0.dp)
         } else {
             WindowDecoration.SystemDefault
         },
-        transparent = host.transparentWindow,
+        transparent = windowChromeHost.transparentWindow,
         resizable = true,
         init = { window ->
-            window.background = WINDOW_BACKGROUND
-            window.contentPane.background = WINDOW_BACKGROUND
+            window.background = DESKTOP_WINDOW_BACKGROUND_COLOR
+            window.contentPane.background = DESKTOP_WINDOW_BACKGROUND_COLOR
             window.minimumSize = Dimension(360, 480)
-            host.prepare(window)
+            windowChromeHost.prepare(window)
         },
     ) {
-        val chrome = host.chrome
-        Box(Modifier.fillMaxSize().background(if (host.transparentWindow) Color.Transparent else NahidkaBackground)) {
-            Column(
+        val windowChrome = windowChromeHost.chrome
+        Box(
+            Modifier
+                .fillMaxSize()
+                .background(if (windowChromeHost.transparentWindow) Color.Transparent else NahidkaBackground),
+        ) {
+            Box(
                 Modifier
                     .fillMaxSize()
-                    .padding(chrome.contentInset)
-                    .clip(chrome.contentShape)
+                    .padding(windowChrome.contentInset)
+                    .clip(windowChrome.contentShape)
                     .background(NahidkaBackground),
             ) {
-                NahidkaTitleBar(controller, chrome)
-                DesktopApplication(desktopStartupTrace)
+                DesktopApplication(
+                    desktopStartupTrace = desktopStartupTrace,
+                    applicationTopBar = { applicationTopBarState, applicationTopBarActions ->
+                        NahidkaTitleBar(desktopWindowController, windowChrome, applicationTopBarState, applicationTopBarActions)
+                    },
+                    navigationSidebarTopInset = if (windowChrome.controlsAreNative) WINDOW_TITLE_BAR_HEIGHT else 0.dp,
+                )
             }
-            chrome.FrameOverlay()
+            windowChrome.FrameOverlay()
         }
     }
 }

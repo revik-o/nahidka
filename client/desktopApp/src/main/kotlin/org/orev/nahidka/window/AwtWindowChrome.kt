@@ -2,6 +2,7 @@ package org.orev.nahidka.window
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import java.awt.Dialog
 import java.awt.Window
@@ -31,13 +34,18 @@ import javax.swing.SwingUtilities
 
 internal data class ChromeGeometry(
     val header: Rect = Rect.Zero,
+    val caption: Rect = Rect.Zero,
     val controls: Map<WindowControl, Rect> = emptyMap(),
     val enabled: Set<WindowControl> = emptySet(),
     val fullscreen: Boolean = false,
     val inputEnabled: Boolean = true,
     val density: Float = 1f,
     val ready: Boolean = false,
-)
+) {
+    fun isCaptionHit(pointerPosition: Offset): Boolean =
+        ready && inputEnabled && !fullscreen && caption.contains(pointerPosition) &&
+            controls.values.none { controlBounds -> controlBounds.contains(pointerPosition) }
+}
 
 internal abstract class AwtWindowChrome(
     protected val window: ComposeWindow,
@@ -180,7 +188,14 @@ internal abstract class AwtWindowChrome(
 
     @Composable
     override fun Caption(modifier: Modifier, content: @Composable () -> Unit) {
-        Box(modifier) { content() }
+        DisposableEffect(this) {
+            onDispose { geometry.updateAndGet { chromeGeometry -> chromeGeometry.copy(caption = Rect.Zero) } }
+        }
+        Box(
+            modifier.onGloballyPositioned { captionCoordinates ->
+                geometry.updateAndGet { chromeGeometry -> chromeGeometry.copy(caption = captionCoordinates.boundsInWindow()) }
+            },
+        ) { content() }
     }
 
     @Composable

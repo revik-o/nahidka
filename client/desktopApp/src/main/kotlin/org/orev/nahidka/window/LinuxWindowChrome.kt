@@ -102,7 +102,7 @@ internal class LinuxWindowChrome(
         if (!acceptsInput() || controller.isFullscreen || !peerReady) return
         val current = geometry.get()
         val point = contentPoint(event)
-        val caption = current.ready && current.header.contains(point) && current.controls.values.none { it.contains(point) }
+        val caption = current.isCaptionHit(point)
         val scale = window.graphicsConfiguration.defaultTransform
         val edge = if (controller.isFloating && window.isResizable &&
             (actions == null || "_NET_WM_ACTION_RESIZE" in actions!!)) {

@@ -5,6 +5,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import org.jetbrains.compose.resources.stringResource
 import org.orev.nahidka.navigation.ApplicationNavigator
 import org.orev.nahidka.ui.common.layout.LayoutWidth
 import org.orev.nahidka.ui.common.navigation.ApplicationDestination
@@ -16,6 +18,8 @@ import org.orev.nahidka.ui.notification.NotificationsViewModel
 internal fun ApplicationShell(
     applicationNavigator: ApplicationNavigator,
     notificationsViewModel: NotificationsViewModel,
+    applicationTopBar: ApplicationTopBarRenderer,
+    navigationSidebarTopInset: Dp,
     modifier: Modifier = Modifier,
     destinationContent: @Composable (ApplicationDestination) -> Unit,
 ) {
@@ -26,10 +30,15 @@ internal fun ApplicationShell(
         BoxWithConstraints(Modifier.safeDrawingPadding()) {
             when (LayoutWidth.of(maxWidth)) {
                 LayoutWidth.EXPANDED -> Row(Modifier.fillMaxSize()) {
-                    NavigationSidebar(applicationNavigator.navigationDestination, applicationNavigator::open)
+                    NavigationSidebar(
+                        selectedDestination = applicationNavigator.navigationDestination,
+                        onDestinationSelect = applicationNavigator::open,
+                        navigationSidebarTopInset = navigationSidebarTopInset,
+                    )
                     ShellContent(
                         applicationNavigator = applicationNavigator,
                         modifier = Modifier.weight(1f),
+                        applicationTopBar = applicationTopBar,
                         notificationsAction = { NotificationsPopupButton(notificationsViewModel, applicationNavigator::open) },
                         destinationContent = destinationContent,
                     )
@@ -39,6 +48,7 @@ internal fun ApplicationShell(
                     ShellContent(
                         applicationNavigator = applicationNavigator,
                         modifier = Modifier.weight(1f),
+                        applicationTopBar = applicationTopBar,
                         notificationsAction = {
                             if (applicationNavigator.currentDestination != ApplicationDestination.NOTIFICATIONS) {
                                 NotificationsButton(notificationsViewModel) {
@@ -59,6 +69,7 @@ internal fun ApplicationShell(
 private fun ShellContent(
     applicationNavigator: ApplicationNavigator,
     modifier: Modifier,
+    applicationTopBar: ApplicationTopBarRenderer,
     notificationsAction: @Composable () -> Unit,
     destinationContent: @Composable (ApplicationDestination) -> Unit,
 ) {
@@ -66,13 +77,14 @@ private fun ShellContent(
         val contentLayoutWidth = LayoutWidth.of(maxWidth)
 
         Column(Modifier.fillMaxSize()) {
-            ApplicationTopBar(
-                destination = applicationNavigator.currentDestination,
-                layoutWidth = contentLayoutWidth,
-                onNavigateBack = applicationNavigator::navigateBack.takeIf { applicationNavigator.canNavigateBack },
-            ) {
-                notificationsAction()
-            }
+            applicationTopBar(
+                ApplicationTopBarState(
+                    title = stringResource(applicationNavigator.currentDestination.title),
+                    layoutWidth = contentLayoutWidth,
+                    onNavigateBack = applicationNavigator::navigateBack.takeIf { applicationNavigator.canNavigateBack },
+                ),
+                notificationsAction,
+            )
             Box(Modifier.weight(1f)) {
                 destinationContent(applicationNavigator.currentDestination)
             }

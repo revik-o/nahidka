@@ -12,41 +12,56 @@ import nahidka.shared.ui.common.generated.resources.common_action_back
 import nahidka.shared.ui.common.generated.resources.icon_back
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.orev.nahidka.ui.common.layout.LayoutWidth
-import org.orev.nahidka.ui.common.navigation.ApplicationDestination
 
 private val APPLICATION_TOP_BAR_HEIGHT = 64.dp
 
 @Composable
-internal fun ApplicationTopBar(
-    destination: ApplicationDestination,
-    layoutWidth: LayoutWidth,
-    onNavigateBack: (() -> Unit)?,
-    actions: @Composable RowScope.() -> Unit,
+fun ApplicationTopBar(
+    applicationTopBarState: ApplicationTopBarState,
+    modifier: Modifier = Modifier
+        .height(APPLICATION_TOP_BAR_HEIGHT)
+        .padding(end = applicationTopBarState.layoutWidth.screenPadding),
+    captionContainer: @Composable (Modifier, @Composable () -> Unit) -> Unit = { captionModifier, captionContent ->
+        Box(captionModifier) { captionContent() }
+    },
+    actions: @Composable () -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(APPLICATION_TOP_BAR_HEIGHT)
-            .padding(horizontal = layoutWidth.screenPadding),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        onNavigateBack?.let { navigateBack ->
-            IconButton(onClick = navigateBack) {
+        applicationTopBarState.onNavigateBack?.let { navigateBack ->
+            IconButton(
+                onClick = navigateBack,
+                modifier = Modifier.padding(start = applicationTopBarState.layoutWidth.screenPadding),
+            ) {
                 Icon(
                     painter = painterResource(Res.drawable.icon_back),
                     contentDescription = stringResource(Res.string.common_action_back),
                 )
             }
         }
-        Text(
-            text = stringResource(destination.title),
-            modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.titleLarge,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
+        captionContainer(
+            Modifier
+                .weight(1f)
+                .fillMaxHeight(),
+        ) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.CenterStart) {
+                Text(
+                    text = applicationTopBarState.title,
+                    modifier = Modifier.padding(
+                        start = if (applicationTopBarState.onNavigateBack == null) {
+                            applicationTopBarState.layoutWidth.screenPadding
+                        } else {
+                            8.dp
+                        },
+                    ),
+                    style = MaterialTheme.typography.titleLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
         actions()
     }
 }

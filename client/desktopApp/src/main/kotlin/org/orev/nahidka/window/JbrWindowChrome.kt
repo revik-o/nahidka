@@ -18,7 +18,7 @@ internal open class JbrWindowChrome(
         "Nahidka requires JetBrains Runtime 25 with custom title-bar support; use the packaged launcher"
     }
     private val titleBar = decorations.createCustomTitleBar().apply {
-        height = 40f
+        height = WINDOW_TITLE_BAR_HEIGHT.value
         putProperty("controls.visible", controlsAreNative)
     }
     final override var leftInset by mutableStateOf(0.dp)
@@ -43,7 +43,10 @@ internal open class JbrWindowChrome(
     override fun refresh() {
         super.refresh()
         if (closed) return
-        leftInset = titleBar.leftInset.dp
+        val titleBarGeometry = geometry.get()
+        leftInset = (titleBar.leftInset - titleBarGeometry.header.left / titleBarGeometry.density)
+            .coerceAtLeast(0f)
+            .dp
         rightInset = titleBar.rightInset.dp
     }
 
@@ -51,8 +54,7 @@ internal open class JbrWindowChrome(
         if (event.id == MouseEvent.MOUSE_EXITED || event.id == MouseEvent.MOUSE_WHEEL) return
         val current = geometry.get()
         val point = contentPoint(event)
-        titleBar.forceHitTest(!acceptsInput() || current.fullscreen || !current.ready ||
-            !current.header.contains(point) || current.controls.values.any { it.contains(point) })
+        titleBar.forceHitTest(!acceptsInput() || !current.isCaptionHit(point))
     }
 
     override fun close() {

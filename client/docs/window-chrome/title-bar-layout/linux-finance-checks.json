@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Sidebar reaches the top",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Header follows the selected theme",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Greeting appears directly below the header",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Title bar has no bottom separator",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Splash and dashboard frame callbacks fire",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Finance sidebar button opens the finance page",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Finance sidebar button is selected",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Maximized finance title bar has no separator",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Compact finance title bar has no separator",
+    "passed": true,
+    "details": null
+  },
+  {
+    "name": "Close button exits",
+    "passed": true,
+    "details": null
+  }
+]

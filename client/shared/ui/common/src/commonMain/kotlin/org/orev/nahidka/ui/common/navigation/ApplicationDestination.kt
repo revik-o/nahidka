@@ -12,7 +12,7 @@ enum class ApplicationDestination(
 ) {
     DASHBOARD(
         title = Res.string.destination_dashboard,
-        navigationLabel = Res.string.destination_dashboard,
+        navigationLabel = Res.string.destination_dashboard_label,
         icon = Res.drawable.icon_dashboard,
         shownInNavigation = true,
     ),
@@ -34,17 +34,17 @@ enum class ApplicationDestination(
         icon = Res.drawable.icon_goals,
         shownInNavigation = true,
     ),
+    FINANCE(
+        title = Res.string.destination_finance,
+        navigationLabel = Res.string.destination_finance_label,
+        icon = Res.drawable.icon_finance,
+        shownInNavigation = true,
+    ),
     SETTINGS(
         title = Res.string.destination_settings,
         navigationLabel = Res.string.destination_settings_label,
         icon = Res.drawable.icon_settings,
         shownInNavigation = true,
-    ),
-    FINANCE(
-        title = Res.string.destination_finance,
-        navigationLabel = Res.string.destination_finance,
-        icon = Res.drawable.icon_finance,
-        shownInNavigation = false,
     ),
     NOTIFICATIONS(
         title = Res.string.destination_notifications,

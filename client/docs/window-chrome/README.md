@@ -1,5 +1,7 @@
 # Desktop window integration validation
 
+The [integrated desktop title bar](title-bar-layout/README.md) includes the current layout and its validation. The native integration checks below record the earlier implementation.
+
 Implementation applied on 2 October 2026 against the existing working tree.
 No source comments or unit tests were added, as requested. The shared `App`
 API, startup callback, initial window size, and other platform entry points were
