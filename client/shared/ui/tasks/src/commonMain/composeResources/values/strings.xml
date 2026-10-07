@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="feature_task_title">Tasks</string>
     <string name="tasks_view_board">Board</string>
     <string name="tasks_view_list">List</string>
     <string name="tasks_create">Create new task</string>
@@ -25,4 +24,5 @@
     <string name="tasks_rating_level_add">＋ Add reaction</string>
     <string name="tasks_deletion_title">Delete task?</string>
     <string name="tasks_deletion_message">“%1$s” will be deleted.</string>
+    <string name="tasks_summary_all_done">Everything is done</string>
 </resources>

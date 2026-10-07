@@ -68,6 +68,7 @@ kotlin {
             implementation(project(":shared:ui:tasks"))
             implementation(project(":shared:ui:goal"))
             implementation(project(":shared:ui:social-battery"))
+            implementation(project(":shared:ui:notification"))
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)

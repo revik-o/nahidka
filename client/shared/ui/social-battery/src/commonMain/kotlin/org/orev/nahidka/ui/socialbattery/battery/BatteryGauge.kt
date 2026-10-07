@@ -1,27 +1,19 @@
 package org.orev.nahidka.ui.socialbattery.battery
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.verticalDrag
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.PointerInputScope
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.toSize
-import nahidka.shared.ui.social_battery.generated.resources.Res
-import nahidka.shared.ui.social_battery.generated.resources.feature_socialbattery_title
 import org.jetbrains.compose.resources.stringResource
 import org.orev.nahidka.feature.socialbattery.dto.SocialBattery
+import org.orev.nahidka.ui.common.navigation.ApplicationDestination
 
 private const val UNSET_PERCENTAGE_LABEL = "—"
 private const val PERCENTAGE_FONT_SIZE_FRACTION = 0.2f
@@ -32,11 +24,10 @@ private const val CHARGE_BOTTOM_ALPHA = 0.75f
 internal fun BatteryGauge(
     socialBattery: SocialBattery?,
     chargeFraction: Float,
-    chargeColor: Color,
-    onBatteryChange: (SocialBattery) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val batteryTitle = stringResource(Res.string.feature_socialbattery_title)
+    val chargeColor = socialBattery.chargeColor
+    val batteryTitle = stringResource(ApplicationDestination.SOCIAL_BATTERY.title)
     val percentageLabel = socialBattery?.let { chargedBattery -> "${chargedBattery.percentage}%" } ?: UNSET_PERCENTAGE_LABEL
     val textMeasurer = rememberTextMeasurer()
     val percentageTextStyle = MaterialTheme.typography.displayMedium
@@ -44,26 +35,11 @@ internal fun BatteryGauge(
     val cellColor = MaterialTheme.colorScheme.surface
 
     Canvas(
-        modifier = modifier
-            .semantics {
-                contentDescription = batteryTitle
-                stateDescription = percentageLabel
-                progressBarRangeInfo = ProgressBarRangeInfo(socialBattery.chargeFraction(), 0f..1f, CHARGE_FRACTION_STEPS)
-                setProgress { targetChargeFraction ->
-                    onBatteryChange(socialBatteryOf(targetChargeFraction))
-                    true
-                }
-            }
-            .pointerInput(onBatteryChange) {
-                awaitEachGesture {
-                    val firstDown = awaitFirstDown()
-                    onBatteryChange(socialBatteryAt(firstDown.position))
-                    verticalDrag(firstDown.id) { pointerChange ->
-                        pointerChange.consume()
-                        onBatteryChange(socialBatteryAt(pointerChange.position))
-                    }
-                }
-            },
+        modifier = modifier.semantics {
+            contentDescription = batteryTitle
+            stateDescription = percentageLabel
+            progressBarRangeInfo = ProgressBarRangeInfo(socialBattery.chargeFraction(), 0f..1f, CHARGE_FRACTION_STEPS)
+        },
     ) {
         val batteryGeometry = BatteryGeometry(size)
         val chargeArea = batteryGeometry.chargeArea(chargeFraction)
@@ -110,8 +86,3 @@ internal fun BatteryGauge(
         )
     }
 }
-
-private fun PointerInputScope.socialBatteryAt(pointerPosition: Offset): SocialBattery =
-    socialBatteryOf(
-        BatteryGeometry(size.toSize()).chargeFractionAt(pointerPosition.y),
-    )

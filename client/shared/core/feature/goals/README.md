@@ -82,7 +82,7 @@ import org.orev.nahidka.feature.goals.di.GoalsSessionGraph
 
 fun goalsSession(): GoalsSessionGraph = createGraph<GoalsSessionGraph>()
 // Graph exposes goalsContext + goalsManager; GoalsRepository binds to goalsContext.
-// GoalsBindings holds those providers, so other graphs (GoalsScreenGraph in shared/ui/goal) reuse them.
+// GoalsBindings holds those providers, so other graphs (GoalsScreenGraph in shared/ui/goal, ApplicationSessionGraph in shared) reuse them.
 // GoalsSessionScope scopes one default-empty context and manager per graph.
 // Retain the graph for the session. Use direct construction to seed initialGoals.
 // There is no close()/dispose() API; the caller owns collector cancellation.

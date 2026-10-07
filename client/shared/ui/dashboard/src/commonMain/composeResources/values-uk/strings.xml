@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="feature_dashboard_title">Панель управління</string>
+    <string name="dashboard_greeting_morning">Доброго ранку</string>
+    <string name="dashboard_greeting_afternoon">Добрий день</string>
+    <string name="dashboard_greeting_evening">Добрий вечір</string>
 </resources>

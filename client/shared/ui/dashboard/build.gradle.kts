@@ -23,17 +23,20 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
+            implementation(project(":shared:core:feature:common"))
             implementation(project(":shared:ui:common"))
+            implementation(project(":shared:ui:social-battery"))
+            implementation(project(":shared:ui:tasks"))
+            implementation(project(":shared:ui:goal"))
+            implementation(project(":shared:ui:financial-management"))
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
-            implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.components.resources)
-            implementation(project(":shared:ui:social-battery"))
-            implementation(project(":shared:core:feature:financial-management"))
             implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.metro.runtime)
         }
         commonTest.dependencies {

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="feature_goal_title">Цілі</string>
     <string name="goal_create">Створити ціль</string>
     <string name="goal_creation_title">Нова ціль</string>
     <string name="goal_editing_title">Редагування цілі</string>

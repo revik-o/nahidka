@@ -56,19 +56,23 @@ For an installer, run `./gradlew :desktopApp:packageReleaseDistributionForCurren
 that runs the packaged executable; the Windows installer creates desktop and
 Start-menu shortcuts. Windows and macOS installers must be built on those operating systems. `make run-desktop` remains the development workflow.
 
-The Java launcher displays the bundled static splash before Kotlin/Compose starts.
-Its image uses a relocatable `$APPDIR/resources` path in the packaged launcher.
-The main window uses a custom header and the same dark background. Windows and
+There is no separate launcher splash window. The main window opens first and its
+first frame draws `ApplicationSplash` (the brand mark and name) under the custom
+header. `DesktopApplication` composes the application on the following frame, so
+the expensive first composition no longer delays the window. Windows and
 Linux use application-drawn controls; macOS keeps native traffic lights inside
 the header to preserve system hover menus and fullscreen behavior. Native window
 integration is validated separately on each supported platform. Linux targets
-X11 and XWayland; native Wayland is not included. Java closes the native splash
-when the first AWT window appears. There is no minimum duration or delayed
-dashboard composition.
+X11 and XWayland; native Wayland is not included.
 
-The header stays above the dashboard and reserves a 6 dp resize perimeter on
-floating Linux windows. The minimum size is 360 × 480 AWT logical units. The
-initial size and first-frame callback are preserved. See the
+The header stays above the application and reserves a 6 dp resize perimeter on
+floating Linux windows. When the display supports per-pixel translucency (a
+compositing window manager is running), the Linux window is transparent: the
+perimeter becomes an invisible resize border and the content is clipped to
+rounded corners while floating. Without a compositor the window stays square and
+opaque. Windows 11 and macOS keep their native rounded frames. The minimum size
+is 360 × 480 AWT logical units. `NAHIDKA_STARTUP_TRACE=1` prints the
+`splash_frame` and `dashboard_frame` milestones. See the
 [window integration validation record](window-chrome/README.md) for actual checks
 and remaining release gates.
 
@@ -86,10 +90,12 @@ cannot process the project's JDK 25 class files.
 
 ## Shared UI and platform handoff
 
-- The root renders the dashboard directly, without a navigation controller for a
-  single destination. One shared theme supplies its colors and typography.
-- The dashboard's central scroller uses lazy sections. State and dialogs remain
-  outside lazy items, preserving edits when scrolling or changing layout.
+- The root renders `ApplicationShell` around every destination: a sidebar on
+  expanded widths and a floating bottom bar on compact widths (the shared 600 dp
+  `LayoutWidth` breakpoint), plus a top bar with the notifications button. One
+  shared theme supplies its colors and typography.
+- The dashboard arranges summary cards owned by the feature modules; every card
+  reads the same session state as the feature screens.
 - `App(onFirstFrame = ...)` is optional. It reports once per composition lifetime,
   after content draws and the next frame begins. This is a render milestone, not
   proof that the OS compositor has presented pixels or the user has interacted.

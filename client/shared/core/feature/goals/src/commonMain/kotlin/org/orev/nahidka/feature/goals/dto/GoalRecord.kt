@@ -11,6 +11,9 @@ data class GoalRecord(
     val deadlineDate: LocalDate? = null,
 ) {
 
+    val completed: Boolean
+        get() = progressPercentage == PROGRESS_PERCENTAGE_RANGE.endInclusive
+
     companion object {
         val PROGRESS_PERCENTAGE_RANGE = 0f..100f
     }

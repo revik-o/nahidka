@@ -13,7 +13,7 @@ import org.orev.nahidka.feature.socialbattery.dto.SocialBattery
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-private const val BATTERY_TITLE = "Social Battery"
+private const val BATTERY_TITLE = "Social battery"
 
 @OptIn(ExperimentalTestApi::class)
 class SocialBatteryScreenTest : SocialBatteryTest() {

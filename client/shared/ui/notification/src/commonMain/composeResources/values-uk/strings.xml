@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_task_overdue">Завдання «%1$s» прострочене</string>
+    <string name="notification_task_due_today">Завдання «%1$s» потрібно виконати сьогодні</string>
+    <string name="notification_task_due_soon">Термін завдання «%1$s» скоро спливає</string>
+    <string name="notification_goal_deadline_passed">Термін цілі «%1$s» минув</string>
+    <string name="notification_goal_deadline_soon">Наближається термін цілі «%1$s»</string>
+    <string name="notification_social_battery_unset">Укажіть рівень соціальної батареї</string>
+    <string name="notification_list_empty">Нових сповіщень немає</string>
+    <string name="notification_action_dismiss">Приховати</string>
+</resources>

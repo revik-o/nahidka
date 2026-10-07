@@ -61,8 +61,9 @@ fun settingsSession(storage: SettingsLocalDataSource): SettingsSessionGraph =
 // graph.settingsContext: SettingsContext
 // graph.settingsManager: SettingsManager
 // Factory.create(localDataSource: SettingsLocalDataSource): SettingsSessionGraph
+// SettingsBindings holds the context provider, so ApplicationSessionGraph in :shared reuses it.
 // SettingsSessionScope is the Metro scope marker: one context/manager per graph.
 // Retain the graph for the desired lifetime. There is no close() or owned coroutine scope.
 ```
 
-Sources: [service implementations](src/commonMain/kotlin/org/orev/nahidka/feature/settings/service), [Metro graph](src/commonMain/kotlin/org/orev/nahidka/feature/settings/di/SettingsSessionGraph.kt), [App integration](../../../src/commonMain/kotlin/org/orev/nahidka/App.kt), [JVM persistence test](../../../src/jvmTest/kotlin/org/orev/nahidka/SettingsPersistenceTest.kt), [UI recreation test](../../../src/jvmTest/kotlin/org/orev/nahidka/ReviewFeaturesUiTest.kt).
+Sources: [service implementations](src/commonMain/kotlin/org/orev/nahidka/feature/settings/service), [Metro graph](src/commonMain/kotlin/org/orev/nahidka/feature/settings/di/SettingsSessionGraph.kt), [bindings](src/commonMain/kotlin/org/orev/nahidka/feature/settings/di/SettingsBindings.kt), [App integration](../../../src/commonMain/kotlin/org/orev/nahidka/di/ApplicationSessionGraph.kt), [settings screen](../../../ui/settings/src/commonMain/kotlin/org/orev/nahidka/ui/settings/SettingsViewModel.kt).

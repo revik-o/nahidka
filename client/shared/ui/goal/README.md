@@ -4,13 +4,13 @@
 
 Photos are picked by `rememberPhotoPicker` from `shared/ui/common`: the Android Photo Picker, a desktop file dialog, a browser file input, or the iOS `PHPickerViewController`. The core keeps the original bytes; cards decode them off the main thread and scale them to at most 512 px.
 
-`GoalsScreenGraph` uses the same `GoalsBindings` as `GoalsSessionGraph`. The app retains the ViewModel in its session and exposes a Goals entry.
+`GoalsScreenGraph` uses the same `GoalsBindings` as `GoalsSessionGraph`. The app's `ApplicationSessionGraph` retains the ViewModel for the Goals entry, the dashboard's `GoalsSummaryCard` and deadline reminders.
 
 ## Temporary data
 
-All production demo records live in [GoalsMockData.kt](src/commonMain/kotlin/org/orev/nahidka/ui/goal/mock/GoalsMockData.kt). `App.kt` invokes its seed function once for each remembered goals graph: five goals covering emoji and letter pictures, descriptions, optional deadlines, and a completed goal. Changes last for the app session; restarting creates fresh demo data.
+All production demo records live in [GoalsMockData.kt](src/commonMain/kotlin/org/orev/nahidka/ui/goal/mock/GoalsMockData.kt). `populateDemoData` in `shared/src/commonMain/kotlin/org/orev/nahidka/di/DemoData.kt` invokes its seed function once per application session: five goals covering emoji and letter pictures, descriptions, optional deadlines, and a completed goal. Changes last for the app session; restarting creates fresh demo data.
 
-To remove the demo seed, delete `GoalsMockData.kt` and remove its import and `LaunchedEffect` call from `App.kt`. Persistence and the backend remain outside this implementation.
+To remove the demo seed, delete `GoalsMockData.kt` and remove its import and call from `DemoData.kt`. Persistence and the backend remain outside this implementation.
 
 ## Verification
 

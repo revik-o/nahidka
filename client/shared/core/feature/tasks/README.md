@@ -106,12 +106,12 @@ import org.orev.nahidka.feature.tasks.di.TasksSessionGraph
 
 fun tasksSession(): TasksSessionGraph = createGraph<TasksSessionGraph>()
 // Graph exposes tasksContext + tasksManager; TasksBindings binds TasksRepository to tasksContext.
-// Other graphs (for example TasksScreenGraph in :shared:ui:tasks) reuse TasksBindings.
+// Other graphs (TasksScreenGraph in :shared:ui:tasks, ApplicationSessionGraph in :shared) reuse TasksBindings.
 // TasksSessionScope scopes one default-empty context and manager per graph.
 // Retain the graph for the session. Use direct construction to seed initialTasks.
 // There is no close()/dispose() API; the caller owns collector cancellation.
-// App.kt remembers a TasksScreenGraph per session and takes TasksViewModel from it.
+// The app's ApplicationSessionGraph provides TasksViewModel for the screen, dashboard and notifications.
 // Recreating the context starts with the supplied initialTasks at revision 0.
 ```
 
-Source: [repository](src/commonMain/kotlin/org/orev/nahidka/feature/tasks/service/TasksRepository.kt), [context](src/commonMain/kotlin/org/orev/nahidka/feature/tasks/service/TasksContext.kt), [DTOs](src/commonMain/kotlin/org/orev/nahidka/feature/tasks/dto), [app usage](../../../src/commonMain/kotlin/org/orev/nahidka/App.kt), [UI tests](../../../ui/tasks/src/jvmTest/kotlin/org/orev/nahidka/ui/tasks/TasksScreenTest.kt).
+Source: [repository](src/commonMain/kotlin/org/orev/nahidka/feature/tasks/service/TasksRepository.kt), [context](src/commonMain/kotlin/org/orev/nahidka/feature/tasks/service/TasksContext.kt), [DTOs](src/commonMain/kotlin/org/orev/nahidka/feature/tasks/dto), [app usage](../../../src/commonMain/kotlin/org/orev/nahidka/di/ApplicationSessionGraph.kt), [UI tests](../../../ui/tasks/src/jvmTest/kotlin/org/orev/nahidka/ui/tasks/TasksScreenTest.kt).

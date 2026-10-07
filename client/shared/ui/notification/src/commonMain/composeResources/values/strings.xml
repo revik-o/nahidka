@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_task_overdue">Task “%1$s” is overdue</string>
+    <string name="notification_task_due_today">Task “%1$s” is due today</string>
+    <string name="notification_task_due_soon">Task “%1$s” is due soon</string>
+    <string name="notification_goal_deadline_passed">The deadline for goal “%1$s” has passed</string>
+    <string name="notification_goal_deadline_soon">The deadline for goal “%1$s” is coming up</string>
+    <string name="notification_social_battery_unset">Set your social battery level</string>
+    <string name="notification_list_empty">You are all caught up</string>
+    <string name="notification_action_dismiss">Dismiss</string>
+</resources>

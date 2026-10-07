@@ -1,10 +1,12 @@
 package org.orev.nahidka.window
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.awt.ComposeWindow
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.jetbrains.JBR
@@ -25,10 +27,16 @@ import java.awt.event.MouseEvent
 import javax.swing.SwingUtilities
 import org.orev.nahidka.window.nativeapi.X11Gestures
 
-internal class LinuxWindowChrome(window: ComposeWindow, controller: DesktopWindowController) :
-    AwtWindowChrome(window, controller) {
+private val FLOATING_WINDOW_SHAPE = RoundedCornerShape(10.dp)
+
+internal class LinuxWindowChrome(
+    window: ComposeWindow,
+    controller: DesktopWindowController,
+    private val transparentWindow: Boolean,
+) : AwtWindowChrome(window, controller) {
     override val controlsAreNative = false
     override val contentInset get() = if (controller.isFloating && window.isResizable) 6.dp else 0.dp
+    override val contentShape get() = if (transparentWindow && controller.isFloating) FLOATING_WINDOW_SHAPE else RectangleShape
     private val native = X11Gestures(window)
     private val fallback = FallbackWindowGesture(window)
     private var peerReady = false

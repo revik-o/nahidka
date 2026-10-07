@@ -4,9 +4,9 @@ import androidx.compose.ui.window.application
 import org.orev.nahidka.window.NahidkaWindow
 
 fun main() {
-    val startup = DesktopStartupTrace()
+    val desktopStartupTrace = DesktopStartupTrace()
 
     application {
-        NahidkaWindow(::exitApplication, startup::onFirstFrame)
+        NahidkaWindow(::exitApplication, desktopStartupTrace)
     }
 }

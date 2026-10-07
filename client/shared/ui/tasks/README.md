@@ -2,13 +2,13 @@
 
 `TasksScreen` provides an adaptive board and list, task creation and editing, optional due dates, deletion confirmation, customizable reactions, mouse dragging, touch long-press dragging, and menu-based status changes. Layouts use the screen width with a 600 dp breakpoint. Strings are available in English, Ukrainian, and Russian.
 
-The core owns the tasks and reaction levels in one atomic state. Only Done tasks can be rated. Leaving Done clears the rating; deleting a reaction clears affected task ratings. `TasksScreenGraph` uses the same `TasksBindings` as `TasksSessionGraph`. The app retains the ViewModel in its session and exposes a Tasks entry.
+The core owns the tasks and reaction levels in one atomic state. Only Done tasks can be rated. Leaving Done clears the rating; deleting a reaction clears affected task ratings. `TasksScreenGraph` uses the same `TasksBindings` as `TasksSessionGraph`. The app's `ApplicationSessionGraph` retains the ViewModel for the Tasks entry, the dashboard's `TasksSummaryCard` and task reminders.
 
 ## Temporary data
 
-All production demo records live in [TasksMockData.kt](src/commonMain/kotlin/org/orev/nahidka/ui/tasks/mock/TasksMockData.kt). `App.kt` invokes its seed function once for each remembered tasks graph. There are three To Do tasks, one In Progress task, and two Done tasks, covering descriptions, optional dates, and ratings. Changes last for the app session; restarting creates fresh demo data.
+All production demo records live in [TasksMockData.kt](src/commonMain/kotlin/org/orev/nahidka/ui/tasks/mock/TasksMockData.kt). `populateDemoData` in `shared/src/commonMain/kotlin/org/orev/nahidka/di/DemoData.kt` invokes its seed function once per application session. There are three To Do tasks, one In Progress task, and two Done tasks, covering descriptions, optional dates, and ratings. Changes last for the app session; restarting creates fresh demo data.
 
-To remove the demo seed, delete `TasksMockData.kt` and remove its import and `LaunchedEffect` call from `App.kt`. The core and ViewModel contain no demo records. Persistence and the backend remain outside this implementation.
+To remove the demo seed, delete `TasksMockData.kt` and remove its import and call from `DemoData.kt`. The core and ViewModel contain no demo records. Persistence and the backend remain outside this implementation.
 
 ## Verification
 

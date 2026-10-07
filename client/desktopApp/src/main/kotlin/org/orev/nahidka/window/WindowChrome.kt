@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import java.util.Locale
 
@@ -39,6 +40,7 @@ internal interface WindowChrome : AutoCloseable {
     val leftInset: Dp
     val rightInset: Dp
     val contentInset: Dp
+    val contentShape: Shape
     val interaction: NativeControlInteraction
 
     fun refreshState()
@@ -55,6 +57,8 @@ internal interface WindowChrome : AutoCloseable {
 }
 
 internal interface WindowChromeFactory {
+    val transparentWindow: Boolean
+
     fun prepare(window: ComposeWindow, controller: DesktopWindowController): WindowChrome
 }
 
@@ -71,6 +75,7 @@ internal class WindowChromeHost(
 ) : AutoCloseable {
     private var installed: WindowChrome? = null
     val chrome: WindowChrome get() = checkNotNull(installed)
+    val transparentWindow: Boolean get() = factory.transparentWindow
 
     fun prepare(window: ComposeWindow) {
         check(installed == null)

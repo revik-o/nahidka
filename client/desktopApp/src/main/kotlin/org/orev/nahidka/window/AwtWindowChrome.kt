@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import java.awt.Dialog
 import java.awt.Window
@@ -52,6 +54,7 @@ internal abstract class AwtWindowChrome(
     override val leftInset = 0.dp
     override val rightInset = 0.dp
     override val contentInset = 0.dp
+    override val contentShape: Shape = RectangleShape
     override val usesNativeMaximizeHover = false
     protected val geometry = AtomicReference(ChromeGeometry())
     protected var closed = false

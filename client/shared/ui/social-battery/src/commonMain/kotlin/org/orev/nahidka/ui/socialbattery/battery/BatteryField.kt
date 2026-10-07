@@ -8,7 +8,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
 import org.orev.nahidka.feature.socialbattery.dto.SocialBattery
 
@@ -20,7 +19,6 @@ private const val PARTICLE_FIELD_HEIGHT_SCALE = 1.35f
 @Composable
 internal fun BatteryField(
     socialBattery: SocialBattery?,
-    chargeColor: Color,
     onBatteryChange: (SocialBattery) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -35,16 +33,16 @@ internal fun BatteryField(
 
         BatteryParticles(
             chargeFraction = chargeFraction,
-            chargeColor = chargeColor,
+            chargeColor = socialBattery.chargeColor,
             batterySize = batterySize,
             modifier = Modifier.size(batterySize.width * PARTICLE_FIELD_WIDTH_SCALE, batterySize.height * PARTICLE_FIELD_HEIGHT_SCALE),
         )
         BatteryGauge(
             socialBattery = socialBattery,
             chargeFraction = chargeFraction,
-            chargeColor = chargeColor,
-            onBatteryChange = onBatteryChange,
-            modifier = Modifier.size(batterySize),
+            modifier = Modifier
+                .size(batterySize)
+                .batteryControl(onBatteryChange),
         )
     }
 }

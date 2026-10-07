@@ -1,7 +1,6 @@
 package org.orev.nahidka.ui.goal.card
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -11,16 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import nahidka.shared.ui.goal.generated.resources.Res
-import nahidka.shared.ui.goal.generated.resources.goal_progress_completed
-import org.jetbrains.compose.resources.stringResource
 import org.orev.nahidka.feature.goals.dto.GoalRecord
-import org.orev.nahidka.ui.common.component.DateText
 import org.orev.nahidka.ui.common.component.MoreActionsMenu
 import org.orev.nahidka.ui.common.component.editingMenuActions
 import org.orev.nahidka.ui.common.layout.LayoutWidth
 import org.orev.nahidka.ui.goal.component.GoalPictureView
-import kotlin.math.roundToInt
+import org.orev.nahidka.ui.goal.component.GoalProgressRow
+import org.orev.nahidka.ui.goal.component.GoalProgressText
 
 private const val GOAL_CARD_DESCRIPTION_MAXIMUM_LINES = 3
 
@@ -78,36 +74,11 @@ internal fun GoalCard(
                             overflow = TextOverflow.Ellipsis,
                         )
                     }
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        LinearProgressIndicator(
-                            progress = { goal.progressPercentage / GoalRecord.PROGRESS_PERCENTAGE_RANGE.endInclusive },
-                            modifier = Modifier.weight(1f),
-                        )
-                        goal.deadlineDate?.let { deadlineDate ->
-                            DateText(deadlineDate)
-                        }
-                    }
+                    GoalProgressRow(goal)
                 }
             }
         }
     }
-}
-
-@Composable
-private fun GoalProgressText(goal: GoalRecord) {
-    Text(
-        text = stringResource(Res.string.goal_progress_completed, goal.progressPercentage.roundToInt()),
-        style = MaterialTheme.typography.labelLarge,
-        color = if (goal.progressPercentage == GoalRecord.PROGRESS_PERCENTAGE_RANGE.endInclusive) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
-        },
-        maxLines = 1,
-    )
 }
 
 private val LayoutWidth.goalPictureSize: Dp

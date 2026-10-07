@@ -4,7 +4,7 @@
 
 The layout measures its own width with the shared 600 dp breakpoint (`LayoutWidth`) and sizes the battery from the available width and height, so phones in portrait and landscape, tablets, desktop windows, and browsers all fit without scrolling.
 
-`SocialBatteryScreenGraph` uses the same `SocialBatteryBindings` as the core `SocialBatterySessionGraph`. The app retains the ViewModel in its session and exposes a Social battery entry. The level stays in memory for the app session.
+`SocialBatteryScreenGraph` uses the same `SocialBatteryBindings` as the core `SocialBatterySessionGraph`. The app's `ApplicationSessionGraph` retains the ViewModel for the Social battery entry and the dashboard's read-only `SocialBatterySummaryCard`. The level stays in memory for the app session.
 
 ## Verification
 
@@ -19,4 +19,4 @@ Verified on 2026-10-07: 41 tests passed on three consecutive forced runs, includ
 
 Android APK assembly, desktop compilation, and JS and Wasm app compilation passed. Core and shared UI test sources also compiled for JS and Wasm; the screen's interaction and rendering tests run on JVM. Verification used separate temporary build outputs to avoid concurrent Gradle runs writing the same test results. iOS builds and physical touchscreens were not verified on this Linux host.
 
-The level remains in memory for the app session. System reduce motion and arrow-key controls are not supported. Dashboard and partner battery sample data, persistence, and side-menu changes remain outside this plan.
+The level remains in memory for the app session. System reduce motion and arrow-key controls are not supported. Partner battery data and persistence remain outside this plan.

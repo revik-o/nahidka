@@ -5,9 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import kotlinx.coroutines.CompletableDeferred
 
-/** Signal only after content has drawn, then let that frame reach the platform renderer. */
 @Composable
-internal fun Modifier.onFirstFrame(onFirstFrame: (() -> Unit)?): Modifier {
+fun Modifier.onFirstFrame(onFirstFrame: (() -> Unit)?): Modifier {
     if (onFirstFrame == null) return this
     val drawn = remember { CompletableDeferred<Unit>() }
     val callback = rememberUpdatedState(onFirstFrame)

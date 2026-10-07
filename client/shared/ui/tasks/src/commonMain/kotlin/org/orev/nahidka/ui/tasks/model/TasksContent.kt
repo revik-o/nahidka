@@ -11,6 +11,11 @@ data class TasksContent(
     val ratingLevels: ImmutableList<TaskRatingLevel>,
 ) {
 
+    val upcomingTaskItems: List<TaskItem>
+        get() = taskItems
+            .filter { taskItem -> taskItem.task.status != TaskStatus.DONE }
+            .sortedWith(compareBy(nullsLast()) { taskItem -> taskItem.task.dueDate })
+
     fun taskItemsWithStatus(status: TaskStatus): List<TaskItem> =
         taskItems.filter { taskItem -> taskItem.task.status == status }
 

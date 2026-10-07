@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.metro)
 }
 
 kotlin {
@@ -23,6 +24,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":shared:core:feature:settings"))
+            implementation(project(":shared:ui:common"))
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -30,6 +32,9 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.compose.components.resources)
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.metro.runtime)
         }
         commonTest.dependencies { implementation(libs.kotlin.test) }
     }

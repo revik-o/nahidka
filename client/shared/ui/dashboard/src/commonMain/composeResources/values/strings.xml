@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="feature_dashboard_title">Dashboard</string>
-    <string name="dashboard_quick_overview">Quick Overview</string>
-    <string name="dashboard_upcoming_tasks">Upcoming Tasks</string>
-    <string name="dashboard_no_tasks">No upcoming tasks</string>
-    <string name="dashboard_goals">Goals</string>
-    <string name="dashboard_no_goals">No goals set</string>
+    <string name="dashboard_greeting_morning">Good morning</string>
+    <string name="dashboard_greeting_afternoon">Good afternoon</string>
+    <string name="dashboard_greeting_evening">Good evening</string>
 </resources>
