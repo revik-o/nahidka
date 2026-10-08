@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.awt.ComposeWindow
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,7 @@ import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
 import javax.swing.SwingUtilities
 import org.orev.nahidka.window.nativeapi.X11Gestures
+import org.orev.nahidka.window.nativeapi.X11ResizeSync
 
 private val FLOATING_WINDOW_SHAPE = RoundedCornerShape(10.dp)
 
@@ -38,6 +40,7 @@ internal class LinuxWindowChrome(
     override val contentInset get() = if (controller.isFloating && window.isResizable) 6.dp else 0.dp
     override val contentShape get() = if (transparentWindow && controller.isFloating) FLOATING_WINDOW_SHAPE else RectangleShape
     private val native = X11Gestures(window)
+    private val resizeSync = X11ResizeSync(window, ::repaintForResize)
     private val fallback = FallbackWindowGesture(window)
     private var peerReady = false
     private var nativeMoveResize = false
@@ -70,9 +73,10 @@ internal class LinuxWindowChrome(
 
     override fun onPeerReady() {
         native.verifyPeer()
+        val synchronizedResize = resizeSync.start()
         peerReady = true
         nativeMoveResize = native.supports("_NET_WM_MOVERESIZE")
-        System.err.println("Nahidka window: Linux ${Toolkit.getDefaultToolkit().javaClass.simpleName}, JBR ${System.getProperty("java.runtime.version")}, EWMH moveresize=$nativeMoveResize")
+        System.err.println("Nahidka window: Linux ${Toolkit.getDefaultToolkit().javaClass.simpleName}, JBR ${System.getProperty("java.runtime.version")}, EWMH moveresize=$nativeMoveResize, resize sync=$synchronizedResize")
     }
 
     override fun refresh() {
@@ -80,6 +84,23 @@ internal class LinuxWindowChrome(
         super.refresh()
         if (!controller.isFloating || !window.isResizable || !acceptsInput()) clearResizeCursor()
         if (controller.isFloating && !window.isMinimized && window.extendedState and Frame.MAXIMIZED_BOTH == 0 && !fallback.active) floatingBounds = Rectangle(window.bounds)
+    }
+
+    override fun onResized() {
+        refresh()
+        repaintForResize()
+    }
+
+    @OptIn(ExperimentalComposeUiApi::class)
+    private fun repaintForResize() {
+        if (!closed && window.isShowing) {
+            val repaint = resizeSync.beginRepaint()
+            window.invalidate()
+            window.validate()
+            window.renderImmediately()
+            Toolkit.getDefaultToolkit().sync()
+            resizeSync.repaintCompleted(repaint)
+        }
     }
 
     override fun allowedControls(): Set<WindowControl> {
@@ -260,6 +281,7 @@ internal class LinuxWindowChrome(
         if (closed) return
         clearResizeCursor()
         fallback.close()
+        resizeSync.close()
         KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(keys)
         super.close()
     }

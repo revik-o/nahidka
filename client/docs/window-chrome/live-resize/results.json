@@ -1,0 +1,332 @@
+{
+  "before": {
+    "bounds": [
+      100,
+      120,
+      700,
+      600
+    ],
+    "black_fraction": 1.9047619047619046e-05,
+    "right_black_pixels": 8
+  },
+  "wm_protocols": [
+    236,
+    237,
+    240
+  ],
+  "held_settled": {
+    "bounds": [
+      100,
+      120,
+      1100,
+      600
+    ],
+    "black_fraction": 1.2121212121212122e-05,
+    "right_black_pixels": 8
+  },
+  "after": {
+    "bounds": [
+      100,
+      120,
+      1100,
+      600
+    ],
+    "black_fraction": 1.2121212121212122e-05,
+    "right_black_pixels": 8
+  },
+  "held_samples": [
+    {
+      "bounds": [
+        100,
+        120,
+        795,
+        600
+      ],
+      "black_fraction": 1.6771488469601677e-05,
+      "right_black_pixels": 0
+    },
+    {
+      "bounds": [
+        100,
+        120,
+        890,
+        600
+      ],
+      "black_fraction": 1.49812734082397e-05,
+      "right_black_pixels": 0
+    },
+    {
+      "bounds": [
+        100,
+        120,
+        965,
+        600
+      ],
+      "black_fraction": 1.381692573402418e-05,
+      "right_black_pixels": 0
+    },
+    {
+      "bounds": [
+        100,
+        120,
+        1100,
+        600
+      ],
+      "black_fraction": 1.2121212121212122e-05,
+      "right_black_pixels": 0
+    }
+  ],
+  "sync_counter": [
+    12582945
+  ],
+  "wm_supports_sync": false,
+  "controls": [
+    {
+      "check": "resize N",
+      "passed": true,
+      "expected": [
+        200,
+        150,
+        700,
+        630
+      ],
+      "actual": [
+        200,
+        150,
+        700,
+        630
+      ],
+      "held": {
+        "bounds": [
+          200,
+          150,
+          700,
+          630
+        ],
+        "black_fraction": 1.8140589569160997e-05,
+        "right_black_pixels": 8
+      }
+    },
+    {
+      "check": "resize NE",
+      "passed": true,
+      "expected": [
+        200,
+        150,
+        740,
+        630
+      ],
+      "actual": [
+        200,
+        150,
+        740,
+        630
+      ],
+      "held": {
+        "bounds": [
+          200,
+          153,
+          736,
+          627
+        ],
+        "black_fraction": 1.73358296928091e-05,
+        "right_black_pixels": 8
+      }
+    },
+    {
+      "check": "resize E",
+      "passed": true,
+      "expected": [
+        200,
+        180,
+        740,
+        600
+      ],
+      "actual": [
+        200,
+        180,
+        740,
+        600
+      ],
+      "held": {
+        "bounds": [
+          200,
+          180,
+          736,
+          600
+        ],
+        "black_fraction": 1.8115942028985507e-05,
+        "right_black_pixels": 8
+      }
+    },
+    {
+      "check": "resize SE",
+      "passed": true,
+      "expected": [
+        200,
+        180,
+        740,
+        630
+      ],
+      "actual": [
+        200,
+        180,
+        740,
+        630
+      ],
+      "held": {
+        "bounds": [
+          200,
+          180,
+          736,
+          627
+        ],
+        "black_fraction": 1.73358296928091e-05,
+        "right_black_pixels": 8
+      }
+    },
+    {
+      "check": "resize S",
+      "passed": true,
+      "expected": [
+        200,
+        180,
+        700,
+        630
+      ],
+      "actual": [
+        200,
+        180,
+        700,
+        630
+      ],
+      "held": {
+        "bounds": [
+          200,
+          180,
+          700,
+          621
+        ],
+        "black_fraction": 1.840349666436623e-05,
+        "right_black_pixels": 8
+      }
+    },
+    {
+      "check": "resize SW",
+      "passed": true,
+      "expected": [
+        160,
+        180,
+        740,
+        630
+      ],
+      "actual": [
+        160,
+        180,
+        740,
+        630
+      ],
+      "held": {
+        "bounds": [
+          168,
+          180,
+          732,
+          624
+        ],
+        "black_fraction": 1.751436177665686e-05,
+        "right_black_pixels": 8
+      }
+    },
+    {
+      "check": "resize W",
+      "passed": true,
+      "expected": [
+        160,
+        180,
+        740,
+        600
+      ],
+      "actual": [
+        160,
+        180,
+        740,
+        600
+      ],
+      "held": {
+        "bounds": [
+          172,
+          180,
+          728,
+          600
+        ],
+        "black_fraction": 1.8315018315018315e-05,
+        "right_black_pixels": 8
+      }
+    },
+    {
+      "check": "resize NW",
+      "passed": true,
+      "expected": [
+        160,
+        150,
+        740,
+        630
+      ],
+      "actual": [
+        160,
+        150,
+        740,
+        630
+      ],
+      "held": {
+        "bounds": [
+          168,
+          156,
+          732,
+          624
+        ],
+        "black_fraction": 1.751436177665686e-05,
+        "right_black_pixels": 8
+      }
+    },
+    {
+      "check": "maximize",
+      "passed": true,
+      "actual": [
+        0,
+        0,
+        1600,
+        1000
+      ]
+    },
+    {
+      "check": "restore",
+      "passed": true,
+      "actual": [
+        200,
+        180,
+        700,
+        600
+      ],
+      "expected": [
+        200,
+        180,
+        700,
+        600
+      ]
+    },
+    {
+      "check": "minimize",
+      "passed": true,
+      "actual": [
+        3,
+        0
+      ]
+    },
+    {
+      "check": "close",
+      "passed": true,
+      "exit_code": 0
+    }
+  ]
+}

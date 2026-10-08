@@ -1,0 +1,98 @@
+Nahidka resize sync: enabled counter=12582945 extension=3.1
+Nahidka window: Linux XToolkit, JBR 25.0.4.1+1-b583.48, EWMH moveresize=true, resize sync=true
+[SKIKO] warn: Fallback to next API
+org.jetbrains.skiko.RenderException: Cannot create Linux GL context
+[SKIKO] info: Renderer info:
+ GraphicsApi: SOFTWARE_FAST
+OS: linux x64
+
+Nahidka resize sync: request=1 size=800x600
+NAHIDKA_STARTUP splash_frame main_ms=2740.793696
+Oct 08, 2026 8:16:43 AM java.util.prefs.FileSystemPreferences setupUserRoot
+INFO: Created user preferences directory.
+Nahidka resize sync: painted=1 size=800x600
+NAHIDKA_STARTUP dashboard_frame main_ms=3751.105115
+Nahidka resize sync: request=2 size=705x600
+Nahidka resize sync: painted=2 size=705x600
+Nahidka resize sync: request=3 size=750x600
+Nahidka resize sync: painted=3 size=750x600
+Nahidka resize sync: request=4 size=795x600
+Nahidka resize sync: painted=4 size=795x600
+Nahidka resize sync: request=5 size=805x600
+Nahidka resize sync: painted=5 size=805x600
+Nahidka resize sync: request=6 size=890x600
+Nahidka resize sync: painted=6 size=890x600
+Nahidka resize sync: request=7 size=905x600
+Nahidka resize sync: painted=7 size=905x600
+Nahidka resize sync: request=8 size=965x600
+Nahidka resize sync: painted=8 size=965x600
+Nahidka resize sync: request=9 size=1005x600
+Nahidka resize sync: painted=9 size=1005x600
+Nahidka resize sync: request=10 size=1035x600
+Nahidka resize sync: painted=10 size=1035x600
+Nahidka resize sync: request=11 size=1100x600
+Nahidka resize sync: painted=11 size=1100x600
+Nahidka resize sync: request=12 size=700x603
+Nahidka resize sync: painted=12 size=700x603
+Nahidka resize sync: request=13 size=700x612
+Nahidka resize sync: painted=13 size=700x612
+Nahidka resize sync: request=14 size=700x621
+Nahidka resize sync: painted=14 size=700x621
+Nahidka resize sync: request=15 size=700x630
+Nahidka resize sync: painted=15 size=700x630
+Nahidka resize sync: request=16 size=704x603
+Nahidka resize sync: painted=16 size=704x603
+Nahidka resize sync: request=17 size=716x612
+Nahidka resize sync: painted=17 size=716x612
+Nahidka resize sync: request=18 size=736x627
+Nahidka resize sync: painted=18 size=736x627
+Nahidka resize sync: request=19 size=740x630
+Nahidka resize sync: painted=19 size=740x630
+Nahidka resize sync: request=20 size=704x600
+Nahidka resize sync: painted=20 size=704x600
+Nahidka resize sync: request=21 size=716x600
+Nahidka resize sync: painted=21 size=716x600
+Nahidka resize sync: request=22 size=736x600
+Nahidka resize sync: painted=22 size=736x600
+Nahidka resize sync: request=23 size=740x600
+Nahidka resize sync: painted=23 size=740x600
+Nahidka resize sync: request=24 size=704x603
+Nahidka resize sync: painted=24 size=704x603
+Nahidka resize sync: request=25 size=716x612
+Nahidka resize sync: painted=25 size=716x612
+Nahidka resize sync: request=26 size=736x627
+Nahidka resize sync: painted=26 size=736x627
+Nahidka resize sync: request=27 size=740x630
+Nahidka resize sync: painted=27 size=740x630
+Nahidka resize sync: request=28 size=700x603
+Nahidka resize sync: painted=28 size=700x603
+Nahidka resize sync: request=29 size=700x609
+Nahidka resize sync: painted=29 size=700x609
+Nahidka resize sync: request=30 size=700x621
+Nahidka resize sync: painted=30 size=700x621
+Nahidka resize sync: request=31 size=700x630
+Nahidka resize sync: painted=31 size=700x630
+Nahidka resize sync: request=32 size=704x603
+Nahidka resize sync: painted=32 size=704x603
+Nahidka resize sync: request=33 size=716x612
+Nahidka resize sync: painted=33 size=716x612
+Nahidka resize sync: request=34 size=732x624
+Nahidka resize sync: painted=34 size=732x624
+Nahidka resize sync: request=35 size=740x630
+Nahidka resize sync: painted=35 size=740x630
+Nahidka resize sync: request=36 size=704x600
+Nahidka resize sync: painted=36 size=704x600
+Nahidka resize sync: request=37 size=712x600
+Nahidka resize sync: painted=37 size=712x600
+Nahidka resize sync: request=38 size=728x600
+Nahidka resize sync: painted=38 size=728x600
+Nahidka resize sync: request=39 size=740x600
+Nahidka resize sync: painted=39 size=740x600
+Nahidka resize sync: request=40 size=704x603
+Nahidka resize sync: painted=40 size=704x603
+Nahidka resize sync: request=41 size=716x612
+Nahidka resize sync: painted=41 size=716x612
+Nahidka resize sync: request=42 size=732x624
+Nahidka resize sync: painted=42 size=732x624
+Nahidka resize sync: request=43 size=740x630
+Nahidka resize sync: painted=43 size=740x630

@@ -1,0 +1,15 @@
+Nahidka resize sync: enabled counter=29360161 extension=3.1
+Nahidka window: Linux XToolkit, JBR 25.0.4.1+1-b583.48, EWMH moveresize=true, resize sync=true
+[SKIKO] info: Renderer info:
+ GraphicsApi: OPENGL
+OS: linux x64
+Vendor: Intel
+Model: Mesa Intel(R) Graphics (ARL)
+Total VRAM: 31 MB
+
+Nahidka resize sync: request=1 size=800x600
+NAHIDKA_STARTUP splash_frame main_ms=2537.67005
+Nahidka resize sync: painted=1 size=800x600
+Oct 08, 2026 8:17:48 AM java.util.prefs.FileSystemPreferences setupUserRoot
+INFO: Created user preferences directory.
+NAHIDKA_STARTUP dashboard_frame main_ms=3762.228051

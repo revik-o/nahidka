@@ -78,7 +78,7 @@ internal abstract class AwtWindowChrome(
         override fun windowClosed(e: WindowEvent) = close()
     }
     private val components = object : ComponentAdapter() {
-        override fun componentResized(e: ComponentEvent) = refresh()
+        override fun componentResized(e: ComponentEvent) = onResized()
         override fun componentMoved(e: ComponentEvent) = refresh()
     }
     private val properties = PropertyChangeListener {
@@ -167,6 +167,7 @@ internal abstract class AwtWindowChrome(
 
     protected open fun headerChanged(bounds: Rect, density: Float) {}
     protected open fun onPeerReady() {}
+    protected open fun onResized() = refresh()
     protected open fun onMouse(event: MouseEvent) {}
     protected open fun onDeactivated(opposite: Window?) {}
     protected open fun onOwnedWindowEvent(event: WindowEvent) {}
