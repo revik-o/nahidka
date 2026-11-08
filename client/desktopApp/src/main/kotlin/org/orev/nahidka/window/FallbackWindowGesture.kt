@@ -1,12 +1,12 @@
 package org.orev.nahidka.window
 
 import androidx.compose.ui.awt.ComposeWindow
+import java.awt.KeyEventDispatcher
 import java.awt.KeyboardFocusManager
 import java.awt.Point
 import java.awt.Rectangle
 import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
-import java.awt.KeyEventDispatcher
 
 internal class FallbackWindowGesture(private val window: ComposeWindow) : AutoCloseable {
     private var start: Rectangle? = null

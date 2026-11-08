@@ -3,4 +3,6 @@
     <string name="dashboard_greeting_morning">Доброго ранку</string>
     <string name="dashboard_greeting_afternoon">Добрий день</string>
     <string name="dashboard_greeting_evening">Добрий вечір</string>
+    <string name="dashboard_partner_online">%1$s у мережі</string>
+    <string name="dashboard_partner_offline">%1$s не в мережі</string>
 </resources>

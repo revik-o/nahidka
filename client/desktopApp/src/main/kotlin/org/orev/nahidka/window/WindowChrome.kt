@@ -6,13 +6,13 @@ import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
-import java.util.Locale
+import java.util.*
 
 internal enum class DesktopPlatform {
     Windows, MacOS, Linux;
 
     companion object {
-        fun current(): DesktopPlatform {
+        fun current(): DesktopPlatform { // FIXME use KMP's `expect/actual` (AI)
             val name = System.getProperty("os.name").lowercase(Locale.ROOT)
             return when {
                 name.startsWith("windows") -> Windows
@@ -32,7 +32,8 @@ internal data class NativeControlInteraction(
 )
 
 internal interface WindowChrome : AutoCloseable {
-    val controlsAreNative: Boolean
+
+    val controlsAreNative: Boolean // FIXME better use `isWindowControlsAreNotNative` (AI)
     val isActive: Boolean
     val enabledControls: Set<WindowControl>
     val nativeMenuOpen: Boolean
@@ -44,7 +45,9 @@ internal interface WindowChrome : AutoCloseable {
     val interaction: NativeControlInteraction
 
     fun refreshState()
+
     fun updateHeader(bounds: Rect, density: Float)
+
     fun updateControl(control: WindowControl, bounds: Rect?)
 
     @Composable
@@ -57,9 +60,10 @@ internal interface WindowChrome : AutoCloseable {
 }
 
 internal interface WindowChromeFactory {
-    val transparentWindow: Boolean
 
-    fun prepare(window: ComposeWindow, controller: DesktopWindowController): WindowChrome
+    val transparentWindow: Boolean // FIXME remove this (AI)
+
+    fun prepare(window: ComposeWindow, controller: DesktopWindowController): WindowChrome // FIXME I guess we can use KMP's `expect/actual` here also (AI)
 }
 
 internal fun windowChromeFactory(platform: DesktopPlatform): WindowChromeFactory =
@@ -72,7 +76,8 @@ internal fun windowChromeFactory(platform: DesktopPlatform): WindowChromeFactory
 internal class WindowChromeHost(
     private val factory: WindowChromeFactory,
     private val controller: DesktopWindowController,
-) : AutoCloseable {
+) : AutoCloseable { // FIXME WHERE IS DI????? (AI)
+
     private var installed: WindowChrome? = null
     val chrome: WindowChrome get() = checkNotNull(installed)
     val transparentWindow: Boolean get() = factory.transparentWindow

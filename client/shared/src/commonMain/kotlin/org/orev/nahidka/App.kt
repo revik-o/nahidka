@@ -26,7 +26,7 @@ import org.orev.nahidka.ui.settings.isDarkTheme
 @Preview
 @Composable
 fun App(
-    onFirstFrame: (() -> Unit)? = null,
+//    onFirstFrame: (() -> Unit)? = null,
     settingsLocalDataSource: SettingsLocalDataSource = rememberSettingsLocalDataSource(),
     applicationTopBar: ApplicationTopBarRenderer = { applicationTopBarState, applicationTopBarActions ->
         ApplicationTopBar(applicationTopBarState, actions = applicationTopBarActions)
@@ -50,7 +50,7 @@ fun App(
             notificationsViewModel = applicationSessionOwner.sessionViewModel { notificationsViewModel },
             applicationTopBar = applicationTopBar,
             navigationSidebarTopInset = navigationSidebarTopInset,
-            modifier = Modifier.onFirstFrame(onFirstFrame),
+//            modifier = Modifier.onFirstFrame(onFirstFrame),
         ) { destination ->
             DestinationContent(destination, applicationSessionOwner, applicationNavigator)
         }

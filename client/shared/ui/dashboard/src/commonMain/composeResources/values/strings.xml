@@ -3,4 +3,6 @@
     <string name="dashboard_greeting_morning">Good morning</string>
     <string name="dashboard_greeting_afternoon">Good afternoon</string>
     <string name="dashboard_greeting_evening">Good evening</string>
+    <string name="dashboard_partner_online">%1$s is online</string>
+    <string name="dashboard_partner_offline">%1$s is offline</string>
 </resources>

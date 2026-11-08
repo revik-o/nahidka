@@ -3,7 +3,6 @@ package org.orev.nahidka.window.nativeapi
 import com.sun.jna.Native
 import com.sun.jna.Structure
 import com.sun.jna.WString
-import com.sun.jna.platform.win32.BaseTSD.ULONG_PTR
 import com.sun.jna.platform.win32.BaseTSD.ULONG_PTRByReference
 import com.sun.jna.platform.win32.WinDef.*
 import com.sun.jna.platform.win32.WinUser.HHOOK

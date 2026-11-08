@@ -1,11 +1,7 @@
 package org.orev.nahidka.window
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.geometry.Offset
@@ -15,19 +11,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
-import java.awt.Dialog
-import java.awt.Window
-import java.awt.EventQueue
-import java.awt.Toolkit
-import java.awt.AWTEvent
-import java.awt.event.AWTEventListener
-import java.awt.event.ComponentAdapter
-import java.awt.event.ComponentEvent
-import java.awt.event.HierarchyEvent
-import java.awt.event.HierarchyListener
-import java.awt.event.MouseEvent
-import java.awt.event.WindowAdapter
-import java.awt.event.WindowEvent
+import java.awt.*
+import java.awt.event.*
 import java.beans.PropertyChangeListener
 import java.util.concurrent.atomic.AtomicReference
 import javax.swing.SwingUtilities

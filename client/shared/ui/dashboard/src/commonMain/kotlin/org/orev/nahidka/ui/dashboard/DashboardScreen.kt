@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.jetbrains.compose.resources.stringResource
@@ -39,6 +40,7 @@ fun DashboardScreen(
     modifier: Modifier = Modifier,
 ) {
     val dashboardHeader by dashboardViewModel.header.collectAsStateWithLifecycle()
+    val partners by dashboardViewModel.partners.collectAsStateWithLifecycle()
 
     BoxWithConstraints(modifier.fillMaxSize()) {
         val columnCount = (maxWidth / DASHBOARD_CARD_MINIMUM_WIDTH)
@@ -52,12 +54,19 @@ fun DashboardScreen(
                 .padding(LayoutWidth.of(maxWidth).screenPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(
-                    text = stringResource(dashboardHeader.dayPeriod.greeting),
-                    style = MaterialTheme.typography.headlineSmall,
-                )
-                DateText(dashboardHeader.today)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(
+                        text = stringResource(dashboardHeader.dayPeriod.greeting),
+                        style = MaterialTheme.typography.headlineSmall,
+                    )
+                    DateText(dashboardHeader.today)
+                }
+                PartnerAvatars(partners)
             }
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),

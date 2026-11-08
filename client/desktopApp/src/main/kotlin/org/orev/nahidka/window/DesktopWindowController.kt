@@ -3,7 +3,7 @@ package org.orev.nahidka.window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
 
-internal class DesktopWindowController(
+internal class DesktopWindowController( // FIXME required redesign (human)
     private val state: WindowState,
     private val onCloseRequest: () -> Unit,
 ) {
@@ -17,12 +17,18 @@ internal class DesktopWindowController(
         get() = state.placement == WindowPlacement.Floating
 
     fun minimize() {
-        if (closing) return
+        if (closing) {
+            return
+        }
+
         state.isMinimized = true
     }
 
     fun toggleMaximize() {
-        if (closing || isFullscreen) return
+        if (closing || isFullscreen) {
+            return
+        }
+
         state.isMinimized = false
         state.placement = if (isMaximized) {
             WindowPlacement.Floating
@@ -34,13 +40,19 @@ internal class DesktopWindowController(
     private var closing = false
 
     fun restore() {
-        if (closing || isFullscreen) return
+        if (closing || isFullscreen) {
+            return
+        }
+
         state.isMinimized = false
         state.placement = WindowPlacement.Floating
     }
 
     fun close() {
-        if (closing) return
+        if (closing) {
+            return
+        }
+
         closing = true
         onCloseRequest()
     }

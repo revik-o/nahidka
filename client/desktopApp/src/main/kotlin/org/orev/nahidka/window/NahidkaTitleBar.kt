@@ -25,10 +25,12 @@ internal fun NahidkaTitleBar(
     applicationTopBarState: ApplicationTopBarState,
     applicationTopBarActions: @Composable () -> Unit,
 ) {
-    SideEffect { windowChrome.refreshState() }
+
     val windowDensity = LocalDensity.current.density
     val titleBarColorScheme = MaterialTheme.colorScheme
     val titleBarContentColor = titleBarColorScheme.onBackground.copy(alpha = if (windowChrome.isActive) 1f else 0.6f)
+
+    SideEffect { windowChrome.refreshState() }
 
     CompositionLocalProvider(LocalContentColor provides titleBarContentColor) {
         ApplicationTopBar(
@@ -45,22 +47,23 @@ internal fun NahidkaTitleBar(
             },
         ) {
             applicationTopBarActions()
+
             if (!windowChrome.controlsAreNative) {
-                WindowControlButton(
+                WindowControlButton( // FIXME make separate `WindowMinimizeButton` component (AI)
                     windowControl = WindowControl.Minimize,
                     accessibilityLabel = "Minimize",
                     showRestoreIcon = false,
                     windowChrome = windowChrome,
                     onControlClick = desktopWindowController::minimize,
                 )
-                WindowControlButton(
+                WindowControlButton( // FIXME make separate `WindowMaximizeButton` component (AI)
                     windowControl = WindowControl.Maximize,
                     accessibilityLabel = if (desktopWindowController.isMaximized) "Restore" else "Maximize",
                     showRestoreIcon = desktopWindowController.isMaximized,
                     windowChrome = windowChrome,
                     onControlClick = desktopWindowController::toggleMaximize,
                 )
-                WindowControlButton(
+                WindowControlButton( // FIXME make separate `WindowCloseButton` component (AI)
                     windowControl = WindowControl.Close,
                     accessibilityLabel = "Close",
                     showRestoreIcon = false,

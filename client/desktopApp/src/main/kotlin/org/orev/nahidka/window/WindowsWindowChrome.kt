@@ -12,14 +12,14 @@ import com.sun.jna.platform.win32.User32
 import com.sun.jna.platform.win32.WinDef.*
 import com.sun.jna.platform.win32.WinUser
 import com.sun.jna.ptr.IntByReference
+import org.orev.nahidka.window.nativeapi.Win32
+import org.orev.nahidka.window.nativeapi.Win32Subclass
 import java.awt.EventQueue
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
 import javax.swing.SwingUtilities
-import org.orev.nahidka.window.nativeapi.Win32
-import org.orev.nahidka.window.nativeapi.Win32Subclass
 
 internal class WindowsWindowChrome(window: ComposeWindow, controller: DesktopWindowController) :
     JbrWindowChrome(window, controller, controlsAreNative = false) {

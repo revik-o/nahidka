@@ -5,29 +5,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.jetbrains.JBR
-import java.awt.EventQueue
-import java.awt.Frame
-import java.awt.Component
-import java.awt.Cursor
-import java.awt.KeyboardFocusManager
-import java.awt.KeyEventDispatcher
-import java.awt.event.WindowEvent
-import java.awt.Point
-import java.awt.Rectangle
-import java.awt.Toolkit
-import java.awt.Window
+import org.orev.nahidka.window.nativeapi.X11Gestures
+import org.orev.nahidka.window.nativeapi.X11ResizeSync
+import java.awt.*
 import java.awt.dnd.DragSource
 import java.awt.event.KeyEvent
 import java.awt.event.MouseEvent
+import java.awt.event.WindowEvent
 import javax.swing.SwingUtilities
-import org.orev.nahidka.window.nativeapi.X11Gestures
-import org.orev.nahidka.window.nativeapi.X11ResizeSync
 
 private val FLOATING_WINDOW_SHAPE = RoundedCornerShape(10.dp)
 

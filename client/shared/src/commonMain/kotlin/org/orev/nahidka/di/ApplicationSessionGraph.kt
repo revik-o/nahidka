@@ -22,6 +22,7 @@ import org.orev.nahidka.feature.tasks.di.TasksBindings
 import org.orev.nahidka.feature.tasks.di.TasksSessionScope
 import org.orev.nahidka.feature.tasks.service.TasksManager
 import org.orev.nahidka.ui.dashboard.DashboardViewModel
+import org.orev.nahidka.ui.dashboard.PartnerPresenceStore
 import org.orev.nahidka.ui.financialmanagement.history.FinancialHistoryViewModel
 import org.orev.nahidka.ui.financialmanagement.overview.FinancialOverviewViewModel
 import org.orev.nahidka.ui.financialmanagement.planning.FinancialPlanningViewModel
@@ -54,6 +55,7 @@ interface ApplicationSessionGraph {
     val tasksManager: TasksManager
     val goalsManager: GoalsManager
     val dashboardViewModel: DashboardViewModel
+    val partnerPresenceStore: PartnerPresenceStore
     val socialBatteryViewModel: SocialBatteryViewModel
     val tasksViewModel: TasksViewModel
     val goalsViewModel: GoalsViewModel
@@ -70,6 +72,10 @@ interface ApplicationSessionGraph {
         errorReporter: ErrorReporter,
         financialCalendar: FinancialCalendar,
     ): FinancialGateway = InMemoryFinancialGateway(financialSessionConfig, errorReporter, financialCalendar)
+
+    @Provides
+    @SingleIn(ApplicationSessionScope::class)
+    fun providePartnerPresenceStore(): PartnerPresenceStore = PartnerPresenceStore()
 
     @Provides
     fun provideErrorReporter(): ErrorReporter = NoOpErrorReporter()

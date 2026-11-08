@@ -20,7 +20,10 @@ private val HEADER_REFRESH_INTERVAL = 1.minutes
 class DashboardViewModel(
     private val applicationClock: ApplicationClock,
     private val timeZone: TimeZone,
+    partnerPresenceStore: PartnerPresenceStore,
 ) : ViewModel() {
+
+    val partners: StateFlow<List<PartnerPresence>> = partnerPresenceStore.partners
 
     val header: StateFlow<DashboardHeader> = flow {
         while (true) {
